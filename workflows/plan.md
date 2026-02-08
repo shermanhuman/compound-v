@@ -1,5 +1,5 @@
 ---
-description: Interactive planning workflow. Decomposes tasks into ideas, investigates, iterates with user, drafts plan.
+description: Autonomous planning workflow. Researches, reasons, and presents a plan with minimal back-and-forth. Respects the user's time.
 ---
 
 // turbo-all
@@ -10,113 +10,149 @@ description: Interactive planning workflow. Decomposes tasks into ideas, investi
 
 Plan the task described by the user in their message above.
 
-If the user's request is unclear, ask them to restate the task in one sentence and STOP.
-
 ## Rules
 
 - DO NOT edit code during this workflow.
 - You may read files to understand context.
 - Never write to `stack.md` or `structure.md` without showing proposed changes and getting explicit user approval.
-- **One question at a time.** If you need clarification, ask one focused question per message.
-- **Multiple choice preferred.** When asking the user to decide, present numbered options with your recommendation.
-- **YAGNI ruthlessly.** Remove unnecessary features and scope creep from all designs.
+- **Minimize round-trips.** Do your own thinking. Don't ask the user to hold your hand.
+- **YAGNI ruthlessly.** Kill ideas yourself before presenting them.
 
-## Init
+## Phase 1: Establish the goal
+
+Determine the **desired end result** — the single sentence that defines success.
+
+- If the user stated a clear goal, use it.
+- If the goal is ambiguous, ask ONE question: "What's the desired end result?" and STOP. Do not proceed until you have a goal.
+- Do NOT ask multiple clarifying questions. Infer what you can and note assumptions.
+
+## Phase 2: Research (autonomous — no user interaction)
+
+Do all of this in parallel, silently:
 
 1. Resolve a task slug:
    - If the user provided a kebab-case slug (e.g. `/plan fix-auth`), use it.
    - If continuing a previous task, check `.promptherder/convos/` for a matching folder.
    - Otherwise, generate a short kebab-case name (2-4 words) from the task description.
 
-2. Check if `.promptherder/convos/<slug>/plan.md` already exists. If so, read it and resume from current state.
+2. Read `.agent/rules/stack.md` and `.agent/rules/structure.md` if they exist.
 
-3. Read `.agent/rules/stack.md` and `.agent/rules/structure.md` if they exist. Use pinned versions to scope web searches.
+3. `search_web` for best practices, alternatives, and pitfalls. Scope queries to versions in `stack.md`.
 
-4. Research in parallel:
-   - `search_web` for best practices, alternatives, and pitfalls related to the task.
-   - `view_file_outline` on relevant project files to understand what exists today.
+4. `view_file_outline` on relevant project files.
 
-5. Create `.promptherder/convos/<slug>/plan.md` with:
-   - Header line: `# Plan: <title>`
-   - Status line: `> /plan · Status: **planning** · .promptherder/convos/<slug>/plan.md`
-   - Empty ideas table
-   - Decompose the user's request into initial ideas (state: `proposed`)
+5. Read `.promptherder/future-tasks.md` if it exists — check if any deferred ideas are relevant.
 
-## Ideation loop
+## Phase 3: Think (autonomous — no user interaction)
 
-Maintain the ideas table across every message. For each user message:
+Build your internal reasoning. For each approach you consider:
 
-- Process any ACCEPT/REJECT/DEFER decisions (update table, add rationale)
-- For accepted ideas, add or update plan steps (each step: Files, Change, Verify)
-- Break any new input into discrete ideas (state: `proposed`)
-- Investigate proposed ideas: search web, apply first principles, build user stories / mock interfaces / diagram workflows as appropriate
-- Challenge each idea: does it solve the actual problem? Is it the simplest approach? Apply YAGNI.
-- Persist `plan.md` to disk immediately after every update
-- Present the full ideas table at the end of every response
-- If proposed ideas remain: ask the user to ACCEPT / REJECT / DEFER by number
-- If no proposed ideas remain: ask "All ideas resolved. Type **DRAFT** to finalize the plan."
+- **Idea**: what is it?
+- **Pros**: why it's good
+- **Cons**: why it's risky or complex
+- **Verdict**: accept / reject / ask (need user input)
 
-## Draft
+Apply these filters yourself:
 
-When the user types DRAFT:
+- YAGNI — is this the simplest approach?
+- Does it solve the actual problem or a hypothetical one?
+- What are the risks? Are they manageable?
+- Are there rollback options?
 
-1. Review the full plan as a senior engineer.
-2. Rewrite the plan cleanly:
-   - Accepted ideas → concrete plan steps (Files, Change, Verify per step)
-   - Rejected ideas → removed entirely
-   - Deferred ideas → listed in a Deferred section
-   - Add: Goal, Risks & mitigations, Rollback plan
-3. Propose `stack.md` and `structure.md` changes if needed. Show the diff and wait for approval before writing.
-4. Present the plan to the user in sections (200-300 words each), checking after each: "Does this section look right?"
-   - Plan summary and goal
-   - Happy-path user story
-   - Interface mocks or logic diagrams (if applicable)
-5. Persist `plan.md` with status `draft`.
+**Reject bad ideas yourself.** Only surface ideas with verdict `ask` to the user.
 
-## Approval
+## Phase 4: Present the plan
 
-Ask: **Approve this plan? Reply APPROVED. Task: `<slug>`**
-
-If the user replies APPROVED:
-
-- Update status to `approved`.
-- Persist `plan.md`.
-- Do NOT implement.
-- Reply: **"Plan approved. Run `/execute` to begin implementation. Task: `<slug>`"**
-
-## Plan artifact format (use this structure)
+Write the plan to `.promptherder/convos/<slug>/plan.md` and present it to the user in a single response:
 
 ```markdown
 # Plan: <title>
 
-> `/plan` · **Status**: planning · `.promptherder/convos/<slug>/plan.md`
-
-## Ideas
-
-| #   | Idea | State    | Rationale |
-| --- | ---- | -------- | --------- |
-| 1   | ...  | proposed | —         |
+> `/plan` · **Status**: draft · `.promptherder/convos/<slug>/plan.md`
 
 ## Goal
 
-(filled during DRAFT)
+<one sentence>
 
 ## Plan
 
 1. Step name
    - Files: `path/to/file`
-   - Change: what changes
+   - Change: what changes (1-2 bullets)
    - Verify: command to verify
 
 ## Risks & mitigations
 
-(filled during DRAFT)
+- Risk → mitigation
 
 ## Rollback plan
 
-(filled during DRAFT)
-
-## Deferred
-
-(ideas with state: deferred)
+<how to undo>
 ```
+
+### Asking for input
+
+After the plan, present **batch questions** — all the decisions you need input on, in one block:
+
+```
+**I need your input on:**
+
+1. <question> — I recommend (A) because ...
+   - (A) option
+   - (B) option
+2. <question>
+   - (A) ...
+   - (B) ...
+```
+
+If you have no questions (the path is clear), skip this section.
+
+### Approval prompt
+
+Always end with:
+
+> **Reply APPROVED to proceed, reply SHOW DECISIONS to audit my reasoning, or give feedback.**
+> Task: `<slug>`
+
+## Handling responses
+
+### If APPROVED
+
+- Update status to `approved` in plan.md.
+- Reply: **"Plan approved. Run `/execute` to begin. Task: `<slug>`"**
+- Do NOT implement.
+
+### If SHOW DECISIONS
+
+- Print the full internal ideas table (all ideas considered, including rejected ones):
+
+```
+| #  | Idea | Verdict  | Pros | Cons | Rationale |
+|----|------|----------|------|------|-----------|
+| 1  | ...  | accepted | ...  | ...  | ...       |
+| 2  | ...  | rejected | ...  | ...  | ...       |
+| 3  | ...  | ask      | ...  | ...  | ...       |
+```
+
+- After showing, re-prompt: **"Reply APPROVED, give feedback, or answer the open questions above."**
+
+### If feedback
+
+- Incorporate feedback, re-research if needed, update plan.
+- Present the updated plan (same format as Phase 4).
+- Don't apologize excessively. Just fix it and re-present.
+
+### If answers to questions
+
+- Process answers, update plan accordingly.
+- Present the updated plan.
+
+## Deferred ideas
+
+If you reject ideas that have future value, append them to `.promptherder/future-tasks.md` (create if needed). Format:
+
+```markdown
+- [ ] <idea> — <brief rationale> _(from: <slug>, <date>)_
+```
+
+Do NOT put deferred items in the plan file.

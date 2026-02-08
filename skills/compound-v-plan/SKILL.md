@@ -1,6 +1,6 @@
 ---
 name: compound-v-plan
-description: Interactive planning with ideation loop. Maintains ideas table, investigates proposals, iterates with user decisions. Use before making non-trivial changes.
+description: Autonomous planning with internal reasoning. Researches, evaluates ideas, presents a plan. Minimizes user round-trips. Use before making non-trivial changes.
 ---
 
 # Planning Skill
@@ -12,40 +12,56 @@ description: Interactive planning with ideation loop. Maintains ideas table, inv
 - any debugging that needs systematic isolation
 - any design decision with multiple viable approaches
 
-## Core pattern: ideation loop
+## Core pattern: think first, ask smart
 
-Planning is interactive, not one-shot. The LLM maintains an **ideas table** across messages:
+Planning is **LLM-driven**, not turn-by-turn. The LLM should:
 
-| #   | Idea                   | State    | Rationale                  |
-| --- | ---------------------- | -------- | -------------------------- |
-| 1   | Use middleware pattern | accepted | Testable, clean separation |
-| 2   | Use hooks instead      | rejected | Too magical                |
+1. **Understand the goal** — what does success look like?
+2. **Research autonomously** — read code, search web, understand constraints
+3. **Reason internally** — evaluate approaches, apply YAGNI, reject bad ideas
+4. **Present a plan** — one response with the plan, batch questions, and approval prompt
 
-**States**: `proposed` → `accepted` / `rejected` / `deferred`
+### Anti-patterns (don't do these)
 
-Every response should:
+- ❌ Asking the user to ACCEPT/REJECT individual ideas one at a time
+- ❌ Showing an ideas table before you've done your own thinking
+- ❌ Asking clarifying questions you could answer by reading the code
+- ❌ Multiple rounds of "does this look right?" on sections of the plan
+- ❌ Deferring the goal statement to a later phase
 
-1. Process user decisions (ACCEPT/REJECT/DEFER by number)
-2. Update the ideas table and plan steps
-3. Investigate any new proposed ideas
-4. Present the full table and ask for decisions
+### Good patterns
+
+- ✅ Research first, then present a confident plan
+- ✅ Batch all questions into one block at the end
+- ✅ Offer SHOW DECISIONS audit on demand (not by default)
+- ✅ Kill bad ideas yourself with rationale (visible in audit)
+- ✅ State assumptions explicitly so the user can correct them
+
+## Internal reasoning format
+
+When evaluating approaches, use this structure internally:
+
+| #   | Idea | Verdict  | Pros | Cons | Rationale |
+| --- | ---- | -------- | ---- | ---- | --------- |
+| 1   | ...  | accepted | ...  | ...  | ...       |
+| 2   | ...  | rejected | ...  | ...  | ...       |
+| 3   | ...  | ask      | ...  | ...  | ...       |
+
+**Verdicts:**
+
+- `accepted` — you're confident this is right. Include in plan.
+- `rejected` — you've killed it. Available in SHOW DECISIONS audit.
+- `ask` — you genuinely can't decide without user input. Surface as a batch question.
 
 ## Investigation techniques
 
-When investigating proposed ideas:
+When researching:
 
 - `search_web` for patterns, pitfalls, best practices (scope to versions in `stack.md`)
 - Apply first-principles thinking — does this solve the actual problem?
-- Challenge with YAGNI — is this the simplest approach? Remove unnecessary complexity.
+- Challenge with YAGNI — is this the simplest approach?
 - Build user stories for UX-facing ideas
-- Mock interfaces for visual ideas
-- Diagram workflows for process ideas
-
-## Conversation principles
-
-- **One question at a time.** Don't overwhelm the user — ask one focused question per message.
-- **Multiple choice preferred.** Present numbered options with your recommendation.
-- **YAGNI ruthlessly.** Remove unnecessary features from all designs.
+- Check `.promptherder/future-tasks.md` for relevant deferred ideas
 
 ## Planning rules
 
@@ -55,6 +71,7 @@ When investigating proposed ideas:
 - Identify **rollback** and **risk controls** early.
 - Group independent steps for **parallel execution** where possible.
 - Never write to `stack.md` or `structure.md` without user approval.
+- State the **goal** first. Everything else flows from it.
 
 ## Plan step format
 
