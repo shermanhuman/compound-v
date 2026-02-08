@@ -35,13 +35,15 @@ Do all of this in parallel, silently:
    - If continuing a previous task, check `.promptherder/convos/` for a matching folder.
    - Otherwise, generate a short kebab-case name (2-4 words) from the task description.
 
-2. Read `.agent/rules/stack.md` and `.agent/rules/structure.md` if they exist.
+2. Check if `.promptherder/convos/<slug>/plan.md` already exists. If so, read it and `decisions.md` if present, then resume from the current state (don't start over).
 
-3. `search_web` for best practices, alternatives, and pitfalls. Scope queries to versions in `stack.md`.
+3. Read `.agent/rules/stack.md` and `.agent/rules/structure.md` if they exist.
 
-4. `view_file_outline` on relevant project files.
+4. `search_web` for best practices, alternatives, and pitfalls. Scope queries to versions in `stack.md`.
 
-5. Read `.promptherder/future-tasks.md` if it exists — check if any deferred ideas are relevant.
+5. `view_file_outline` on relevant project files.
+
+6. Read `.promptherder/future-tasks.md` if it exists — check if any deferred ideas are relevant.
 
 ## Phase 3: Think (autonomous — no user interaction)
 
