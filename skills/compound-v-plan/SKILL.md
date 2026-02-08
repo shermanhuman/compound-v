@@ -36,22 +36,29 @@ Planning is **LLM-driven**, not turn-by-turn. The LLM should:
 - ✅ Offer SHOW DECISIONS audit on demand (not by default)
 - ✅ Kill bad ideas yourself with rationale (visible in audit)
 - ✅ State assumptions explicitly so the user can correct them
+- ✅ Confirm deferred ideas with the user before adding to `future-tasks.md`
 
-## Internal reasoning format
+## Decisions table
 
-When evaluating approaches, use this structure internally:
+When evaluating approaches, build a decisions table and **persist it** to `.promptherder/convos/<slug>/decisions.md`:
+
+```markdown
+# Decisions: <title>
 
 | #   | Idea | Verdict  | Pros | Cons | Rationale |
 | --- | ---- | -------- | ---- | ---- | --------- |
 | 1   | ...  | accepted | ...  | ...  | ...       |
 | 2   | ...  | rejected | ...  | ...  | ...       |
 | 3   | ...  | ask      | ...  | ...  | ...       |
+```
 
 **Verdicts:**
 
 - `accepted` — you're confident this is right. Include in plan.
-- `rejected` — you've killed it. Available in SHOW DECISIONS audit.
+- `rejected` — you've killed it. Visible when user says SHOW DECISIONS.
 - `ask` — you genuinely can't decide without user input. Surface as a batch question.
+
+Update `decisions.md` whenever decisions change (feedback, re-planning, etc.).
 
 ## Investigation techniques
 
@@ -81,3 +88,9 @@ When researching:
    - Change: (1–2 bullets)
    - Verify: (exact commands or checks)
 ```
+
+## Deferred ideas
+
+- Ideas with future value go to `.promptherder/future-tasks.md`.
+- **Always confirm with the user before appending.** List them when presenting the plan and ask.
+- Do NOT silently add to future-tasks.md or put deferred items in the plan file.
