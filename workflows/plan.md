@@ -61,6 +61,22 @@ Apply these filters yourself:
 
 **Reject bad ideas yourself.** Only surface ideas with verdict `ask` to the user.
 
+### Persist decisions
+
+Write the full decisions table to `.promptherder/convos/<slug>/decisions.md`:
+
+```markdown
+# Decisions: <title>
+
+| #   | Idea | Verdict  | Pros | Cons | Rationale |
+| --- | ---- | -------- | ---- | ---- | --------- |
+| 1   | ...  | accepted | ...  | ...  | ...       |
+| 2   | ...  | rejected | ...  | ...  | ...       |
+| 3   | ...  | ask      | ...  | ...  | ...       |
+```
+
+Update this file whenever decisions change (feedback, re-planning, etc.).
+
 ## Phase 4: Present the plan
 
 Write the plan to `.promptherder/convos/<slug>/plan.md` and present it to the user in a single response:
@@ -124,16 +140,7 @@ Always end with:
 
 ### If SHOW DECISIONS
 
-- Print the full internal ideas table (all ideas considered, including rejected ones):
-
-```
-| #  | Idea | Verdict  | Pros | Cons | Rationale |
-|----|------|----------|------|------|-----------|
-| 1  | ...  | accepted | ...  | ...  | ...       |
-| 2  | ...  | rejected | ...  | ...  | ...       |
-| 3  | ...  | ask      | ...  | ...  | ...       |
-```
-
+- Print the contents of `.promptherder/convos/<slug>/decisions.md` (the full decisions table with all ideas, including rejected ones).
 - After showing, re-prompt: **"Reply APPROVED, give feedback, or answer the open questions above."**
 
 ### If feedback
@@ -149,7 +156,17 @@ Always end with:
 
 ## Deferred ideas
 
-If you reject ideas that have future value, append them to `.promptherder/future-tasks.md` (create if needed). Format:
+If you identify ideas with future value that don't belong in this plan, list them when presenting the plan:
+
+```
+**Ideas I'd defer to future tasks:**
+- <idea> — <brief rationale>
+- <idea> — <brief rationale>
+
+Should I add these to `future-tasks.md`?
+```
+
+**Only append to `.promptherder/future-tasks.md` after the user confirms.** Format:
 
 ```markdown
 - [ ] <idea> — <brief rationale> _(from: <slug>, <date>)_
