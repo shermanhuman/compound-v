@@ -6,8 +6,6 @@ description: Runs a review pass with severity levels (Blocker/Major/Minor/Nit).
 
 Invoke the `compound-v-review` skill and follow it exactly.
 
-**Announce at start:** "Running review pass on [scope]."
-
 ## Workflow-specific protocol
 
 ### Slug resolution

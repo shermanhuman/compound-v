@@ -55,7 +55,7 @@ Apply these filters yourself:
 
 #### Persist decisions
 
-Write the full decisions table to `decisions.md` (path determined by the calling workflow):
+Write the full decisions table to `decisions.md`. The calling workflow determines the full path (typically `.promptherder/convos/<slug>/decisions.md`):
 
 ```markdown
 # Decisions: <title>
