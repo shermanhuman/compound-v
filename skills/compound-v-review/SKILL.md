@@ -37,7 +37,7 @@ If no check specified, run all 10.
 
 Before running the checks, do all research **in parallel** (`waitForPreviousTools: false`):
 
-1. Read `stack.md` for pinned versions. If it doesn't exist, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent.
+1. Read `.agent/rules/stack.md` for pinned versions. If it doesn't exist, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent.
 2. Use `git diff` against the pre-implementation baseline for the review scope.
 3. Read all changed files in parallel to build full context.
 4. `search_web` for version-specific docs, gotchas, and best practices scoped to `stack.md` versions.
