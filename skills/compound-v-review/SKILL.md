@@ -192,35 +192,50 @@ Flag outdated comments that don't match current code behavior. A wrong comment i
 
 ## Output format
 
-### 1. Strengths
+Keep the review **scannable**. The user should grasp the full picture in 10 seconds from the table, then drill into details only where needed.
 
-What's well done? Be specific with file:line references.
+### 1. Strengths (3-5 items max)
+
+Highlight what's well done. Be specific with file:line references. Don't list everything good — pick the top 3-5.
+
+---
 
 ### 2. Findings
 
-Grouped by severity (⠿ → ⠷ → ⠴ → ⠠). Each finding must include:
+**Always start with a summary table.** This is the scannable overview:
 
 ```
-⠿ **B1**: file.go:42 — What's wrong
-  Why it matters.
-  Fix: how to fix (if not obvious).
+| ID | Sev | Location | Issue |
+|----|-----|----------|-------|
+| B1 | ⠿ | file.go:42 | Brief description |
+| M1 | ⠷ | auth.go:15 | Brief description |
+| m1 | ⠴ | utils.go:8 | Brief description |
 ```
 
-- Unique ID: `⠿ **B1**`, `⠷ **M2**`, `⠴ **m3**`, `⠠ **n1**`
-- File:line reference
-- What's wrong
-- Why it matters
-- How to fix (if not obvious)
+**Then, detail only findings that need explanation** (non-obvious fix, nuanced reasoning). Skip details for self-explanatory findings — the table row is enough.
+
+```
+⠷ **M1**: auth.go:15 — Why this matters (1-2 lines)
+  Fix: specific remediation.
+```
+
+Finding IDs: `⠿ **B1**` (blocker), `⠷ **M1**` (major), `⠴ **m1**` (minor), `⠠ **n1**` (nit).
+
+---
 
 ### 3. Verdict
 
-"Ready to merge? **Yes** / **No** / **With fixes**" + 1-2 sentence reasoning.
+"Ready to merge? **Yes** / **No** / **With fixes**" — plus 1-2 sentence reasoning.
+
+---
 
 ## After presenting findings
 
+**The decision prompt appears exactly ONCE, at the very end of the response.** Do not repeat it after file operations or any other step.
+
 **Normal mode (findings-first):**
 
-Present findings and verdict. Do NOT auto-fix.
+Present findings and verdict. Do NOT auto-fix. End with:
 
 > Run `fix` to fix all, `fix blockers` for ⠿ only, or give feedback.
 > Task: `<slug>`
@@ -238,3 +253,9 @@ If any finding is unclear, clarify ALL unclear items before fixing ANY.
 **`YOLO` mode:**
 
 Skip presentation. Auto-fix ALL findings (⠿ → ⠷ → ⠴ → ⠠). Output summary of what was fixed.
+
+---
+
+## Persistence
+
+Write review to `.promptherder/convos/<slug>/review.md`. The persisted file contains strengths, the findings table, details, and verdict — but NOT the decision prompt. The prompt is conversational, not archival.
