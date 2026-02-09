@@ -2,6 +2,8 @@
 description: Runs a review pass with severity levels (Blocker/Major/Minor/Nit). Supports check targeting and YOLO mode.
 ---
 
+// turbo-all
+
 # Review
 
 Invoke the `compound-v-review` skill and follow it exactly.

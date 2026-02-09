@@ -25,7 +25,7 @@ You have the Compound V methodology available. Use these workflows and skills:
 
 ## Manual rules
 
-- `@browser.md` — browser-based UI testing
+- `browser.md` — browser-based UI testing (manual trigger)
 
 ## Output formatting
 
