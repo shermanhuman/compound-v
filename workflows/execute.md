@@ -45,30 +45,19 @@ If the plan file does not exist, stop and tell the user to run `/plan` first.
 
 **Normal mode:**
 
-1. Run `compound-v-review` — review pass. Present findings and verdict.
-2. Wait for user response:
-
-> SKIP to move on without fixes, FIX to fix ⠿⠷ (blockers + majors), FIX ALL to fix everything, or give feedback.
-> Task: `<slug>`
-
-- FIX ALL → Fix in severity order (⠿ → ⠷ → ⠴ → ⠠), test after each.
-- FIX → Fix ⠿ blockers and ⠷ majors only.
-- Feedback → Discuss, then fix agreed items.
-- SKIP → Confirm artifacts, move on.
-
-3. Manual smoke test (when applicable):
+1. Run `compound-v-review`. Follow its output format and action menu — do not duplicate them here.
+2. After fixes (if any), provide a manual smoke test:
    - List exact commands to test the happy path end-to-end
    - List edge cases worth testing manually
    - Show expected output for each command
-4. Write summary to `.promptherder/convos/<slug>/review.md`.
-5. Confirm artifacts exist by listing `.promptherder/convos/<slug>/`.
+3. Write summary to `.promptherder/convos/<slug>/review.md`.
+4. Confirm artifacts exist by listing `.promptherder/convos/<slug>/`.
 
 **`YOLO` mode:**
 
-1. Run `compound-v-review` — review pass.
-2. Auto-fix ALL findings (⠿ → ⠷ → ⠴ → ⠠), test after each. No user interaction.
-3. Output summary: what was built, what was found, what was fixed.
-4. Write summary to `.promptherder/convos/<slug>/review.md`.
-5. Confirm artifacts.
+1. Run `compound-v-review` in YOLO mode. It handles auto-fixing.
+2. Output summary: what was built, what was found, what was fixed.
+3. Write summary to `.promptherder/convos/<slug>/review.md`.
+4. Confirm artifacts.
 
 Stop after completing the finish step.
