@@ -242,9 +242,14 @@ Finding IDs: `⠿ **B1**` (blocker), `⠷ **M1**` (major), `⠴ **m1**` (minor),
 
 ### 4. Persistence (before verdict)
 
-Write review to `.promptherder/convos/<slug>/review.md`. The persisted file contains strengths, check coverage, findings table, details, and assessment — but NOT the action menu. The menu is conversational, not archival.
+Write review to `.promptherder/convos/<slug>/review-<description>.md`.
 
-**Overwrite guard:** If `review.md` already exists in the resolved slug folder and this is NOT a plan→execute flow, generate a new slug (append `-2`, `-3`, etc.) instead of overwriting.
+- `<description>` should match the review scope (e.g. `review-login-fix.md`, `review-security.md`).
+- Do not overwrite previous reviews unless explicitly requested.
+
+The persisted file contains strengths, check coverage, findings table, details, and assessment — but NOT the action menu. The menu is conversational, not archival.
+
+**Overwrite guard:** (Managed by `compound-v-persist` skill usage + dynamic filename)
 
 Confirm the file exists by listing `.promptherder/convos/<slug>/`.
 

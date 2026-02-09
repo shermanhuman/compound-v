@@ -22,6 +22,7 @@ You have the Compound V methodology available. Use these workflows and skills:
 - `compound-v-debug` — systematic debugging
 - `compound-v-parallel` — parallel execution reasoning
 - `compound-v-verify` — verification before completion
+- `compound-v-persist` — resolves conversation slugs and paths
 
 ## Manual rules
 
