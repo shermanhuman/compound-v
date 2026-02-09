@@ -259,8 +259,9 @@ Confirm the file exists by listing `.promptherder/convos/<slug>/`.
 
 State your assessment in 1-2 sentences (what you found, what matters most). Then present the action menu:
 
-> SKIP to move on without fixes, FIX to fix ⠿⠷ (blockers + majors), FIX ALL to fix everything, or give feedback.
-> Task: `<slug>`
+> FIX to fix ⠿⠷ (blockers + majors), FIX ALL to fix everything, SKIP to move on without fixes, or give feedback.
+
+_Task: `<slug>`_
 
 **The action menu appears exactly ONCE, at the very end of the response.** It comes AFTER persistence. Do not repeat it after file operations or any other step.
 

@@ -32,7 +32,8 @@ Write to `.promptherder/convos/<slug>/`:
 After presenting the plan, always end with:
 
 > Run `/execute <slug>` to proceed, `SHOW DECISIONS` to audit, `DECLINE` to reject, or give feedback.
-> Task: `<slug>`
+
+_Task: `<slug>`_
 
 **`/execute`** → The user running `/execute` IS the approval. The execute workflow sets status to `approved`. Do NOT implement.
 

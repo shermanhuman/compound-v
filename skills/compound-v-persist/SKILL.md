@@ -1,11 +1,15 @@
 ---
 name: compound-v-persist
-description: Resolves the persistent storage location for conversation artifacts. Guarantees organized, time-sorted history.
+description: Resolves target repository and storage location for conversation artifacts. Guarantees organized, time-sorted history.
 ---
 
 # Persist
 
-Use this skill BEFORE writing any artifact to `.promptherder/convos/`.
+Use this skill BEFORE writing any artifact to `.promptherder/`.
+
+## 0. Resolve Target Repository
+
+When multiple repositories are open in the workspace, all `.promptherder/` paths target the **repository the user is working in**, not the methodology source repo. Infer the target from the user's active document or recent conversation context. If the active document is outside all repositories, use recent conversation context (which files were read/written). If still ambiguous, ask which repository before writing.
 
 ## 1. Determine the Slug
 
