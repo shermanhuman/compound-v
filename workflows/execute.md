@@ -20,8 +20,8 @@ Invoke skills as needed during execution: `compound-v-tdd`, `compound-v-debug`, 
 
 ### Preconditions (do not skip)
 
-1. The user must have replied **APPROVED** to a written plan.
-2. The approved plan must exist at `.promptherder/convos/<slug>/plan.md`.
+1. The plan must exist at `.promptherder/convos/<slug>/plan.md`.
+2. Update status to `approved` in plan.md (running `/execute` IS the approval).
 
 If the plan file does not exist, stop and tell the user to run `/plan` first.
 
@@ -30,6 +30,7 @@ If the plan file does not exist, stop and tell the user to run `/plan` first.
 - `.promptherder/convos/<slug>/plan.md` — the approved plan.
 - `.agent/rules/stack.md` — pinned versions and tech constraints.
 - `.agent/rules/structure.md` — project layout and naming conventions.
+- `.promptherder/hard-rules.md` — project-level rules that must always be followed.
 
 ### Execution loop
 
@@ -42,8 +43,32 @@ If the plan file does not exist, stop and tell the user to run `/plan` first.
 
 ### Finish (required)
 
-1. Run a review pass (use `compound-v-review`).
-2. Write summary to `.promptherder/convos/<slug>/review.md`.
-3. Confirm artifacts exist by listing `.promptherder/convos/<slug>/`.
+**Normal mode:**
+
+1. Run `compound-v-review` — review pass. Present findings and verdict.
+2. Wait for user response:
+
+> Run `fix` to fix all, `fix blockers` for ⠿ only, `ship it` to skip, or give feedback.
+> Task: `<slug>`
+
+- `fix` / `fix all` → Fix in severity order (⠿ → ⠷ → ⠴ → ⠠), test after each.
+- `fix blockers` → Fix only ⠿ findings.
+- Feedback → Discuss, then fix agreed items.
+- `ship it` → Skip fixes, confirm artifacts.
+
+3. Manual smoke test (when applicable):
+   - List exact commands to test the happy path end-to-end
+   - List edge cases worth testing manually
+   - Show expected output for each command
+4. Write summary to `.promptherder/convos/<slug>/review.md`.
+5. Confirm artifacts exist by listing `.promptherder/convos/<slug>/`.
+
+**`YOLO` mode:**
+
+1. Run `compound-v-review` — review pass.
+2. Auto-fix ALL findings (⠿ → ⠷ → ⠴ → ⠠), test after each. No user interaction.
+3. Output summary: what was built, what was found, what was fixed.
+4. Write summary to `.promptherder/convos/<slug>/review.md`.
+5. Confirm artifacts.
 
 Stop after completing the finish step.
