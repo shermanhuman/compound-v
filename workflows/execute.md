@@ -48,13 +48,13 @@ If the plan file does not exist, stop and tell the user to run `/plan` first.
 1. Run `compound-v-review` — review pass. Present findings and verdict.
 2. Wait for user response:
 
-> Run `fix` to fix all, `fix blockers` for ⠿ only, `ship it` to skip, or give feedback.
+> SKIP to move on without fixes, FIX to fix ⠿⠷ (blockers + majors), FIX ALL to fix everything, or give feedback.
 > Task: `<slug>`
 
-- `fix` / `fix all` → Fix in severity order (⠿ → ⠷ → ⠴ → ⠠), test after each.
-- `fix blockers` → Fix only ⠿ findings.
+- FIX ALL → Fix in severity order (⠿ → ⠷ → ⠴ → ⠠), test after each.
+- FIX → Fix ⠿ blockers and ⠷ majors only.
 - Feedback → Discuss, then fix agreed items.
-- `ship it` → Skip fixes, confirm artifacts.
+- SKIP → Confirm artifacts, move on.
 
 3. Manual smoke test (when applicable):
    - List exact commands to test the happy path end-to-end

@@ -54,7 +54,7 @@ Finding IDs are mandatory in reviews: `⠿ **B1**`, `⠷ **M2**`, `⠴ **m3**`, 
 All user decision points must use markdown blockquotes (`>`). Every point where the user must choose an action gets a blockquote:
 
 - **After plan:** `> Run /execute <slug> to proceed, SHOW DECISIONS to audit, DECLINE to reject, or give feedback.`
-- **After review findings:** `> Run fix to fix all, fix blockers for ⠿ only, or give feedback. Task: <slug>`
+- **After review findings:** `> SKIP to move on, FIX to fix ⠿⠷, FIX ALL to fix everything, or give feedback. Task: <slug>`
 - **Deferred ideas:** `> Add these to future-tasks.md? yes / no`
 
 ### Short names first

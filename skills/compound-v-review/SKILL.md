@@ -225,30 +225,23 @@ Finding IDs: `⠿ **B1**` (blocker), `⠷ **M1**` (major), `⠴ **m1**` (minor),
 
 ### 3. Verdict
 
-"Ready to merge? **Yes** / **No** / **With fixes**" — plus 1-2 sentence reasoning.
+State your assessment in 1-2 sentences (what you found, what matters most). Then present the action menu:
 
----
-
-## After presenting findings
-
-**The decision prompt appears exactly ONCE, at the very end of the response.** Do not repeat it after file operations or any other step.
-
-**Normal mode (findings-first):**
-
-Present findings and verdict. Do NOT auto-fix. End with:
-
-> Run `fix` to fix all, `fix blockers` for ⠿ only, or give feedback.
+> SKIP to move on without fixes, FIX to fix ⠿⠷ (blockers + majors), FIX ALL to fix everything, or give feedback.
 > Task: `<slug>`
+
+**The action menu appears exactly ONCE, at the very end of the response.** Do not repeat it after file operations or any other step.
 
 If any finding is unclear, clarify ALL unclear items before fixing ANY.
 
-**Fix triage (when user approves):**
+---
 
-- ⠿ blockers: fix immediately
-- ⠷ majors: fix before proceeding
-- ⠴ minors: note for later (or fix if quick)
-- ⠠ nits: optional, fix only if trivial
-- Test after each fix. Verify no regressions.
+## Fix triage (when user approves)
+
+- FIX ALL → Fix in severity order (⠿ → ⠷ → ⠴ → ⠠), test after each.
+- FIX → Fix ⠿ blockers and ⠷ majors. Note ⠴⠠ for later.
+- SKIP → Confirm artifacts, move on.
+- Feedback → Discuss, then fix agreed items.
 
 **`YOLO` mode:**
 
@@ -258,4 +251,4 @@ Skip presentation. Auto-fix ALL findings (⠿ → ⠷ → ⠴ → ⠠). Output s
 
 ## Persistence
 
-Write review to `.promptherder/convos/<slug>/review.md`. The persisted file contains strengths, the findings table, details, and verdict — but NOT the decision prompt. The prompt is conversational, not archival.
+Write review to `.promptherder/convos/<slug>/review.md`. The persisted file contains strengths, the findings table, details, and assessment — but NOT the action menu. The menu is conversational, not archival.
