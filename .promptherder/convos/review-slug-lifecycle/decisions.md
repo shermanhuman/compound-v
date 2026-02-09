@@ -1,0 +1,8 @@
+# Decisions: review-slug-lifecycle
+
+| #   | Idea                                                | Verdict  | Pros                                                 | Cons                                                                            | Rationale                                         |
+| --- | --------------------------------------------------- | -------- | ---------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------- |
+| 1   | Scope-aware slug resolution in review workflow      | accepted | Prevents silent overwrite of unrelated reviews       | Slightly more complex slug logic                                                | Root cause of the bug — slug step 2 is too greedy |
+| 2   | Overwrite guard in review skill persistence         | accepted | Defense in depth — catches cases the workflow misses | None                                                                            | Belt and suspenders                               |
+| 3   | Timestamped review filenames (review-2026-02-08.md) | rejected | Would prevent any overwrite                          | Breaks the convention of `review.md` as the known filename; complicates reading | Slug-per-scope is cleaner than file-per-timestamp |
+| 4   | Append to existing review.md                        | rejected | No data loss                                         | Messy, hard to read, unclear which review is current                            | Separate slugs are clearer                        |

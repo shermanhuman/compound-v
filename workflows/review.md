@@ -13,8 +13,8 @@ Invoke the `compound-v-review` skill and follow it exactly.
 ### Slug resolution
 
 1. If the user provided a kebab-case slug (e.g. `/review fix-this`), use it.
-2. If continuing a previous task, check `.promptherder/convos/` for a matching folder.
-3. Otherwise, generate a short kebab-case name (2-4 words) from the task description.
+2. If invoked as part of `/execute` (within an execution flow), use the plan's slug. Overwriting `review.md` is correct here.
+3. Otherwise, this is a **standalone review**. Generate a new slug from the review scope (e.g. `review-last-commit`, `review-auth-module`). Do NOT reuse a slug from a previous standalone review.
 
 ### Check targeting
 

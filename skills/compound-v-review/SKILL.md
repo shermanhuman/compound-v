@@ -244,6 +244,8 @@ Finding IDs: `⠿ **B1**` (blocker), `⠷ **M1**` (major), `⠴ **m1**` (minor),
 
 Write review to `.promptherder/convos/<slug>/review.md`. The persisted file contains strengths, check coverage, findings table, details, and assessment — but NOT the action menu. The menu is conversational, not archival.
 
+**Overwrite guard:** If `review.md` already exists in the resolved slug folder and this is NOT a plan→execute flow, generate a new slug (append `-2`, `-3`, etc.) instead of overwriting.
+
 Confirm the file exists by listing `.promptherder/convos/<slug>/`.
 
 ---
