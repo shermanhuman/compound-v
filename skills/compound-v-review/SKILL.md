@@ -200,7 +200,24 @@ Highlight what's well done. Be specific with file:line references. Don't list ev
 
 ---
 
-### 2. Findings
+### 2. Check coverage
+
+**Always include this table.** Every check must appear — no silent omissions.
+
+```
+| # | Check | Result |
+|---|-------|--------|
+| 1 | `correctness` | ✅ Clean |
+| 2 | `edges` | ⠷ M1 |
+| 3 | `security` | N/A — no auth or input handling |
+| ... | ... | ... |
+```
+
+Mark each check: `✅ Clean` (no issues), finding IDs (e.g. `⠷ M1, ⠴ m2`), or `N/A — reason`.
+
+---
+
+### 3. Findings
 
 **Always start with a summary table.** This is the scannable overview:
 
@@ -212,7 +229,7 @@ Highlight what's well done. Be specific with file:line references. Don't list ev
 | m1 | ⠴ | utils.go:8 | Brief description |
 ```
 
-**Then, detail only findings that need explanation** (non-obvious fix, nuanced reasoning). Skip details for self-explanatory findings — the table row is enough.
+Detail a finding ONLY if the fix is non-obvious or the reasoning is nuanced. If someone can understand the issue and fix from the table row alone, do NOT expand it below.
 
 ```
 ⠷ **M1**: auth.go:15 — Why this matters (1-2 lines)
@@ -223,14 +240,22 @@ Finding IDs: `⠿ **B1**` (blocker), `⠷ **M1**` (major), `⠴ **m1**` (minor),
 
 ---
 
-### 3. Verdict
+### 4. Persistence (before verdict)
+
+Write review to `.promptherder/convos/<slug>/review.md`. The persisted file contains strengths, check coverage, findings table, details, and assessment — but NOT the action menu. The menu is conversational, not archival.
+
+Confirm the file exists by listing `.promptherder/convos/<slug>/`.
+
+---
+
+### 5. Verdict
 
 State your assessment in 1-2 sentences (what you found, what matters most). Then present the action menu:
 
 > SKIP to move on without fixes, FIX to fix ⠿⠷ (blockers + majors), FIX ALL to fix everything, or give feedback.
 > Task: `<slug>`
 
-**The action menu appears exactly ONCE, at the very end of the response.** Do not repeat it after file operations or any other step.
+**The action menu appears exactly ONCE, at the very end of the response.** It comes AFTER persistence. Do not repeat it after file operations or any other step.
 
 If any finding is unclear, clarify ALL unclear items before fixing ANY.
 
@@ -246,9 +271,3 @@ If any finding is unclear, clarify ALL unclear items before fixing ANY.
 **`YOLO` mode:**
 
 Skip presentation. Auto-fix ALL findings (⠿ → ⠷ → ⠴ → ⠠). Output summary of what was fixed.
-
----
-
-## Persistence
-
-Write review to `.promptherder/convos/<slug>/review.md`. The persisted file contains strengths, the findings table, details, and assessment — but NOT the action menu. The menu is conversational, not archival.
