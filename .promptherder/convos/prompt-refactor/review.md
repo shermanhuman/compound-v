@@ -1,35 +1,65 @@
-# Review: prompt-refactor
+# Review: compound-v v0.6.0
 
 ## Strengths
 
-- Consistent blockquote prompts across all 3 workflows (plan, execute, review)
-- Clean domain short names table in review skill — easy to scan, memorable
-- YOLO cascade well-documented in compound-v.md — each level clearly defined
-- Short-names-first rule is both in hard-rules.md AND compound-v.md — can't be missed
-- Hard-rules.md check properly wired into correctness domain AND plan research phase AND execute context files
+- Consistent terminology: zero "domain" in source files. Clean migration to "check".
+- Imperative style throughout: "Do X. Flag Y." — no passive questions remain.
+- Short names table (SKILL.md:23-34): clean, scannable, memorizable.
+- Research-backed gaps from actual industry checklists (OWASP ASVS, SPOT, canonical events).
+- Parallel execution clearly stated with `waitForPreviousTools` references.
+- Plan skill anti-patterns (compound-v-plan/SKILL.md:157-164): explicit guardrails.
+- Lightweight workflows (idea.md, rule.md): zero-ceremony, appropriate friction.
+- YOLO cascade (compound-v.md:69-77): clean 3-tier with preserved summaries.
+- Blockquote decision prompts consistent across all workflows.
 
 ## Findings
 
-⠴ **m1**: `compound-v.md:11` — Pipeline description said "approval gate" implying separate step. **Fixed:** Changed to "/execute approval".
+### ⠿ B1: plan.md artifact — stale "domain" references
 
-⠠ **n1**: `execute.md:54-57` — Response option list items outside blockquote. Cosmetic only. Not fixed.
+Historical plan artifact still uses "domain" 20+ times. Not a source file, but could confuse LLM during context reads. Acceptable as historical record.
 
-⠠ **n2**: Plan skill filesystem tree section is example content, not template. Working as intended.
+### ⠷ M1: SKILL.md:72 — Go-centric error wrapping
+
+`edges` check hardcodes `fmt.Errorf %w` but compound-v is language-agnostic. Other checks correctly multi-language.
+Fix: Generalize with multi-language examples.
+
+### ⠷ M2: SKILL.md:40 — stack.md assumed to exist
+
+Review skill research phase doesn't handle missing stack.md. Plan skill says "if it exists" but review doesn't.
+Fix: Add fallback: infer from go.mod/mix.exs/package.json.
+
+### ⠷ M3: compound-v.md:20 — stale skill description
+
+"review checklist" undersells the refactored skill.
+Fix: Update description.
+
+### ⠴ m1: compound-v-plan/SKILL.md:53-55 — orphaned passive questions
+
+3 bullet points still in passive question style after imperative filters.
+Fix: Rewrite as imperative.
+
+### ⠴ m2: compound-v-verify/SKILL.md:18 — passive question style
+
+Verify skill checklist not converted to imperative style.
+Fix: Rewrite as imperative.
+
+### ⠴ m3: execute.md:5 — turbo-all undocumented
+
+`// turbo-all` annotation not explained in compound-v docs (promptherder convention).
+
+### ⠴ m4: herd.json — version field undocumented
+
+No schema docs for herd.json fields. Promptherder concern.
+
+### ⠠ n1: SKILL.md:232-234 — triage labels imply check-severity mapping
+
+Example uses check names as severity labels, suggesting each severity maps to a check.
+Fix: Drop check names from triage labels.
+
+### ⠠ n2: skills/README.md — possibly stale
+
+Not reviewed this session.
 
 ## Verdict
 
-Ready to merge? **Yes** — m1 was fixed. Nits are cosmetic, no action needed.
-
-## Files modified
-
-| File                                | Change                                                                                   |
-| ----------------------------------- | ---------------------------------------------------------------------------------------- |
-| `rules/compound-v.md`               | + output formatting, severity indicators, decision prompts, short-names-first, YOLO mode |
-| `skills/compound-v-plan/SKILL.md`   | + visual anchors, TDD sequencing, YAGNI/DRY checks, parallel research, hard-rules read   |
-| `skills/compound-v-review/SKILL.md` | Full overhaul: 10 domains, domain targeting, findings-first, version-specific research   |
-| `skills/compound-v-tdd/SKILL.md`    | + explicit parallel research directive                                                   |
-| `skills/compound-v-debug/SKILL.md`  | + explicit parallel research directive                                                   |
-| `workflows/plan.md`                 | /execute approval, DECLINE option, blockquote prompts                                    |
-| `workflows/execute.md`              | Findings-first finish, YOLO mode, hard-rules context, blockquote prompts                 |
-| `workflows/review.md`               | Domain targeting, YOLO mode support                                                      |
-| `.promptherder/hard-rules.md`       | Blockquote prompts rule, short-names-first rule                                          |
+Ready to merge? **With fixes** — M1 (Go-centrism) and M2 (missing stack.md fallback) could confuse non-Go projects.

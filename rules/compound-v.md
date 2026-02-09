@@ -17,7 +17,7 @@ You have the Compound V methodology available. Use these workflows and skills:
 ## Skills (auto-activated)
 
 - `compound-v-plan` — autonomous planning methodology
-- `compound-v-review` — review checklist
+- `compound-v-review` — severity-graded review with 10 parallel checks
 - `compound-v-tdd` — tests-first discipline
 - `compound-v-debug` — systematic debugging
 - `compound-v-parallel` — parallel execution reasoning

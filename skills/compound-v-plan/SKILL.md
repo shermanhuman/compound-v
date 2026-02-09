@@ -50,9 +50,9 @@ Apply these filters yourself:
 - **DRY** — Identify repeated logic across the plan. Extract shared patterns into reusable steps. If two steps do the same thing, merge them. Update logic in one place — changes reflect everywhere.
 - **YAGNI** — Only plan features you actually need right now. Focus on current requirements, not hypothetical future ones. If a step exists "just in case," cut it.
 - **Don't overengineer** — Focus on the simplest solution that solves the core problem. Ask: "What's the minimum viable version?" If a step adds complexity without clear necessity, skip it. Keep it lean, functional, and maintainable.
-- Does it solve the actual problem or a hypothetical one?
-- What are the risks? Are they manageable?
-- Are there rollback options?
+- Confirm the approach solves the actual problem, not a hypothetical one.
+- Identify risks and verify they are manageable.
+- Ensure rollback options exist.
 
 **Reject bad ideas yourself.** Only surface ideas with verdict `ask` to the user.
 

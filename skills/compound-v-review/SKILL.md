@@ -37,7 +37,7 @@ If no check specified, run all 10.
 
 Before running the checks, do all research **in parallel** (`waitForPreviousTools: false`):
 
-1. Read `stack.md` for pinned versions.
+1. Read `stack.md` for pinned versions. If it doesn't exist, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent.
 2. Use `git diff` against the pre-implementation baseline for the review scope.
 3. Read all changed files in parallel to build full context.
 4. `search_web` for version-specific docs, gotchas, and best practices scoped to `stack.md` versions.
@@ -69,7 +69,7 @@ Flag hardcoded solutions that only work for specific test inputs. The code must 
 
 Test the boundaries: nil, empty, zero, max, negative, off-by-one. If any are unhandled, flag them.
 Trace resource lifecycle — files, connections, goroutines must be released on ALL paths, including error paths.
-Follow every error. It must be wrapped with context (`fmt.Errorf %w`), never swallowed or silently ignored.
+Follow every error. It must be wrapped with context (e.g., `fmt.Errorf %w` in Go, `raise ... from` in Python, `Kernel.reraise` in Elixir), never swallowed or silently ignored.
 Check for race conditions. Shared state needs guards: mutexes, channels, or atomics. Maps, slices, and dicts shared across goroutines without synchronization are bugs.
 Simulate partial failure: if step 3 of 5 fails, are steps 1-2 cleaned up or left dangling?
 Consider external failures: what happens when the API/DB/filesystem is unavailable or slow?
@@ -229,9 +229,9 @@ If any finding is unclear, clarify ALL unclear items before fixing ANY.
 
 **Fix triage (when user approves):**
 
-- ⠿ `correctness` blockers: fix immediately
-- ⠷ `design` majors: fix before proceeding
-- ⠴ `docs` minors: note for later (or fix if quick)
+- ⠿ blockers: fix immediately
+- ⠷ majors: fix before proceeding
+- ⠴ minors: note for later (or fix if quick)
 - ⠠ nits: optional, fix only if trivial
 - Test after each fix. Verify no regressions.
 
