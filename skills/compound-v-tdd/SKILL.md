@@ -15,10 +15,10 @@ description: Applies tests-first discipline (red/green/refactor) and adds regres
 
 ## Research
 
-Before writing tests, do research **in parallel** (`waitForPreviousTools: false`):
+Before writing tests, do research **in parallel** (invoke multiple tool calls in the same response):
 
-- `search_web` for the project's testing framework best practices and latest patterns (scope to `stack.md` versions).
-- `search_web` for assertion styles and testing utilities available in the framework.
+- Search the web for the project's testing framework best practices and latest patterns (scope to `stack.md` versions).
+- Search the web for assertion styles and testing utilities available in the framework.
 
 ## Rules
 

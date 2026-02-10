@@ -35,19 +35,19 @@ If no check specified, run all 10.
 
 ## Research before reviewing
 
-Before running the checks, do all research **in parallel** (`waitForPreviousTools: false`):
+Before running the checks, do all research **in parallel** (invoke multiple tool calls in the same response):
 
 1. Read `.agent/rules/stack.md` for pinned versions. If it doesn't exist, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent.
 2. Use `git diff` against the pre-implementation baseline for the review scope.
 3. Read all changed files in parallel to build full context.
-4. `search_web` for version-specific docs, gotchas, and best practices scoped to `stack.md` versions.
+4. Search the web for version-specific docs, gotchas, and best practices scoped to `stack.md` versions.
 5. Read `.promptherder/hard-rules.md` if it exists.
 6. Read `.promptherder/convos/<slug>/plan.md` and `.promptherder/future-tasks.md`.
 
 ## Review checks (run in parallel)
 
 Each check is independent. Fire all checks concurrently.
-Checks marked 🔍 require `search_web` using the specific versions from `stack.md`.
+Checks marked 🔍 require web research using the specific versions from `stack.md`.
 
 ---
 
@@ -65,7 +65,7 @@ Flag hardcoded solutions that only work for specific test inputs. The code must 
 
 ### 🚧 2. `edges` — what breaks at the boundaries? 🔍
 
-**Stack research:** `search_web` for common edge cases and error patterns for the specific versions in `stack.md`.
+**Stack research:** Search the web for common edge cases and error patterns for the specific versions in `stack.md`.
 
 Test the boundaries: nil, empty, zero, max, negative, off-by-one. If any are unhandled, flag them.
 Trace resource lifecycle — files, connections, goroutines must be released on ALL paths, including error paths.
@@ -80,7 +80,7 @@ Check for retry/recovery: transient failures (network timeouts, 503s) should hav
 
 ### 🛡️ 3. `security` — close the doors 🔍
 
-**Stack research:** `search_web` for CVEs, security advisories, and OWASP ASVS misconfigurations for the specific versions in `stack.md`.
+**Stack research:** Search the web for CVEs, security advisories, and OWASP ASVS misconfigurations for the specific versions in `stack.md`.
 
 Search for hardcoded secrets and credentials. Search logs for leaked tokens or PII. Flag both.
 Trace user input from entry to use. Sanitize before queries, commands, file paths, and templates.
@@ -95,7 +95,7 @@ Check IaC files too: Kubernetes manifests, Dockerfiles, Terraform — not just a
 
 ### ⚡ 4. `perf` — don't waste cycles 🔍
 
-**Stack research:** `search_web` for common performance pitfalls for the specific versions in `stack.md`.
+**Stack research:** Search the web for common performance pitfalls for the specific versions in `stack.md`.
 
 Find N+1 queries and unbounded loops over external data. Batch or paginate them.
 Look for unnecessary allocations or copies in hot paths. Eliminate them.
@@ -130,7 +130,7 @@ Minimize coupling: changing module A shouldn't require touching module B.
 Apply the 2-minute rule: can a new team member understand this function in under 2 minutes? If not, simplify.
 Match patterns to the latest framework best practices for the versions in `stack.md`.
 
-**Idiomatic code** 🔍 — `search_web` for "idiomatic [language] [version]":
+**Idiomatic code** 🔍 — search the web for "idiomatic [language] [version]":
 
 Use language-native constructs: list comprehensions in Python, channels in Go, pattern matching in Elixir.
 Follow the language's style guide: Effective Go, PEP 8, Elixir formatter.
@@ -237,6 +237,18 @@ Detail a finding ONLY if the fix is non-obvious or the reasoning is nuanced. If 
 ```
 
 Finding IDs: `⠿ **B1**` (blocker), `⠷ **M1**` (major), `⠴ **m1**` (minor), `⠠ **n1**` (nit).
+
+---
+
+### 3b. Codebase scan for similar issues
+
+**After identifying any finding**, search the codebase for similar issues in the same class:
+
+- Same anti-pattern in other files?
+- Related code that might have the same bug?
+- Copy-pasted code that shares the flaw?
+
+Use grep/search to find other occurrences. Add them to the findings table if found. This prevents fixing one instance while leaving others broken.
 
 ---
 

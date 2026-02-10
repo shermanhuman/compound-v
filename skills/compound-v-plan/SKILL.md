@@ -28,10 +28,10 @@ Determine the **desired end result** — the single sentence that defines succes
 
 ### Phase 2: Research (autonomous — no user interaction)
 
-Do all of this **in parallel** (multiple `search_web` + `view_file` calls with `waitForPreviousTools: false`):
+Do all of this **in parallel** (invoke multiple tool calls in the same response):
 
-- `search_web` for best practices, alternatives, and pitfalls. Scope to versions in `stack.md`.
-- `view_file_outline` on relevant project files.
+- Search the web for best practices, alternatives, and pitfalls. Scope to versions in `stack.md`.
+- Read relevant project files to understand structure and patterns.
 - Read `.promptherder/future-tasks.md` if it exists — check if any deferred ideas are relevant.
 - Read `.agent/rules/stack.md` and `.agent/rules/structure.md` if they exist.
 - Read `.promptherder/hard-rules.md` if it exists — all rules must be respected.
