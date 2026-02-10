@@ -1,8 +1,22 @@
 # Compound V
 
-A coding methodology herd for [promptherder](https://github.com/shermanhuman/promptherder).
+An AI coding methodology that gets things done with minimal human effort.
 
-Compound V provides rules, skills, and workflows that define a structured approach to AI-assisted software development.
+## Philosophy: Superpowers vs Compound V
+
+[Superpowers](https://github.com/obra/superpowers) is about **control** — subagents are spawned for each task, two-stage reviews gate progress, worktrees isolate branches, and checkpoints require human approval. It's a rigorous process that keeps the AI on rails.
+
+Compound V is about **results** — the agent researches before acting, executes in parallel batches, and only surfaces decisions that genuinely need human input. You describe what you want, approve a plan, and come back when it's done.
+
+| | Superpowers | Compound V |
+|---|---|---|
+| Execution | Subagent per task | Parallel tool calls |
+| Reviews | Two-stage gating | Severity-graded, batch at end |
+| Research | Training data only | Web search before every step |
+| Checkpoints | After each task | After each batch |
+| Human effort | High (gate each task) | Low (approve plan, review result) |
+
+Both share the same core values: TDD, systematic over ad-hoc, verify before declaring success.
 
 ## Install
 
@@ -13,39 +27,23 @@ go install github.com/shermanhuman/promptherder/cmd/promptherder@latest
 # Pull this herd
 promptherder pull https://github.com/shermanhuman/compound-v
 
-# Sync to agent targets
+# Sync to agents
 promptherder
 ```
 
 ## What's Included
 
-- **Rules** — Behavioral guidelines for AI coding agents
-- **Skills** — Reusable capability modules (planning, debugging, TDD, review, etc.)
-- **Workflows** — Step-by-step processes activated by `/plan`, `/execute`, `/review`
+| Type | Purpose |
+|---|---|
+| **Workflows** | `/plan`, `/execute`, `/review`, `/idea`, `/rule` |
+| **Skills** | Planning, review, TDD, debugging, parallel execution, verification |
+| **Rules** | Core methodology, output formatting, browser testing |
 
-## Structure
+## Usage
 
-```
-compound-v/
-├── herd.json           # Herd metadata
-├── rules/
-│   ├── browser.md      # Browser-based UI testing rules
-│   └── compound-v.md   # Core methodology rules
-├── skills/
-│   ├── README.md       # Skills structure documentation
-│   ├── compound-v-debug/
-│   ├── compound-v-parallel/
-│   ├── compound-v-plan/
-│   ├── compound-v-review/
-│   ├── compound-v-tdd/
-│   └── compound-v-verify/
-└── workflows/
-    ├── execute.md
-    ├── idea.md
-    ├── plan.md
-    ├── review.md
-    └── rule.md
-```
+1. **`/plan`** — Describe what you want. The agent researches, evaluates options, and presents a plan.
+2. **`/execute`** — Approve the plan. The agent works through it in parallel batches.
+3. **`/review`** — Get a severity-graded code review with 10 parallel checks.
 
 ## License
 
