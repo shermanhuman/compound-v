@@ -17,9 +17,9 @@ description: Systematic debugging — reproduce, isolate, form hypotheses, instr
 
 1. **Reproduce**
    - Capture exact error, inputs, environment, command.
-2. **Research** (parallel — use `waitForPreviousTools: false` for all calls)
-   - `search_web` for the exact error message or symptom.
-   - `search_web` for known issues in the relevant library/framework version (use `stack.md` versions).
+2. **Research** (parallel — invoke multiple tool calls in the same response)
+   - Search the web for the exact error message or symptom.
+   - Search the web for known issues in the relevant library/framework version (use `stack.md` versions).
    - Read related source files in parallel.
 3. **Minimize**
    - Reduce to smallest repro (one file, one function, smallest dataset).
