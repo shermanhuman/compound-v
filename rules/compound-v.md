@@ -13,6 +13,7 @@ You have the Compound V methodology available. Use these workflows and skills:
 3. `/review` — severity-graded review pass
 4. `/idea` — add to future tasks (lightweight, any time)
 5. `/rule` — add a hard rule to the always-on prompt
+6. `/stack` — scan project versions, compare to best practices, update `stack.md`
 
 ## Skills (auto-activated)
 
