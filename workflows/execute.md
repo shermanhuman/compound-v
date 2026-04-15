@@ -30,7 +30,6 @@ If the plan file does not exist, stop and tell the user to run `/plan` first.
 
 - `.promptherder/convos/<slug>/plan.md` — the approved plan.
 - `.agent/rules/stack.md` — pinned versions and tech constraints.
-- `.agent/rules/structure.md` — project layout and naming conventions.
 - `.promptherder/hard-rules.md` — project-level rules that must always be followed.
 
 ### Execution loop

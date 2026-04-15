@@ -26,14 +26,19 @@ Determine the **desired end result** — the single sentence that defines succes
 - If the goal is ambiguous, ask ONE question: "What's the desired end result?" and STOP.
 - Do NOT ask multiple clarifying questions. Infer what you can and note assumptions.
 
-### Phase 2: Research (autonomous — no user interaction)
+### Phase 2a: Load stack context (sequential — before research)
+
+Read `.agent/rules/stack.md` if it exists. These versions scope all subsequent web searches.
+
+If `stack.md` is missing, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue planning.
+
+### Phase 2b: Research (autonomous — no user interaction)
 
 Do all of this **in parallel** (invoke multiple tool calls in the same response):
 
 - Search the web for best practices, alternatives, and pitfalls. Scope to versions in `stack.md`.
 - Read relevant project files to understand structure and patterns.
 - Read `.promptherder/future-tasks.md` if it exists — check if any deferred ideas are relevant.
-- Read `.agent/rules/stack.md` and `.agent/rules/structure.md` if they exist.
 - Read `.promptherder/hard-rules.md` if it exists — all rules must be respected.
 
 ### Phase 3: Think (autonomous — no user interaction)
@@ -182,7 +187,7 @@ If you identified ideas with future value, list them:
 - Prefer **incremental deliverables** (avoid "big bang" edits).
 - Identify **rollback** and **risk controls** early.
 - Group independent steps for **parallel execution** where possible.
-- Never write to `stack.md` or `structure.md` without user approval.
+- Never write to `stack.md` without user approval.
 - State the **goal** first. Everything else flows from it.
 
 ## Plan step format

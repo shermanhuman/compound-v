@@ -201,6 +201,8 @@ Create `.agent/rules/stack.md` (or `.github/rules/stack.md`) to pin your version
 
 Every workflow reads this file. Web searches get scoped to these exact versions. Reviews check for version-specific gotchas. Plans use version-appropriate patterns. It's the single source of truth for "what are we building with."
 
+**Auto-generate it:** Run `/stack` to scan your project for versions, compare against latest stable releases, and write `stack.md` interactively. The command checks lockfiles, manifests, Dockerfiles, and mise/asdf configs.
+
 ---
 
 ## .gitignore tip
@@ -227,7 +229,7 @@ Also add the agent target directories if you don't want generated files in your 
 
 | Type | Contents |
 |---|---|
-| **Workflows** | `/plan`, `/execute`, `/review`, `/idea`, `/rule` |
+| **Workflows** | `/plan`, `/execute`, `/review`, `/idea`, `/rule`, `/stack` |
 | **Skills** | Planning, TDD, code review, debugging, parallel execution, verification, persistence |
 | **Rules** | Core methodology, output formatting, browser testing |
 
