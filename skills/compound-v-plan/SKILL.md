@@ -28,7 +28,7 @@ Determine the **desired end result** — the single sentence that defines succes
 
 ### Phase 2a: Load stack context (sequential — before research)
 
-Read `.agent/rules/stack.md` if it exists. These versions scope all subsequent web searches.
+Read `.agent/rules/stack.md` if it exists. If it doesn't exist, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent. These versions scope all subsequent web searches.
 
 If `stack.md` is missing, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue planning.
 

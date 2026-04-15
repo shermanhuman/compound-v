@@ -29,8 +29,13 @@ If the plan file does not exist, stop and tell the user to run `/plan` first.
 ### Context files (read before starting)
 
 - `.promptherder/convos/<slug>/plan.md` — the approved plan.
-- `.agent/rules/stack.md` — pinned versions and tech constraints.
 - `.promptherder/hard-rules.md` — project-level rules that must always be followed.
+
+### Load stack context (sequential — before execution)
+
+Read `.agent/rules/stack.md` if it exists. These versions scope all web searches during execution.
+
+If `stack.md` is missing, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue.
 
 ### Execution loop
 

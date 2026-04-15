@@ -33,16 +33,21 @@ If no check specified, run all 10.
 | 9   | Logging & observability     | `logging`     |
 | 10  | Documentation               | `docs`        |
 
+## Load stack context (sequential — before research)
+
+Read `.agent/rules/stack.md` for pinned versions. If it doesn't exist, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent. These versions scope all subsequent web searches.
+
+If `stack.md` is missing and no versions can be inferred, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue.
+
 ## Research before reviewing
 
-Before running the checks, do all research **in parallel** (invoke multiple tool calls in the same response):
+Do all research **in parallel** (invoke multiple tool calls in the same response):
 
-1. Read `.agents/rules/stack.md` (or `.agent/rules/stack.md`) for pinned versions. If it doesn't exist, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent.
-2. Use `git diff` against the pre-implementation baseline for the review scope.
-3. Read all changed files in parallel to build full context.
-4. Search the web for version-specific docs, gotchas, and best practices scoped to `stack.md` versions.
-5. Read `.promptherder/hard-rules.md` if it exists.
-6. Read `.promptherder/convos/<slug>/plan.md` and `.promptherder/future-tasks.md`.
+1. Use `git diff` against the pre-implementation baseline for the review scope.
+2. Read all changed files in parallel to build full context.
+3. Search the web for version-specific docs, gotchas, and best practices scoped to `stack.md` versions.
+4. Read `.promptherder/hard-rules.md` if it exists.
+5. Read `.promptherder/convos/<slug>/plan.md` and `.promptherder/future-tasks.md`.
 
 ## Review checks (run in parallel)
 
