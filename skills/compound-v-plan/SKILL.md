@@ -33,7 +33,7 @@ Do all of this **in parallel** (invoke multiple tool calls in the same response)
 - Search the web for best practices, alternatives, and pitfalls. Scope to versions in `stack.md`.
 - Read relevant project files to understand structure and patterns.
 - Read `.promptherder/future-tasks.md` if it exists — check if any deferred ideas are relevant.
-- Read `.agent/rules/stack.md` and `.agent/rules/structure.md` if they exist.
+- Read `.agents/rules/stack.md` (or `.agent/rules/stack.md`) and `structure.md` if they exist.
 - Read `.promptherder/hard-rules.md` if it exists — all rules must be respected.
 
 ### Phase 3: Think (autonomous — no user interaction)

@@ -11,6 +11,8 @@ Use this skill BEFORE writing any artifact to `.promptherder/`.
 
 When multiple repositories are open in the workspace, all `.promptherder/` paths target the **repository the user is working in**, not the methodology source repo. Infer the target from the user's active document or recent conversation context. If the active document is outside all repositories, use recent conversation context (which files were read/written). If still ambiguous, ask which repository before writing.
 
+**Install paths:** promptherder installs agent files to `.agents/` (current Antigravity default since v1.14). The legacy path `.agent/` is still read by Antigravity for backward compat. Global skills live at `~/.gemini/antigravity/skills/`; workspace skills at `.agents/skills/`.
+
 ## 1. Determine the Slug
 
 The "slug" is the folder name in `.promptherder/convos/`. It MUST follow the format:  

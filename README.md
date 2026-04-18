@@ -18,7 +18,7 @@ promptherder pull https://github.com/shermanhuman/compound-v
 promptherder
 ```
 
-That's it. Your agents now have Compound V loaded. Works with VS Code Copilot (`.github/`) and Antigravity (`.agent/`).
+That's it. Your agents now have Compound V loaded. Works with VS Code Copilot (`.github/`) and Antigravity (`.agents/` — or legacy `.agent/`).
 
 ---
 
@@ -188,7 +188,7 @@ Compound V keeps its memory in `.promptherder/`. This is what makes it more than
 
 ### stack.md
 
-Create `.agent/rules/stack.md` (or `.github/rules/stack.md`) to pin your versions:
+Create `.agents/rules/stack.md` (or `.github/rules/stack.md`) to pin your versions:
 
 ```markdown
 # Stack
@@ -217,9 +217,14 @@ Keep `hard-rules.md` and `future-tasks.md` tracked — they're valuable project 
 Also add the agent target directories if you don't want generated files in your repo:
 
 ```
+.agents/
 .agent/
 .github/copilot-instructions.md
 ```
+
+> **Note:** `.agents/` is the current Antigravity default (since v1.14). Legacy `.agent/` is still supported for backward compat — promptherder will prompt you to migrate when you next run it.
+
+> **Note:** `auto-continue` is deprecated in both Antigravity (v1.19.x) and Gemini CLI — it's now enabled by default. Remove `auto-continue: true` from your `GEMINI.md` if present.
 
 ---
 
