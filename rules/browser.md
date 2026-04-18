@@ -8,7 +8,7 @@ Use the Antigravity browser subagent for true **end-to-end UI testing** — veri
 
 ## Approach hierarchy (cheapest → most capable)
 
-1. **`curl` / HTTP fetch** — for static HTML, REST APIs, markdown files, docs. No JS execution. Very fast, near-zero tokens. Use this first when simple fetching answers the question.
+1. **Native fetch / `curl`** — for static HTML, REST APIs, markdown files, docs. No JS execution. Very fast, near-zero tokens. Every agent platform provides a URL fetch tool (e.g., web fetch, read URL) — use it first. Fall back to `curl` if no native tool is available.
 2. **Headless browser (MCP)** — for JS-rendered pages that need DOM interaction without visual verification. Uses accessibility tree snapshots (text-based), not vision. No image model cost. A good middle ground for SPAs. Use whatever headless browser MCP server is configured in the environment.
 3. **Browser subagent** — reserve for E2E UI verification: does the feature _look_ right in a real browser? Checking forms submit, modals open, LiveView updates render correctly. This is its sweet spot.
 
