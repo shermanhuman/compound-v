@@ -8,10 +8,24 @@ Use the Antigravity browser subagent for true **end-to-end UI testing** — veri
 
 ## Approach hierarchy (cheapest → most capable)
 
-1. **Native fetch / `curl`** — for static HTML, REST APIs, markdown files, docs. No JS execution. Very fast, near-zero tokens. Every agent platform provides a URL fetch tool (e.g., web fetch, read URL) — use it first. Fall back to `curl` if no native tool is available.
-2. **Headless browser (MCP)** — for JS-rendered pages that need DOM interaction without visual verification. Uses accessibility tree snapshots (text-based), not vision. No image model cost. A good middle ground for SPAs. Use whatever headless browser MCP server is configured in the environment.
-3. **Browser subagent** — reserve for E2E UI verification: does the feature _look_ right in a real browser? Checking forms submit, modals open, LiveView updates render correctly. This is its sweet spot.
+1. **Native fetch / `curl`** — static HTML, REST APIs, docs, JSON endpoints. No JS execution. Near-zero cost.
+2. **Headless browser (MCP)** — JS-rendered pages, SPAs, form interactions. Uses accessibility tree snapshots (text, not pixels). Low token cost.
+3. **Browser subagent** — visual verification. Does the UI _look_ right? Screenshots + vision model. High cost.
 
-## When to invoke
+## When to use what
 
-Invoke this rule (via `@browser`) when you need to control a browser or verify rendered UI behavior. Prefer the cheapest approach that answers the question.
+| Need | Use |
+|------|-----|
+| Read docs, static HTML, API responses | **Fetch** |
+| Check if an element exists in rendered DOM | **Headless MCP** |
+| Fill forms, click buttons, navigate SPAs | **Headless MCP** |
+| Verify visual layout, colors, spacing | **Browser subagent** |
+| Confirm modals, toasts, animations render | **Browser subagent** |
+| Debug why a page looks wrong | **Browser subagent** |
+| Scrape data from non-JS pages | **Fetch** |
+
+## Key principles
+
+- **Fetch first.** Check if the data is available via a direct URL or API before launching a browser.
+- **Accessibility tree over screenshots.** Headless MCP uses semantic snapshots (roles, labels, states) — fast, deterministic, cheap. Only use screenshots for visual validation.
+- **Screenshots are expensive.** Each one requires vision model inference. Use them to _verify_ results, not to _navigate_.
