@@ -29,8 +29,8 @@ If the plan file does not exist, stop and tell the user to run `/plan` first.
 ### Context files (read before starting)
 
 - `.promptherder/convos/<slug>/plan.md` — the approved plan.
-- `.agent/rules/stack.md` — pinned versions and tech constraints.
-- `.agent/rules/structure.md` — project layout and naming conventions.
+- `.agents/rules/stack.md` (or `.agent/rules/stack.md`) — pinned versions and tech constraints.
+- `.agents/rules/structure.md` (or `.agent/rules/structure.md`) — project layout and naming conventions.
 - `.promptherder/hard-rules.md` — project-level rules that must always be followed.
 
 ### Execution loop
