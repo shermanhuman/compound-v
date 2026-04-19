@@ -43,4 +43,3 @@ Use the Antigravity browser subagent for true **end-to-end UI testing** — veri
 - Don't use browser testing for API-only changes — use curl/httpie instead
 - Don't capture screenshots just to capture them — have a specific assertion
 - Don't test in the browser what can be tested with unit/integration tests
->>>>>>> 7b5f1a6 (fix: audit fixes — browser.md stub, stack ordering, hard-rules dedup)
