@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "generated_at": "2026-04-19T17:59:32Z",
+  "targets": {
+    "antigravity": null,
+    "copilot": [
+      ".github/copilot-instructions.md"
+    ]
+  }
+}
