@@ -35,9 +35,9 @@ If no check specified, run all 10.
 
 ## Load stack context (sequential — before research)
 
-Read `.agent/rules/stack.md` for pinned versions. If it doesn't exist, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent. These versions scope all subsequent web searches.
+Read `.agents/rules/stack.md` for pinned versions; otherwise read legacy `.agent/rules/stack.md`. If neither exists, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent. These versions scope all subsequent web searches.
 
-If `stack.md` is missing and no versions can be inferred, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue.
+If `stack.md` is missing from both locations and no versions can be inferred, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue.
 
 ## Research before reviewing
 

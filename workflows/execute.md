@@ -33,9 +33,9 @@ If the plan file does not exist, stop and tell the user to run `/plan` first.
 
 ### Load stack context (sequential — before execution)
 
-Read `.agent/rules/stack.md` if it exists. These versions scope all web searches during execution.
+Read `.agents/rules/stack.md` if it exists; otherwise read legacy `.agent/rules/stack.md`. These versions scope all web searches during execution.
 
-If `stack.md` is missing, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue.
+If neither exists, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue.
 
 ### Execution loop
 

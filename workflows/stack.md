@@ -6,13 +6,13 @@ description: Scan project for versions, compare to stack.md and latest recommend
 
 # Stack
 
-Discover project versions, compare them to `stack.md` and current best practices, and update `.agent/rules/stack.md` interactively.
+Discover project versions, compare them to `stack.md` and current best practices, and update `.agents/rules/stack.md` interactively.
 
 **What this does:** Creates or updates `stack.md` — the single source of truth for pinned versions across all compound-v workflows. Every `/plan`, `/execute`, and `/review` scopes web searches to these versions.
 
 ## Steps
 
-1. **Read** `.agent/rules/stack.md` if it exists. Note its contents for the comparison table.
+1. **Read** `.agents/rules/stack.md` (or legacy `.agent/rules/stack.md`) if it exists. Note its contents for the comparison table.
 
 2. **Scan** the project for version indicators. Check for these files and extract version data:
 
@@ -57,7 +57,7 @@ Discover project versions, compare them to `stack.md` and current best practices
    > - **UPDATE** — tell me which rows to change (e.g. "bump Elixir to 1.17, add Redis 7")
    > - **SKIP** — don't write anything
 
-6. **Write** `.agent/rules/stack.md` with the final selections. Use this format:
+6. **Write** `.agents/rules/stack.md` with the final selections. Use this format:
 
    ```markdown
    # Stack
