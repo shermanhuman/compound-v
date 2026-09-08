@@ -1,45 +1,15 @@
 ---
 name: compound-v-persist
-description: Resolves target repository and storage location for conversation artifacts. Guarantees organized, time-sorted history.
+description: Resolve the active repository and task directory for Compound V plan, execution, and review artifacts.
 ---
 
-# Persist
+# Task persistence
 
-Use this skill BEFORE writing any artifact to `.promptherder/`.
+Resolve the repository from the current task, not the methodology installation. Ask only if multiple repositories remain plausible and the write depends on the answer.
 
-## 0. Resolve Target Repository
+1. Reuse the task directory already named in the conversation or plan, even across dates.
+2. For an explicit slug, look for an exact directory first; then a unique dated suffix match. Multiple matches require clarification. Reject path separators, `..`, and paths outside `.promptherder/convos/`.
+3. For a new task, create `YYYY-MM-DD-kebab-case-topic` using the current local date. Add a suffix if that name already belongs to another task.
+4. With no established task, inspect candidate plans for a match to the requested goal. Modification time alone is not a safe selector. A standalone review can create a fresh task directory without requiring a plan.
 
-When multiple repositories are open in the workspace, all `.promptherder/` paths target the **repository the user is working in**, not the methodology source repo. Infer the target from the user's active document or recent conversation context. If the active document is outside all repositories, use recent conversation context (which files were read/written). If still ambiguous, ask which repository before writing.
-
-**Install paths:** promptherder writes agent files to `.agents/` by default. Antigravity currently uses `.agents/` and still reads the legacy `.agent/` path for backward compatibility. Global skills live at `~/.gemini/antigravity/skills/`. Workspace skills live at `.agents/skills/`, with legacy setups using `.agent/skills/`.
-
-## 1. Determine the Slug
-
-The "slug" is the folder name in `.promptherder/convos/`. It MUST follow the format:  
-`YYYY-MM-DD-kebab-case-topic`
-
-**Logic flow:**
-
-1. **Explicit Override:** Did the user provide a specific slug? -> Use it. If the slug does not start with `YYYY-MM-DD-`, prepend today's date.
-2. **New Topic Signal:**
-   - Writing `plan.md`?
-   - Writing `ideas.md` (brainstorming)?
-     -> **CREATE NEW**: Generate a short, descriptive kebab-case slug based on the goal.
-3. **Continuation Signal:**
-   - Writing `review-*.md`?
-   - Writing `debug.md`?
-   - Writing `task.md`?
-     -> **REUSE LATEST**: Find the most recently modified folder in `.promptherder/convos/`.
-     - _Exception:_ If no folders exist, treat as New Topic.
-     - _Exception:_ If the latest folder has no `plan.md`, treat as New Topic.
-
-## 2. Check & Create Directory
-
-1. Construct path: `.promptherder/convos/<YYYY-MM-DD>-<slug>/`
-2. Ensure the directory exists.
-   - If creating new, use the **Current Local Time** for the date prefix.
-   - If reusing, use the existing folder name (even if date differs).
-
-## 3. Return Path
-
-Return the full absolute path for the file to be written (e.g., `.../2024-01-01-fix-login/plan.md`).
+Store `plan.md`, `decisions.md`, and `execution.md` in that directory as needed. Update the current plan instead of creating a new task on feedback. Name reviews `review-<scope>.md`; append a numeric suffix when that file exists unless updating it was requested. Return the resolved absolute path. Do not create conversation directories merely to edit `hard-rules.md`, `stack.md`, or `future-tasks.md`.

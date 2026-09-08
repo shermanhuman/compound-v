@@ -1,88 +1,16 @@
 ---
-trigger: always_on
+activation: always
 ---
-
 # Compound V
 
-You have the Compound V methodology available. Use these workflows and skills:
+Use the methodology in proportion to the task. User instructions and existing authorization determine scope; a skill does not create a new approval requirement or override host policy.
 
-## Pipeline
+- Planning: `compound-v-plan`. An explicit plan-only request stops after presenting the plan. A request to implement includes permission to plan internally and continue.
+- Execution: `compound-v-execute`, with debugging, testing, and verification helpers as needed.
+- Review: `compound-v-review`. Report findings for review-only requests; fix them when the user has already requested fixes or implementation.
+- Full pipeline: `compound-v-pipeline`. `YOLO` requests autonomous progress within the stated task, not unrelated changes, merging, deployment, publishing, or bypassing tool permissions.
+- Persistent task artifacts: `compound-v-persist`; use the active task, not an unrelated recent folder.
 
-1. `/plan` — autonomous planning with `/execute` approval
-2. `/execute` — parallel-by-default execution with checkpointing
-3. `/review` — severity-graded review pass
-4. `/idea` — add to future tasks (lightweight, any time)
-5. `/rule` — add a hard rule to the always-on prompt
-6. `/stack` — scan project versions, compare to best practices, update `stack.md`
+Promptherder 1.x exports workflow entry points as `workflow-plan`, `workflow-execute`, `workflow-review`, `workflow-idea`, `workflow-rule`, and `workflow-stack`. In Codex invoke `$workflow-plan`; in Claude Code invoke `/workflow-plan`. Legacy `/plan` and similar names are shorthand in older discussions, not guaranteed installed aliases. If configured, the command prefix precedes `workflow-`.
 
-## Skills (auto-activated)
-
-- `compound-v-plan` — autonomous planning methodology
-- `compound-v-review` — severity-graded review with 10 parallel checks
-- `compound-v-tdd` — tests-first discipline
-- `compound-v-debug` — systematic debugging
-- `compound-v-parallel` — parallel execution reasoning
-- `compound-v-verify` — verification before completion
-- `compound-v-persist` — resolves conversation slugs and paths
-
-## Manual rules
-
-- `browser.md` — browser-based UI testing (manual trigger)
-
-## Output formatting
-
-All workflows and skills must follow these formatting rules:
-
-### Structure
-
-- **H1** for titles, **H2** for sections, **H3** for subsections
-- `---` dividers between major sections
-- Tables for structured data (findings, decisions, comparisons)
-- Ordered lists for sequential steps. Unordered lists when order doesn't matter.
-
-### Semantic text formatting
-
-- **Bold** for key terms and action verbs in steps: "**Read** the file. **Append** the rule."
-- `Inline code` for anything the user might copy: commands, paths, filenames, flags, slugs
-- _Italic_ for caveats, assumptions, and de-emphasized metadata: _"This assumes the plan exists."_
-- Blockquotes (`>`) for prompting the user — questions, decisions, and action menus. Not for informational text.
-
-### Severity indicators (braille dot patterns)
-
-Visual fill-level = severity. Works without color.
-
-- `⠿` **Blocker** — wrong behavior, security issue, data loss, broken build
-- `⠷` **Major** — likely bug, missing edge case, poor reliability
-- `⠴` **Minor** — style, clarity, small maintainability issue
-- `⠠` **Nit** — optional polish
-
-Finding IDs are mandatory in reviews: `⠿ **B1**`, `⠷ **M2**`, `⠴ **m3**`, `⠠ **n1**`
-
-### Decision prompts
-
-Examples:
-
-- **After plan:** `> Run /execute <slug> to proceed, SHOW DECISIONS to audit, DECLINE to reject, or give feedback.`
-- **After review findings:** `> FIX to fix ⠿⠷, FIX ALL to fix everything, SKIP to move on, or give feedback.`
-- **Deferred ideas:** `> Add these to future-tasks.md? yes / no`
-
-Task slugs go on the next line in italics: _Task: `<slug>`_
-
-### Short names first
-
-When referencing any concept that has a short name, lead with the short name in backticks followed by a brief description. This teaches users the vocabulary progressively.
-
-- ✅ `edges` — boundary conditions and error handling
-- ✅ `perf` — performance pitfalls
-- ✅ `YOLO` — full autonomous mode
-- ❌ "Edge cases & error handling" (user doesn't learn the shortcut)
-
-### YOLO mode
-
-The `YOLO` flag (all caps) enables full autonomous operation. It cascades through the pipeline:
-
-- `/review YOLO` — Auto-fix ALL findings (⠿→⠠) without asking. Output summary.
-- `/execute YOLO` — Execute, auto-review, auto-fix all findings. No interaction.
-- `/plan YOLO` — Full pipeline: plan → execute → review → fix. Zero interaction.
-
-In all YOLO modes, still output a summary at the end (what was built, what was found, what was fixed).
+Keep ordinary replies concise and follow the user's requested format. Use tables only when comparison helps. For substantive reviews use stable finding IDs: B1 blocker, M1 major, m1 minor, n1 nit. Optional braille severity symbols may accompany readable labels. Grugg may shorten commentary but must preserve evidence, uncertainty, finding IDs, and required artifact formats. Use named helpers when installed; if selection omits a helper, follow the applicable procedure locally without inventing unavailable tools. Do not load every skill for an unrelated request.

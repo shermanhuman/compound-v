@@ -1,4 +1,49 @@
 {
   "name": "compound-v",
-  "version": "0.10.0"
+  "version": "1.0.0",
+  "skills": {
+    "workflow-plan": {
+      "requires": [
+        "compound-v-plan",
+        "compound-v-pipeline"
+      ]
+    },
+    "workflow-execute": {
+      "requires": [
+        "compound-v-execute"
+      ]
+    },
+    "workflow-review": {
+      "requires": [
+        "compound-v-review"
+      ]
+    },
+    "compound-v-plan": {
+      "requires": [
+        "compound-v-persist"
+      ]
+    },
+    "compound-v-execute": {
+      "requires": [
+        "compound-v-persist",
+        "compound-v-parallel",
+        "compound-v-tdd",
+        "compound-v-debug",
+        "compound-v-review",
+        "compound-v-verify"
+      ]
+    },
+    "compound-v-review": {
+      "requires": [
+        "compound-v-persist",
+        "compound-v-parallel"
+      ]
+    },
+    "compound-v-pipeline": {
+      "requires": [
+        "compound-v-plan",
+        "compound-v-execute"
+      ]
+    }
+  }
 }

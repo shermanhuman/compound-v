@@ -1,38 +1,14 @@
 ---
 name: compound-v-verify
-description: Mandatory checklist before claiming a task is done. Ensures verification, clean code, and accurate reporting. Use before saying "done" or "complete".
+description: Verify task outcomes and report accurate evidence before declaring implementation complete.
 ---
 
-# Verification Before Completion
+# Completion verification
 
-Before reporting a task as done, run through this checklist.
+Compare the result with the current request and accepted scope. Run the checks required by the repository and checks proportionate to the changed behavior. Use focused tests during iteration; run a full suite when required or justified by impact, not after every small step.
 
-## When to use this skill
+Inspect the diff for accidental changes, new warnings, temporary debug code, and missing migration or usage documentation. Do not remove unrelated TODOs, change unrelated warnings, or add cleanup outside scope.
 
-- before telling the user a task is complete
-- before moving to the next plan step
-- before writing a review or execution summary
+Do not rerun unchanged successful checks without a reason. If a check cannot run because of missing tools, credentials, or an external service, identify it and report the limit. Never equate generated files, a successful build, or a suggested command with live host/model behavior.
 
-## The checklist
-
-1. **Requirements** — Re-read the task description. Confirm all requirements are met and no details or edge cases were missed.
-2. **Tests** — Run the full test suite, not just the tests you wrote. Confirm all pass.
-3. **Code cleanliness** — Remove commented-out code, debug prints, and placeholder TODOs.
-4. **Warnings** — Check for and resolve linter warnings, compiler warnings, and deprecation notices.
-5. **Verification commands** — Run the exact verification commands from the plan step. Confirm expected output.
-6. **Documentation** — Update relevant docs if you changed behavior, APIs, CLI flags, or configuration.
-
-## Statement of completion
-
-When you announce completion, include:
-
-- What you did (1-2 lines)
-- How you verified it (exact commands + results)
-
-Example: "Step 3 complete. Added auth middleware to `lib/auth/plug.ex`. Verified: `mix test test/auth/` — 8 tests, 0 failures."
-
-## Never
-
-- Say "done" without running verification commands
-- Skip the checklist because "it's simple"
-- Move to step N+1 if step N is not verified
+Summarize what changed, checks actually executed and their results, and any remaining limitation. Scope the completion claim to what the evidence supports.

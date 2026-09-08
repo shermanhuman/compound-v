@@ -1,52 +1,9 @@
 ---
-description: Autonomous planning workflow. Researches, reasons, and presents a plan with minimal back-and-forth. Respects the user's time.
+description: Plan a requested task; stop for plan-only requests or follow an explicitly authorized full pipeline.
 ---
-
-// turbo-all
 
 # Plan
 
-Invoke the `compound-v-plan` skill and follow it exactly.
+For explicit plan-only work, use `compound-v-plan` and stop after presenting the plan. Explain how to continue with the native execute entry point or an ordinary request to implement; do not require an exact command string. Feedback updates the same plan. SHOW DECISIONS displays concise recorded decision rationales. DECLINE marks the plan declined.
 
-## Workflow-specific protocol
-
-### Slug resolution
-
-Invoke the `compound-v-persist` skill to resolve the target `<slug>` folder.
-
-**Logic:**
-
-- If updating an existing plan, target the existing folder.
-- If creating a **New Plan**, the skill will generate a new `YYYY-MM-DD-slug`.
-- If the user provided a specific slug, pass it to the skill.
-
-### Artifacts
-
-Write to `.promptherder/convos/<slug>/`:
-
-- `plan.md` — the plan
-- `decisions.md` — full decisions table (all ideas, including rejected)
-
-### Response handling
-
-After presenting the plan, always end with:
-
-> Run `/execute <slug>` to proceed, `SHOW DECISIONS` to audit, `DECLINE` to reject, or give feedback.
-
-_Task: `<slug>`_
-
-**`/execute`** → The user running `/execute` IS the approval. The execute workflow sets status to `approved`. Do NOT implement.
-
-**`SHOW DECISIONS`** → Print contents of `decisions.md`. Re-prompt.
-
-**`DECLINE`** → Update status to `declined` in plan.md. Reply: "Plan declined. Task: `<slug>`". Stop.
-
-**Feedback** → Incorporate, re-research if needed, update plan and decisions, re-present.
-
-### Deferred ideas
-
-List ideas with future value when presenting the plan.
-
-> Add these to `future-tasks.md`? `yes` / `no`
-
-Only append to `.promptherder/future-tasks.md` after user confirms.
+If the user explicitly requests the full pipeline (including `/plan YOLO` as legacy shorthand), use `compound-v-pipeline` instead. Do not apply plan-only stopping rules after that authorized transition.
