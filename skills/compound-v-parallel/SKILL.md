@@ -33,3 +33,5 @@ description: Analyzes task dependencies and groups independent steps into parall
 - Steps that modify the same file
 - Steps where output of one feeds into another
 - Sequential build/test chains (build → test → deploy)
+
+Check shared state too: separate commands can still mutate the same Git index, lockfile, build output, service, or remote record. Await and inspect every result. Use the host’s actual concurrency tools; spawn subagents only when supported and authorized. Sequential fallback preserves the same dependency analysis.

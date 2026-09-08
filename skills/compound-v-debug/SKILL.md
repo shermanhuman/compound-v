@@ -43,3 +43,5 @@ description: Systematic debugging — reproduce, isolate, form hypotheses, instr
 - Fix
 - Regression protection
 - Verification
+
+Use `.promptherder/stack.md` and actual project pins for research. Keep investigation scoped to the failure; redact secrets from errors sent to external searches. If research is unavailable, record the limitation and continue evidence-based local diagnosis.

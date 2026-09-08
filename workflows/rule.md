@@ -1,41 +1,13 @@
 ---
-description: Add a hard rule to the project's always-on prompt. Lightweight, no ceremony. Use any time.
+description: Persist a requested project rule and synchronize configured native instruction output.
 ---
 
-// turbo-all
+# Add a project rule
 
-# Rule
+Resolve the target repository. Ask for the rule only when none was provided. Read `.promptherder/hard-rules.md` and relevant existing rules before appending. If the new rule contradicts another rule, use the user’s explicit replacement intent; otherwise ask which policy should prevail before changing that conflict. Do not create duplicate or knowingly contradictory bullets.
 
-Append the user's rule to `.promptherder/hard-rules.md`.
+Save the agreed rule in `.promptherder/hard-rules.md`. When the Promptherder CLI and target configuration are available, preview and sync the change. Do not silently adopt conflicting generated files or choose new targets. If sync cannot complete, say that the source is saved but native output is pending. Hosts may need to reload instructions; never promise automatic enforcement in an already-running session.
 
-**What this does:** Adds a rule that the AI must always follow in this project. Hard rules are injected into every session automatically. Use this for project-specific standards, constraints, or guardrails (e.g., "never use eval", "all API routes require auth", "prefer composition over inheritance").
+## File and confirmation format
 
-## Steps
-
-1. If the user didn't provide a rule (e.g. just typed `/rule` with nothing after), prompt them:
-
-> **What rule should always be enforced in this project?** Describe it as a clear, actionable statement.
-
-2. Read `.promptherder/hard-rules.md` if it exists.
-
-3. If it doesn't exist, create it with a header:
-
-```markdown
----
-trigger: always_on
----
-
-# Hard Rules
-
-Project-level rules that are always active. Added by `/rule` or manually.
-```
-
-4. Append the rule as a bullet point:
-
-```markdown
-- <rule>
-```
-
-5. Confirm to the user: **"Added hard rule."** with the line that was added.
-
-That's it. No planning, no research, no approval. Just append and confirm.
+When the source file is absent, create it with `# Hard Rules` and a blank line. Append each rule as `- <clear, actionable rule>`; keep existing rules intact. After sync, report **Added hard rule**, quote the exact bullet, and state whether native output was updated or remains pending. A direct request to add a rule supplies authorization; do not start a separate planning or approval workflow.

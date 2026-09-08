@@ -51,6 +51,8 @@ Each step should be one action (2-5 minutes):
 2. Run it to confirm it fails — step
 3. Implement the minimal code to make it pass — step
 4. Run tests to confirm they pass — step
-5. Commit — step
+5. Commit when the task includes committing — a separate step, not required after every test.
 
 Don't combine these. Each step is independently verifiable.
+
+Use existing framework conventions. For documentation or other reversible low-impact edits, use direct validation rather than manufacturing a test that merely matches text. Preserve required repository checks.

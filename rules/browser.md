@@ -1,16 +1,16 @@
 ---
-trigger: manual
+activation: manual
 ---
 
 # Browser Agent
 
-Use the Antigravity browser subagent for true **end-to-end UI testing** — verifying rendered output, forms, and interactions in a real browser. It runs on a separate model (Gemini 2.5 Pro UI Checkpoint), meaning each action incurs a distinct model invocation. Use it sparingly.
+Use real browser testing for end-to-end UI verification. Prefer the Antigravity browser subagent when working in Antigravity and it is available; in Codex or Claude use the host’s browser tools or the project’s browser test runner. The choice of tool does not change the assertions below.
 
 ## Approach hierarchy (cheapest → most capable)
 
-1. **Native fetch / `curl`** — static HTML, REST APIs, docs, JSON endpoints. No JS execution. Near-zero cost.
-2. **Headless browser (MCP)** — JS-rendered pages, SPAs, form interactions. Uses accessibility tree snapshots (text, not pixels). Low token cost.
-3. **Browser subagent** — visual verification. Does the UI _look_ right? Screenshots + vision model. High cost.
+1. **Native fetch / `curl`** — static HTML, REST APIs, docs, JSON endpoints. No JS execution. No rendering required.
+2. **Headless browser (MCP)** — JS-rendered pages, SPAs, form interactions. Uses accessibility tree snapshots (text, not pixels). Inspect semantic state directly.
+3. **Browser subagent** — visual verification. Does the UI _look_ right? Screenshots + vision model. Use when the assertion depends on appearance.
 
 ## When to use what
 
@@ -27,8 +27,8 @@ Use the Antigravity browser subagent for true **end-to-end UI testing** — veri
 ## Key principles
 
 - **Fetch first.** Check if the data is available via a direct URL or API before launching a browser.
-- **Accessibility tree over screenshots.** Headless MCP uses semantic snapshots (roles, labels, states) — fast, deterministic, cheap. Only use screenshots for visual validation.
-- **Screenshots are expensive.** Each one requires vision model inference. Use them to _verify_ results, not to _navigate_.
+- **Accessibility tree over screenshots.** Headless MCP uses semantic snapshots (roles, labels, states) — suited to semantic interaction checks. Only use screenshots for visual validation.
+- **Screenshots are expensive.** They carry more visual context than a focused semantic query. Use them to _verify_ results, not to _navigate_.
 
 ## What to verify
 

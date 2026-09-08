@@ -1,10 +1,10 @@
 ---
-trigger: always_on
+activation: always
 ---
 
 # Compound V
 
-You have the Compound V methodology available. Use these workflows and skills:
+Use the Compound V workflows and skills below.
 
 ## Pipeline
 
@@ -24,6 +24,8 @@ You have the Compound V methodology available. Use these workflows and skills:
 - `compound-v-parallel` — parallel execution reasoning
 - `compound-v-verify` — verification before completion
 - `compound-v-persist` — resolves conversation slugs and paths
+- `compound-v-execute` — callable execution, batch checkpoints, and final review
+- `compound-v-pipeline` — carries authorization through plan, execute, and review
 
 ## Manual rules
 
@@ -40,16 +42,12 @@ All workflows and skills must follow these formatting rules:
 - Tables for structured data (findings, decisions, comparisons)
 - Ordered lists for sequential steps. Unordered lists when order doesn't matter.
 
-### Semantic text formatting
-
-- **Bold** for key terms and action verbs in steps: "**Read** the file. **Append** the rule."
+- **Bold** for key terms and action verbs.
 - `Inline code` for anything the user might copy: commands, paths, filenames, flags, slugs
-- _Italic_ for caveats, assumptions, and de-emphasized metadata: _"This assumes the plan exists."_
+- _Italic_ for caveats, assumptions, and metadata.
 - Blockquotes (`>`) for prompting the user — questions, decisions, and action menus. Not for informational text.
 
 ### Severity indicators (braille dot patterns)
-
-Visual fill-level = severity. Works without color.
 
 - `⠿` **Blocker** — wrong behavior, security issue, data loss, broken build
 - `⠷` **Major** — likely bug, missing edge case, poor reliability
@@ -60,8 +58,6 @@ Finding IDs are mandatory in reviews: `⠿ **B1**`, `⠷ **M2**`, `⠴ **m3**`, 
 
 ### Decision prompts
 
-Examples:
-
 - **After plan:** `> Run /execute <slug> to proceed, SHOW DECISIONS to audit, DECLINE to reject, or give feedback.`
 - **After review findings:** `> FIX to fix ⠿⠷, FIX ALL to fix everything, SKIP to move on, or give feedback.`
 - **Deferred ideas:** `> Add these to future-tasks.md? yes / no`
@@ -70,19 +66,20 @@ Task slugs go on the next line in italics: _Task: `<slug>`_
 
 ### Short names first
 
-When referencing any concept that has a short name, lead with the short name in backticks followed by a brief description. This teaches users the vocabulary progressively.
-
-- ✅ `edges` — boundary conditions and error handling
-- ✅ `perf` — performance pitfalls
-- ✅ `YOLO` — full autonomous mode
-- ❌ "Edge cases & error handling" (user doesn't learn the shortcut)
+Lead with the short name in backticks, then its description: `edges` — boundary conditions and error handling; `perf` — performance pitfalls; `YOLO` — full autonomous mode.
 
 ### YOLO mode
 
-The `YOLO` flag (all caps) enables full autonomous operation. It cascades through the pipeline:
+`YOLO` (all caps) cascades through the pipeline:
 
 - `/review YOLO` — Auto-fix ALL findings (⠿→⠠) without asking. Output summary.
 - `/execute YOLO` — Execute, auto-review, auto-fix all findings. No interaction.
 - `/plan YOLO` — Full pipeline: plan → execute → review → fix. Zero interaction.
 
-In all YOLO modes, still output a summary at the end (what was built, what was found, what was fixed).
+Always summarize what was built, found, and fixed.
+
+## Native host execution
+
+Promptherder 1.x installs native `workflow-<name>` entry points: `$workflow-plan` in Codex and `/workflow-plan` in Claude Code, likewise execute/review/idea/rule/stack. A configured prefix precedes `workflow-`. Short `/plan` names above describe the workflow vocabulary, not guaranteed installed aliases.
+
+Keep the formats, finding IDs, and action vocabulary above. Grugg can shorten prose without removing required sections, evidence, or technical qualifications. Full-pipeline authorization invokes `compound-v-pipeline` and its callable `compound-v-execute` helper; do not automatically call a manual-only entry point. Plan-only instructions expire when execution is authorized. Existing implementation/fix authorization does not require another generic approval menu. YOLO fixes all in-scope findings, including minor/nit findings, but does not authorize unrelated work, merging, publication, or bypassing host permissions.

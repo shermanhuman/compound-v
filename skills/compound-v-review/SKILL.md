@@ -35,9 +35,9 @@ If no check specified, run all 10.
 
 ## Load stack context (sequential — before research)
 
-Read `.agents/rules/stack.md` for pinned versions; otherwise read legacy `.agent/rules/stack.md`. If neither exists, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent. These versions scope all subsequent web searches.
+Read `.promptherder/stack.md` for recorded versions, falling back to legacy `.agents/rules/stack.md` or `.agent/rules/stack.md`; compare with actual project pins. If none exists, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent. These versions scope all subsequent web searches.
 
-If `stack.md` is missing from both locations and no versions can be inferred, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue.
+If `stack.md` is missing from all locations and no versions can be inferred, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue.
 
 ## Research before reviewing
 
@@ -47,153 +47,11 @@ Do all research **in parallel** (invoke multiple tool calls in the same response
 2. Read all changed files in parallel to build full context.
 3. Search the web for version-specific docs, gotchas, and best practices scoped to `stack.md` versions.
 4. Read `.promptherder/hard-rules.md` if it exists.
-5. Read `.promptherder/convos/<slug>/plan.md` and `.promptherder/future-tasks.md`.
+5. Read the current task’s plan and future-tasks file if present. A standalone review does not require a plan; do not invent one or select an unrelated task.
 
-## Review checks (run in parallel)
+## Review checks
 
-Each check is independent. Fire all checks concurrently.
-Checks marked 🔍 require web research using the specific versions from `stack.md`.
-
----
-
-### 🎯 1. `correctness` — does it do what was asked?
-
-Walk through every step in `.promptherder/convos/<slug>/plan.md`. Confirm the code delivers each one.
-Cross-check `.promptherder/future-tasks.md` — catch any deferred idea we accidentally skipped.
-Read `.promptherder/hard-rules.md` — flag any violation. Hard rules are non-negotiable.
-Verify return values, status codes, and error types match the contracts defined.
-Trace every conditional branch. Confirm all expected states are handled, not just the happy path.
-Check pre/post conditions: what must be true before calling a function, and what must be true after it returns? Flag any violations.
-Flag hardcoded solutions that only work for specific test inputs. The code must solve the general problem.
-
----
-
-### 🚧 2. `edges` — what breaks at the boundaries? 🔍
-
-**Stack research:** Search the web for common edge cases and error patterns for the specific versions in `stack.md`.
-
-Test the boundaries: nil, empty, zero, max, negative, off-by-one. If any are unhandled, flag them.
-Trace resource lifecycle — files, connections, goroutines must be released on ALL paths, including error paths.
-Follow every error. It must be wrapped with context (e.g., `fmt.Errorf %w` in Go, `raise ... from` in Python, `Kernel.reraise` in Elixir), never swallowed or silently ignored.
-Check for race conditions. Shared state needs guards: mutexes, channels, or atomics. Maps, slices, and dicts shared across goroutines without synchronization are bugs.
-Simulate partial failure: if step 3 of 5 fails, are steps 1-2 cleaned up or left dangling?
-Consider external failures: what happens when the API/DB/filesystem is unavailable or slow?
-Watch for type coercion traps: charset, timezone (DST, leap years, leap seconds), integer overflow for the language version in use.
-Check for retry/recovery: transient failures (network timeouts, 503s) should have retry mechanisms where appropriate.
-
----
-
-### 🛡️ 3. `security` — close the doors 🔍
-
-**Stack research:** Search the web for CVEs, security advisories, and OWASP ASVS misconfigurations for the specific versions in `stack.md`.
-
-Search for hardcoded secrets and credentials. Search logs for leaked tokens or PII. Flag both.
-Trace user input from entry to use. Sanitize before queries, commands, file paths, and templates.
-Check every entry point for auth/authz — including background jobs, webhooks, and admin routes.
-Look for unsafe defaults: permissive CORS, debug mode in prod, open ports, wildcard origins. Tighten them.
-Check dependencies against known CVEs. Flag any at vulnerable versions.
-Verify cryptographic usage: no weak algorithms, no hardcoded IVs, sufficient key lengths.
-Check session management: session IDs regenerated on auth, HttpOnly/Secure cookie flags, session termination on logout/inactivity.
-Check IaC files too: Kubernetes manifests, Dockerfiles, Terraform — not just application code.
-
----
-
-### ⚡ 4. `perf` — don't waste cycles 🔍
-
-**Stack research:** Search the web for common performance pitfalls for the specific versions in `stack.md`.
-
-Find N+1 queries and unbounded loops over external data. Batch or paginate them.
-Look for unnecessary allocations or copies in hot paths. Eliminate them.
-Verify every external call (DB, HTTP, file I/O) has pagination, limits, and timeouts. Add what's missing.
-Check for blocking operations in async/concurrent contexts. They stall everything.
-Flag large payloads loaded fully into memory. Use streaming where the data size is unbounded.
-Look for caching opportunities: repeated expensive computations or fetches that could be cached.
-Check database queries for missing indexes. Queries on unindexed columns are silent performance killers.
-
----
-
-### 🧪 5. `tests` — prove it works
-
-Run the tests. Don't assume they pass — execute them.
-Check that new behavior has corresponding tests. Missing coverage = missing confidence.
-Verify tests assert behavior, not implementation. Test return values and outcomes, not internal method calls.
-Confirm edge cases are tested: empty, nil, max, concurrent, error paths.
-Check error paths explicitly. Happy-path-only tests give false confidence.
-Read the test names. Each should describe the scenario: `TestEmptyInputReturnsError`, not `TestProcess`.
-Verify test independence: tests must run in any order without shared state. Shared mutable state between tests causes flaky failures.
-Flag flaky indicators: tests that depend on timing, network availability, or filesystem state without proper setup/teardown.
-
----
-
-### 📐 6. `design` — keep it simple and idiomatic 🔍
-
-Give each function and type a single responsibility. If it does two things, split it.
-Use names that describe purpose, not implementation: `fetchUser` not `getData`, `hardRulesFile` not `file2`.
-Extract constants and config. No magic numbers, no magic strings scattered through the code.
-Separate concerns: business logic apart from I/O, transport, and presentation.
-Minimize coupling: changing module A shouldn't require touching module B.
-Apply the 2-minute rule: can a new team member understand this function in under 2 minutes? If not, simplify.
-Match patterns to the latest framework best practices for the versions in `stack.md`.
-
-**Idiomatic code** 🔍 — search the web for "idiomatic [language] [version]":
-
-Use language-native constructs: list comprehensions in Python, channels in Go, pattern matching in Elixir.
-Follow the language's style guide: Effective Go, PEP 8, Elixir formatter.
-Prefer standard library over reinventing. Use `slices.Contains` in Go 1.21+, not a manual loop.
-Match naming conventions: camelCase vs snake_case, exported vs unexported.
-Handle errors the language's way: Go returns errors, Elixir uses ok/error tuples, Python raises exceptions.
-
----
-
-### 🔁 7. `dry` — single point of truth
-
-Apply DRY (Single Point of Truth): every piece of knowledge should have one unambiguous, authoritative representation in the codebase.
-Identify repeated code — same logic in multiple functions, same constant in multiple files.
-Extract shared logic into a reusable function, module, or variable.
-Call the reusable unit instead of duplicating code. Update logic in one place — changes reflect everywhere.
-Respect the Rule of Three: below 3 occurrences, duplication may be acceptable. Don't abstract too early.
-Check for copy-pasted code with minor variations. Parameterize the differences.
-
----
-
-### 🪓 8. `yagni` — build it now, not "just in case"
-
-Apply YAGNI: only implement features when you actually need them. Focus on current requirements, not hypothetical future ones.
-
-**Technique:** `grep`/search for actual callers before accepting an abstraction. If nothing calls it, flag it.
-
-Flag abstractions (interfaces, generics, factories) that serve no current caller. Remove or simplify them.
-Cut "future-proofing" for unconfirmed requirements. Refactor later when real needs arise.
-Replace sophisticated patterns (strategy, visitor, plugin system) with simple functions wherever possible.
-Remove config or extension points nobody asked for. Keep the code lean and maintainable.
-Don't optimize without evidence. Flag premature optimization that lacks measured bottleneck data.
-Generalize upon second use, not first. The first occurrence is not a pattern — it's just code.
-Flag deep inheritance hierarchies (3+ levels) — they usually indicate premature abstraction.
-
----
-
-### 📋 9. `logging` — make it debuggable in production
-
-Use correct log levels: INFO for expected operations, WARN for recoverable issues, ERROR for failures requiring attention.
-Exclude sensitive data from logs: secrets, tokens, PII, full request bodies. Search and flag any leaks.
-Include sufficient context: request IDs, correlation/trace IDs, relevant parameter values, timestamps. "Error occurred" alone is useless.
-Keep structured logging format consistent with project conventions (slog, zerolog, etc.).
-Find silent failures: code paths that swallow errors without logging. Every error needs a trace.
-Consolidate related log entries: prefer canonical/wide events (one structured log per request) over scattered individual log lines.
-Watch log volume: excessive logging causes cost and performance issues in production. Flag unnecessary INFO/DEBUG in hot paths.
-
----
-
-### 📝 10. `docs` — explain the why, not the what
-
-Document public APIs: function signatures, expected inputs, outputs, and error conditions.
-Add comments that explain _why_ the approach was chosen. Don't restate what the code does — the code already says that.
-Update README/docs when user-facing behavior, CLI flags, or configuration options change.
-Document migration steps and deprecation notes when replacing old behavior.
-Flag and remove commented-out code. It's not documentation — it's clutter. Use version control.
-Flag outdated comments that don't match current code behavior. A wrong comment is worse than no comment.
-
----
+Read [the ten-check reference](references/checks.md) for the requested review. Run all ten for a general review; run the named check for targeted review. Execute independent checks concurrently where tools and authorization allow; otherwise perform them locally. Ten checks does not require ten subagents.
 
 ## Output format
 
@@ -218,7 +76,7 @@ Highlight what's well done. Be specific with file:line references. Don't list ev
 | ... | ... | ... |
 ```
 
-Mark each check: `✅ Clean` (no issues), finding IDs (e.g. `⠷ M1, ⠴ m2`), or `N/A — reason`.
+Mark each check: `✅ Clean` (performed, no issues), finding IDs, `N/A — reason`, or `Not assessed — targeted review`. Never label an unperformed check clean.
 
 ---
 
@@ -253,7 +111,7 @@ Finding IDs: `⠿ **B1**` (blocker), `⠷ **M1**` (major), `⠴ **m1**` (minor),
 - Related code that might have the same bug?
 - Copy-pasted code that shares the flaw?
 
-Use grep/search to find other occurrences. Add them to the findings table if found. This prevents fixing one instance while leaving others broken.
+Use `rg`/search to find other occurrences. Add them to the findings table if found. This prevents fixing one instance while leaving others broken.
 
 ---
 
@@ -274,15 +132,15 @@ Confirm the file exists by listing `.promptherder/convos/<slug>/`.
 
 ### 5. Verdict
 
-State your assessment in 1-2 sentences (what you found, what matters most). Then present the action menu:
+State your assessment in 1-2 sentences (what you found, what matters most). When fixes remain and are not already authorized, present the action menu:
 
 > FIX to fix ⠿⠷ (blockers + majors), FIX ALL to fix everything, SKIP to move on without fixes, or give feedback.
 
 _Task: `<slug>`_
 
-**The action menu appears exactly ONCE, at the very end of the response.** It comes AFTER persistence. Do not repeat it after file operations or any other step.
+**When needed, the action menu appears exactly ONCE, at the very end of the response.** It comes AFTER persistence. Do not repeat it after file operations or any other step.
 
-If any finding is unclear, clarify ALL unclear items before fixing ANY.
+Clarify findings whose correction depends on missing input; continue independent authorized fixes.
 
 ---
 
@@ -295,4 +153,10 @@ If any finding is unclear, clarify ALL unclear items before fixing ANY.
 
 **`YOLO` mode:**
 
-Skip presentation. Auto-fix ALL findings (⠿ → ⠷ → ⠴ → ⠠). Output summary of what was fixed.
+Skip the action menu. Keep the required review report and auto-fix ALL findings (⠿ → ⠷ → ⠴ → ⠠). Output summary of what was fixed.
+
+## Authorization and lifecycle
+
+Keep the strengths, coverage, findings, persistence, and verdict structure above; never invent praise or findings to fill a count. For review-only work, report first and offer the action menu when fixes remain. FIX, FIX ALL, and ordinary requests to fix are valid authorization; YOLO is not required. When fixes were already requested or this review finishes an implementation task, perform those fixes without another generic approval stop. YOLO fixes every in-scope severity, including minor/nit findings. Out-of-scope ideas remain deferred.
+
+Use `compound-v-persist` for the active slug and collision-safe report filename. Write the report once; wrappers do not replace it with a second summary. Review-only constraints end when the user authorizes fixes or advances to another phase.

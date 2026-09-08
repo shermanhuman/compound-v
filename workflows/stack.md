@@ -2,17 +2,16 @@
 description: Scan project for versions, compare to stack.md and latest recommended, update interactively. Use any time.
 ---
 
-// turbo-all
 
 # Stack
 
-Discover project versions, compare them to `stack.md` and current best practices, and update `.agents/rules/stack.md` interactively.
+Discover project versions, compare them to `stack.md` and current best practices, and update `.promptherder/stack.md` interactively.
 
 **What this does:** Creates or updates `stack.md` — the single source of truth for pinned versions across all compound-v workflows. Every `/plan`, `/execute`, and `/review` scopes web searches to these versions.
 
 ## Steps
 
-1. **Read** `.agents/rules/stack.md` (or legacy `.agent/rules/stack.md`) if it exists. Note its contents for the comparison table.
+1. **Read** `.promptherder/stack.md` (or legacy `.agents/rules/stack.md` / `.agent/rules/stack.md`) if it exists. Note its contents for the comparison table.
 
 2. **Scan** the project for version indicators. Check for these files and extract version data:
 
@@ -57,7 +56,7 @@ Discover project versions, compare them to `stack.md` and current best practices
    > - **UPDATE** — tell me which rows to change (e.g. "bump Elixir to 1.17, add Redis 7")
    > - **SKIP** — don't write anything
 
-6. **Write** `.agents/rules/stack.md` with the final selections. Use this format:
+6. **Write** `.promptherder/stack.md` with observed versions. Record requested upgrades in a separate `## Proposed upgrades` section; do not substitute them for installed versions. Use this format:
 
    ```markdown
    # Stack
@@ -68,8 +67,10 @@ Discover project versions, compare them to `stack.md` and current best practices
    - Node 22 (for frontend tooling)
    ```
 
-   Preserve any manual entries from the existing `stack.md` that weren't auto-detected. Keep it a flat bullet list — no categories, no explanations. Just technology + version.
+   Preserve any manual entries from the existing `stack.md` that weren't auto-detected. Keep observed versions as a flat bullet list of technology + version. Keep proposed upgrades separate so subsequent research uses actual pins.
 
-7. **Confirm:** "Stack updated. All `/plan`, `/execute`, and `/review` commands will now scope to these versions."
+7. **Confirm:** "Stack updated. `/plan`, `/execute`, and `/review` will use observed versions; proposed upgrades remain pending."
 
 That's it. No planning, no approval workflow. Scan, compare, prompt, write.
+
+Record actual and proposed versions separately. ACCEPT saves the observed versions; UPDATE may record desired upgrades as proposals but does not itself upgrade dependencies or mark proposed versions as installed. If the user already authorized recording observed versions, do not ask ACCEPT again. Preserve the comparison table and manually maintained entries. A legacy `.agents/rules/stack.md` can be read during migration but must not be edited as the new source.

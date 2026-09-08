@@ -23,14 +23,14 @@ Planning is **LLM-driven**, not turn-by-turn. Follow these phases:
 Determine the **desired end result** — the single sentence that defines success.
 
 - If the user stated a clear goal, use it.
-- If the goal is ambiguous, ask ONE question: "What's the desired end result?" and STOP.
+- If the goal remains ambiguous after inspecting context, ask the smallest necessary question. Stop dependent work until answered; continue useful independent research.
 - Do NOT ask multiple clarifying questions. Infer what you can and note assumptions.
 
 ### Phase 2a: Load stack context (sequential — before research)
 
-Read `.agents/rules/stack.md` if it exists; otherwise read legacy `.agent/rules/stack.md`. If neither exists, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent. These versions scope all subsequent web searches.
+Read `.promptherder/stack.md` first, then legacy `.agents/rules/stack.md` or `.agent/rules/stack.md`. Compare recorded versions with the actual manifests/lockfiles and flag drift. If none exists, infer versions from `go.mod`, `mix.exs`, `package.json`, or equivalent. These versions scope all subsequent web searches.
 
-If `stack.md` is missing from both locations, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue planning.
+If `stack.md` is missing from all locations, print: _"No `stack.md` found. Run `/stack` to pin your versions — this improves web search accuracy."_ Then continue planning.
 
 ### Phase 2b: Research (autonomous — no user interaction)
 
@@ -63,7 +63,7 @@ Apply these filters yourself:
 
 #### Persist decisions
 
-Write the full decisions table to `decisions.md`. The calling workflow determines the full path (typically `.promptherder/convos/<slug>/decisions.md`):
+Write the concise decisions table (decision summaries and supporting rationale, not private reasoning transcripts) to `decisions.md`. The calling workflow determines the full path (typically `.promptherder/convos/<slug>/decisions.md`):
 
 ```markdown
 # Decisions: <title>
@@ -200,3 +200,9 @@ If you identified ideas with future value, list them:
   - Code: what to implement
 - **Verify:** (exact commands or checks)
 ```
+
+## Phase and authorization
+
+Persist `plan.md` and `decisions.md` in the active task resolved by `compound-v-persist`; feedback updates the same files. Use the plan template above, including the happy path, affected files, verification, risks, and rollback. Keep deferred ideas separate from accepted requirements.
+
+An explicit plan-only request stops after the plan and continuation menu. An implementation request includes planning and execution: write the scoped plan, then continue with `compound-v-execute` without asking the user to repeat authorization. A later "implement" or native execute invocation advances the same task. A full-pipeline YOLO request uses `compound-v-pipeline`. Do not carry a planning prohibition into an authorized later phase.

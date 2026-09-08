@@ -16,8 +16,8 @@ Before reporting a task as done, run through this checklist.
 ## The checklist
 
 1. **Requirements** — Re-read the task description. Confirm all requirements are met and no details or edge cases were missed.
-2. **Tests** — Run the full test suite, not just the tests you wrote. Confirm all pass.
-3. **Code cleanliness** — Remove commented-out code, debug prints, and placeholder TODOs.
+2. **Tests** — Before final completion of code changes, run the full repository test suite, not just new tests. During batches, run the plan’s focused checks. Reuse a successful full-suite result only if subsequent changes do not invalidate it.
+3. **Code cleanliness** — Remove temporary debug prints, commented-out code, and placeholder TODOs introduced by this task; do not sweep unrelated work.
 4. **Warnings** — Check for and resolve linter warnings, compiler warnings, and deprecation notices.
 5. **Verification commands** — Run the exact verification commands from the plan step. Confirm expected output.
 6. **Documentation** — Update relevant docs if you changed behavior, APIs, CLI flags, or configuration.
@@ -36,3 +36,5 @@ Example: "Step 3 complete. Added auth middleware to `lib/auth/plug.ex`. Verified
 - Say "done" without running verification commands
 - Skip the checklist because "it's simple"
 - Move to step N+1 if step N is not verified
+
+When a required check cannot run, report the exact command and blocker and scope the completion claim accordingly. Never claim that an unrun smoke test or generated host file proves runtime behavior.

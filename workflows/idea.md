@@ -2,7 +2,6 @@
 description: Add an idea to the future tasks list. Lightweight, no ceremony. Use any time.
 ---
 
-// turbo-all
 
 # Idea
 
@@ -35,3 +34,5 @@ Ideas deferred for later. Added by `/idea` or during `/plan`.
 5. Confirm to the user: **"Added to future tasks."** with the line that was added.
 
 That's it. No planning, no research, no approval. Just append and confirm.
+
+Resolve the target repository first and avoid duplicate equivalent ideas. Saving an idea does not approve its implementation. Native entry points use `workflow-idea`, with the host’s invocation syntax.
