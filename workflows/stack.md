@@ -1,11 +1,76 @@
 ---
-description: Record observed project toolchain versions and distinguish them from proposed upgrades.
+description: Scan project for versions, compare to stack.md and latest recommended, update interactively. Use any time.
 ---
 
-# Record the stack
 
-Read `.promptherder/stack.md`, or legacy `.agents/rules/stack.md` / `.agent/rules/stack.md` if no source record exists. Inspect project manifests, lockfiles, runtime manager config, and Dockerfiles for actual versions. Distinguish declared ranges from resolved versions.
+# Stack
 
-Write observed versions to `.promptherder/stack.md` when updating the stack record was requested. Preserve relevant hand-written notes. This source file is context, not a host output file. Never write into generated `.agents/rules/`.
+Discover project versions, compare them to `stack.md` and current best practices, and update `.promptherder/stack.md` interactively.
 
-When asked to compare upgrades, consult official current documentation and show actual, recorded, and proposed versions separately. Do not record a proposed version as installed or upgrade dependencies merely because the user requested an inventory. If an actual upgrade is authorized, carry it out and verify it before updating the observed record.
+**What this does:** Creates or updates `stack.md` — the single source of truth for pinned versions across all compound-v workflows. Every `/plan`, `/execute`, and `/review` scopes web searches to these versions.
+
+## Steps
+
+1. **Read** `.promptherder/stack.md` (or legacy `.agents/rules/stack.md` / `.agent/rules/stack.md`) if it exists. Note its contents for the comparison table.
+
+2. **Scan** the project for version indicators. Check for these files and extract version data:
+
+   | File | Technologies |
+   |------|-------------|
+   | `mix.exs` / `mix.lock` | Elixir, Erlang/OTP, Hex deps |
+   | `package.json` / `package-lock.json` | Node.js, npm/yarn deps |
+   | `go.mod` | Go, module deps |
+   | `Gemfile` / `Gemfile.lock` | Ruby, gem deps |
+   | `pyproject.toml` / `requirements.txt` / `Pipfile` | Python, pip deps |
+   | `Cargo.toml` | Rust, crate deps |
+   | `pom.xml` / `build.gradle` | Java, Maven/Gradle deps |
+   | `docker-compose.yml` / `Dockerfile` | Infrastructure (PostgreSQL, Redis, etc.) |
+   | `.tool-versions` / `mise.toml` | mise/asdf version manager pins |
+
+   Also check for source-file indicators if no lockfile exists (e.g. `.ex` files → Elixir, `.go` files → Go). List any technologies detected that don't match the table above.
+
+   Focus on **primary technologies** — the language, framework, database, and key infrastructure. Don't list every transitive npm dependency.
+
+3. **Search the web** for each discovered technology (in parallel):
+   - Latest stable release version
+   - Recommended production version (sometimes differs from bleeding edge)
+   - Any notable version-specific advisories or migration considerations
+
+4. **Output** a comparison table:
+
+   ```
+   | Technology | Actual (code) | stack.md | Latest Stable | Recommended | Notes |
+   |------------|--------------|----------|---------------|-------------|-------|
+   | Elixir     | 1.16.2       | 1.16     | 1.17.1        | 1.17        | Major available |
+   | Phoenix    | 1.7.14       | —        | 1.7.14        | 1.7         | Current |
+   | PostgreSQL | 16           | 16       | 17.2          | 16 or 17    | LTS is fine |
+   ```
+
+   Mark rows where actual version differs from stack.md with ⚠️.
+   Mark rows where actual version is more than one major behind latest with 🔴.
+
+5. **Prompt** the user:
+
+   > Review the table above. You can:
+   > - **ACCEPT** — write stack.md with the Actual versions as-is
+   > - **UPDATE** — tell me which rows to change (e.g. "bump Elixir to 1.17, add Redis 7")
+   > - **SKIP** — don't write anything
+
+6. **Write** `.promptherder/stack.md` with observed versions. Record requested upgrades in a separate `## Proposed upgrades` section; do not substitute them for installed versions. Use this format:
+
+   ```markdown
+   # Stack
+
+   - Elixir 1.17
+   - Phoenix 1.7
+   - PostgreSQL 16
+   - Node 22 (for frontend tooling)
+   ```
+
+   Preserve any manual entries from the existing `stack.md` that weren't auto-detected. Keep observed versions as a flat bullet list of technology + version. Keep proposed upgrades separate so subsequent research uses actual pins.
+
+7. **Confirm:** "Stack updated. `/plan`, `/execute`, and `/review` will use observed versions; proposed upgrades remain pending."
+
+That's it. No planning, no approval workflow. Scan, compare, prompt, write.
+
+Record actual and proposed versions separately. ACCEPT saves the observed versions; UPDATE may record desired upgrades as proposals but does not itself upgrade dependencies or mark proposed versions as installed. If the user already authorized recording observed versions, do not ask ACCEPT again. Preserve the comparison table and manually maintained entries. A legacy `.agents/rules/stack.md` can be read during migration but must not be edited as the new source.

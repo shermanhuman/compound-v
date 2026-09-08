@@ -1,12 +1,47 @@
 ---
 name: compound-v-debug
-description: Diagnose failing tests, errors, and incorrect behavior using evidence before changing the implementation.
+description: Systematic debugging — reproduce, isolate, form hypotheses, instrument, fix, and add regression tests. Use when troubleshooting errors, failing tests, or unexpected behavior.
 ---
 
-# Debugging
+# Debug Skill
 
-Capture the observed failure, expected behavior, affected inputs, and environment. Reproduce safely, then inspect the relevant path and form a small set of evidence-based hypotheses. Use logs, tracing, focused tests, or a minimal reproduction to distinguish them.
+**Announce at start:** "Debugging: [symptom]. Following systematic debug workflow."
 
-Check version-matched documentation or known issues when the behavior is uncertain or external. Batch independent investigation where supported. Do not force web research or a fixed number of hypotheses for an obvious local defect.
+## When to use this skill
 
-Fix the root cause within the requested scope. Add meaningful regression protection where practical and rerun the failing case plus relevant required checks. Remove temporary instrumentation introduced by this investigation; preserve intentional diagnostics. Report the cause, correction, and verification without claiming an unrun check passed.
+- runtime errors, flaky tests, wrong outputs
+- "it used to work" regressions
+- performance or timeout problems (initial triage)
+
+## Debug workflow (do not skip steps)
+
+1. **Reproduce**
+   - Capture exact error, inputs, environment, command.
+2. **Research** (parallel — invoke multiple tool calls in the same response)
+   - Search the web for the exact error message or symptom.
+   - Search the web for known issues in the relevant library/framework version (use `stack.md` versions).
+   - Read related source files in parallel.
+3. **Minimize**
+   - Reduce to smallest repro (one file, one function, smallest dataset).
+4. **Hypotheses (2–5)**
+   - Rank by likelihood.
+   - Investigate independent hypotheses in parallel where possible (e.g., check config + check logs + check deps simultaneously).
+5. **Instrument**
+   - Add temporary logging/assertions or use existing diagnostics.
+6. **Fix**
+   - Smallest change that removes root cause.
+7. **Prevent**
+   - Add regression test or permanent guard/validation.
+8. **Verify**
+   - Run the failing case + relevant suites.
+
+## Reporting format
+
+- Symptom
+- Repro steps
+- Root cause
+- Fix
+- Regression protection
+- Verification
+
+Use `.promptherder/stack.md` and actual project pins for research. Keep investigation scoped to the failure; redact secrets from errors sent to external searches. If research is unavailable, record the limitation and continue evidence-based local diagnosis.

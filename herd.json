@@ -25,6 +25,7 @@
     },
     "compound-v-execute": {
       "requires": [
+        "compound-v-plan",
         "compound-v-persist",
         "compound-v-parallel",
         "compound-v-tdd",

@@ -1,12 +1,37 @@
 ---
 name: compound-v-parallel
-description: Identify independent work that can safely run concurrently within the host’s available capabilities.
+description: Analyzes task dependencies and groups independent steps into parallel batches. Use when executing multi-step plans or performing research across multiple sources.
 ---
 
-# Concurrent work
+# Parallel Execution Skill
 
-Identify data and mutation dependencies before grouping work. Reads of unrelated files or independent searches can run together. Writes touching the same file, repository index, lockfile, shared build output, service, or external record must be coordinated even when commands look different.
+## When to use this skill
 
-Keep build-before-test and other actual dependencies sequential. Bound concurrency to available tools and resources; no particular host API or worker count is assumed. Subagents are optional and require applicable authorization. If unavailable, perform the same checks locally; do not pretend separate agents ran.
+- executing a multi-step plan with independent steps
+- researching multiple topics or URLs simultaneously
+- creating multiple independent files
+- running multiple independent commands
 
-Await every started operation and inspect its result. Do not declare success while work remains running. Stop dependent work on failure, preserve useful independent progress, and repair the cause before resuming.
+## Dependency analysis
+
+1. List all steps / tool calls needed.
+2. For each pair, check: does step B depend on output of step A?
+   - Same file? → sequential.
+   - B reads A's output? → sequential.
+   - No overlap? → **parallel**.
+3. Group independent steps into **batches**.
+
+## Examples of parallelizable work
+
+- Multiple web searches for different topics
+- Multiple file reads on different files
+- Multiple file writes for unrelated files
+- Multiple commands that don't depend on each other
+
+## When NOT to parallelize
+
+- Steps that modify the same file
+- Steps where output of one feeds into another
+- Sequential build/test chains (build → test → deploy)
+
+Check shared state too: separate commands can still mutate the same Git index, lockfile, build output, service, or remote record. Await and inspect every result. Use the host’s actual concurrency tools; spawn subagents only when supported and authorized. Sequential fallback preserves the same dependency analysis.
