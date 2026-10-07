@@ -19,7 +19,7 @@ Use the Compound V workflows and skills below.
 
 - `compound-v-plan` — autonomous planning methodology
 - `compound-v-review` — severity-graded review with 10 parallel checks
-- `compound-v-tdd` — tests-first discipline
+- `compound-v-tdd` — tests-first discipline with proportionate coverage
 - `compound-v-debug` — systematic debugging
 - `compound-v-parallel` — parallel execution reasoning
 - `compound-v-verify` — verification before completion

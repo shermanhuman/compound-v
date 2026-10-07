@@ -1,6 +1,6 @@
 {
   "name": "compound-v",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "skills": {
     "workflow-plan": {
       "requires": [
@@ -34,10 +34,15 @@
         "compound-v-verify"
       ]
     },
+    "compound-v-tdd": {
+      "requires": ["compound-v-verify"]
+    },
     "compound-v-review": {
       "requires": [
         "compound-v-persist",
-        "compound-v-parallel"
+        "compound-v-parallel",
+        "compound-v-tdd",
+        "compound-v-verify"
       ]
     },
     "compound-v-pipeline": {

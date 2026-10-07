@@ -1,6 +1,6 @@
 # Compound V
 
-A Promptherder herd for scoped planning, execution, review, and persistent task context. Version 1.0.0 aligns with Promptherder 1.x native skill compilation.
+A Promptherder herd for scoped planning, execution, review, and persistent task context. Uses Promptherder 1.x native skill compilation.
 
 ## Install
 
@@ -11,7 +11,7 @@ promptherder plan
 promptherder
 ```
 
-Use the feature build of Promptherder 1.0.0 until that release is published. Existing locked installs must review herd updates with `plan --update-lock` and apply with `--update-lock`.
+Existing locked installs must review herd updates with `plan --update-lock` and apply with `--update-lock`.
 
 ## Entry points
 
@@ -42,7 +42,9 @@ Based on [obra/superpowers](https://github.com/obra/superpowers), with the [Anti
 
 ## Required methodology
 
-Keep the structured plan and decisions table, happy-path walkthrough, affected-files tree, risks/rollback, and verification steps. Execute independent work in batches, research APIs against recorded/actual versions, checkpoint each batch, and stop dependent work on failures. General reviews cover all ten named checks and include strengths, coverage, severity-graded findings, persisted results, and one appropriate action menu. Run the full test suite before final completion of code changes and provide manual smoke-test commands. Detailed checklists remain in the skills and their referenced documents; native host support does not make them optional.
+Keep the structured plan and decisions table, happy-path walkthrough, affected-files tree, risks/rollback, and verification steps. Execute independent work in batches, research APIs against recorded/actual versions, checkpoint each batch, and stop dependent work on failures. General reviews cover all ten named checks and include strengths, coverage, severity-graded findings, persisted results, and one appropriate action menu. Use fast and affected checks during iteration, then full validation before final completion of code changes or PR submission; reuse still-valid results. Provide appropriate smoke-test commands. Detailed checklists remain in the skills and their referenced documents; native host support does not make them optional.
+
+Testing policy lives in [compound-v-tdd](skills/compound-v-tdd/SKILL.md#test-value-and-cost), with validation scope in [compound-v-verify](skills/compound-v-verify/SKILL.md). Keep coverage proportionate to risk and cost; repository rules own concrete commands and timing budgets.
 
 ## Workflow examples
 

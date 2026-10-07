@@ -1,6 +1,6 @@
 ---
 name: compound-v-debug
-description: Systematic debugging — reproduce, isolate, form hypotheses, instrument, fix, and add regression tests. Use when troubleshooting errors, failing tests, or unexpected behavior.
+description: Systematic debugging — reproduce, isolate, form hypotheses, instrument, fix, and verify regression coverage. Use when troubleshooting errors, failing tests, or unexpected behavior.
 ---
 
 # Debug Skill
@@ -31,7 +31,7 @@ description: Systematic debugging — reproduce, isolate, form hypotheses, instr
 6. **Fix**
    - Smallest change that removes root cause.
 7. **Prevent**
-   - Add regression test or permanent guard/validation.
+   - If the repro is a committed test, reuse or strengthen it when it captures the regression; otherwise add coverage or a permanent guard/validation for the remaining gap. Avoid a duplicate test of the same failure.
 8. **Verify**
    - Run the failing case + relevant suites.
 
