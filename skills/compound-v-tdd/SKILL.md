@@ -16,11 +16,11 @@ description: Apply tests-first discipline and choose valuable, proportionate cov
 
 ## Test value and cost
 
-- **Distinct failure:** identify what a test would catch and check existing coverage first. Reuse or strengthen an existing test when it already exercises that contract. Trivial edits do not need a new test merely to record that code changed.
+- **Distinct failure:** identify what a test would catch and check existing coverage first. Reuse or strengthen an existing test when it already exercises that contract. When claiming existing coverage, name its file and test and explain which failure it detects or which behavior it preserves during a refactor. If you cannot identify that evidence, treat the coverage as a gap. Trivial edits do not need a new test merely to record that code changed.
 - **Cheapest sufficient layer:** put rule combinations in pure/domain tests, database semantics and races in integration tests, and permissions, wiring and presentation contracts at their relevant boundaries. Keep representative end-to-end checks; do not repeat the whole rule matrix through every layer without a distinct risk.
 - **Proportionate fixtures:** create only data the assertion needs. Full catalogs, seeds and backfills need an integration purpose. Preserve real positive and negative examples so smaller fixtures do not make assertions vacuously pass.
 - **Observable behavior:** avoid assertions that mirror implementation or match source wording unless the structure itself is a required contract. Where safe, consolidate repeated setup while preserving distinct assertions and state isolation.
-- **Runtime is maintenance cost:** measure expensive cases and substantial additions. Use repository-specific commands and budgets; do not invent universal timeouts or silently exclude coverage to meet a speed target. Preserve required security, isolation, parity and recovery contracts.
+- **Runtime is maintenance cost:** measure expensive cases and substantial additions. Use repository-specific commands and budgets; do not invent universal timeouts or silently exclude coverage to meet a speed target. Preserve required security, isolation, equivalent behavior across supported implementations, and recovery contracts.
 - **No test bureaucracy:** no new test-count or coverage-percentage target, or per-test justification document, by default. Explain material coverage tradeoffs and costly additions in the normal plan or review.
 
 ## Research
@@ -43,19 +43,19 @@ Before writing tests, do research **in parallel** (invoke multiple tool calls in
 2. Check whether an existing test captures it. Add or adjust coverage for a real gap (make the regression fail first if practical).
 3. Implement the minimal change to pass.
 4. Refactor if needed (keep passing).
-5. Run fast and affected tests during iteration, plus relevant linters **in parallel** where independent. Before final completion or PR submission, follow the full-validation requirements in `compound-v-verify` and the repository.
+5. Run fast and affected tests during iteration, plus relevant linters **in parallel** where independent. A fast subset does not prove the edited feature is covered. Before final completion or PR submission, follow the full-validation requirements in `compound-v-verify` and the repository.
 
 ## Output requirements
 
 When you change code, include:
 
-- what coverage you reused, added or changed
+- what coverage you reused, added or changed, with file and test names
 - how to run them
 - what they prove
 
 ## Bite-sized granularity
 
-When a new regression test is needed, keep the feedback steps small:
+When a new test is needed, keep the feedback steps small:
 
 1. Write the failing test — step
 2. Run it to confirm it fails — step
@@ -65,4 +65,4 @@ When a new regression test is needed, keep the feedback steps small:
 
 Don't combine these. Each step is independently verifiable.
 
-Use existing framework conventions. For documentation or other reversible low-impact edits, use direct validation rather than manufacturing a test that merely matches text. Preserve required repository checks.
+Use existing framework conventions. Follow `compound-v-verify` for validation scope, including documentation-only and other low-impact changes.

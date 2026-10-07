@@ -64,6 +64,7 @@ Check database queries for missing indexes. Queries on unindexed columns are sil
 ### 🧪 5. `tests` — prove it works
 
 Apply the test-value policy in `compound-v-tdd`: assess distinct failures, test layer, fixture size, behavioral assertions and runtime cost. Flag redundant coverage as well as missing coverage; new code does not automatically require a new test.
+For claims of existing coverage, inspect the cited file and test: confirm it exists and exercises the claimed behavior or failure. An unsupported claim is a coverage gap.
 Run appropriate checks or reuse still-valid results with evidence; follow `compound-v-verify` and repository requirements for final validation. Do not mistake a fast subset for complete feature coverage.
 Check that changed behavior and relevant boundary/error cases have meaningful coverage. Retain populated negative examples when fixtures shrink; a passing assertion on empty data may prove nothing.
 Check error paths explicitly. Happy-path-only tests give false confidence.

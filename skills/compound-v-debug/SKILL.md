@@ -31,7 +31,7 @@ description: Systematic debugging — reproduce, isolate, form hypotheses, instr
 6. **Fix**
    - Smallest change that removes root cause.
 7. **Prevent**
-   - Reuse or strengthen the reproducing test when it captures the regression; add coverage or a permanent guard/validation for a remaining gap. Avoid a duplicate test of the same failure.
+   - If the repro is a committed test, reuse or strengthen it when it captures the regression; otherwise add coverage or a permanent guard/validation for the remaining gap. Avoid a duplicate test of the same failure.
 8. **Verify**
    - Run the failing case + relevant suites.
 
