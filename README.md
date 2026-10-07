@@ -42,7 +42,9 @@ Based on [obra/superpowers](https://github.com/obra/superpowers), with the [Anti
 
 ## Required methodology
 
-Keep the structured plan and decisions table, happy-path walkthrough, affected-files tree, risks/rollback, and verification steps. Execute independent work in batches, research APIs against recorded/actual versions, checkpoint each batch, and stop dependent work on failures. General reviews cover all ten named checks and include strengths, coverage, severity-graded findings, persisted results, and one appropriate action menu. Run the full test suite before final completion of code changes and provide manual smoke-test commands. Detailed checklists remain in the skills and their referenced documents; native host support does not make them optional.
+Keep the structured plan and decisions table, happy-path walkthrough, affected-files tree, risks/rollback, and verification steps. Execute independent work in batches, research APIs against recorded/actual versions, checkpoint each batch, and stop dependent work on failures. General reviews cover all ten named checks and include strengths, coverage, severity-graded findings, persisted results, and one appropriate action menu. Use fast and affected checks during iteration, then full validation before final completion of code changes or PR submission; reuse still-valid results. Provide appropriate smoke-test commands. Detailed checklists remain in the skills and their referenced documents; native host support does not make them optional.
+
+Testing policy lives in [compound-v-tdd](skills/compound-v-tdd/SKILL.md#test-value-and-cost), with validation scope in [compound-v-verify](skills/compound-v-verify/SKILL.md). Choose distinct behavioral coverage, the cheapest sufficient layer and proportional fixtures; account for runtime without hiding required coverage. Repository rules own concrete commands and timing budgets. No default coverage-percentage target or per-test paperwork is required.
 
 ## Workflow examples
 

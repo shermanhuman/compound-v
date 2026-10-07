@@ -56,6 +56,7 @@ Apply these filters yourself:
 - **YAGNI** — Only plan features you actually need right now. Focus on current requirements, not hypothetical future ones. If a step exists "just in case," cut it.
 - **Don't overengineer** — Focus on the simplest solution that solves the core problem. Ask: "What's the minimum viable version?" If a step adds complexity without clear necessity, skip it. Keep it lean, functional, and maintainable.
 - Confirm the approach solves the actual problem, not a hypothetical one.
+- Plan coverage for distinct risks: reuse existing proof, choose the cheapest sufficient test layer and fixture, and separate fast/affected iteration checks from final full validation. Keep project commands and timing budgets in repository guidance.
 - Identify risks and verify they are manageable.
 - Ensure rollback options exist.
 
@@ -196,7 +197,7 @@ If you identified ideas with future value, list them:
 ### 1. Step name
 - **Files:** `path/to/file.ext`, `...`
 - **Change:** (1–2 bullets)
-  - Test: what test to write first
+  - Test: existing coverage to use, or the specific gap to close first
   - Code: what to implement
 - **Verify:** (exact commands or checks)
 ```

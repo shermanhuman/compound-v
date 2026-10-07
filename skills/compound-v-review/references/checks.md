@@ -63,10 +63,9 @@ Check database queries for missing indexes. Queries on unindexed columns are sil
 
 ### 🧪 5. `tests` — prove it works
 
-Run the tests. Don't assume they pass — execute them.
-Check that new behavior has corresponding tests. Missing coverage = missing confidence.
-Verify tests assert behavior, not implementation. Test return values and outcomes, not internal method calls.
-Confirm edge cases are tested: empty, nil, max, concurrent, error paths.
+Apply the test-value policy in `compound-v-tdd`: assess distinct failures, test layer, fixture size, behavioral assertions and runtime cost. Flag redundant coverage as well as missing coverage; new code does not automatically require a new test.
+Run appropriate checks or reuse still-valid results with evidence; follow `compound-v-verify` and repository requirements for final validation. Do not mistake a fast subset for complete feature coverage.
+Check that changed behavior and relevant boundary/error cases have meaningful coverage. Retain populated negative examples when fixtures shrink; a passing assertion on empty data may prove nothing.
 Check error paths explicitly. Happy-path-only tests give false confidence.
 Read the test names. Each should describe the scenario: `TestEmptyInputReturnsError`, not `TestProcess`.
 Verify test independence: tests must run in any order without shared state. Shared mutable state between tests causes flaky failures.

@@ -1,17 +1,27 @@
 ---
 name: compound-v-tdd
-description: Applies tests-first discipline (red/green/refactor) and adds regression tests for bugs. Use when implementing features, fixing bugs, or refactoring.
+description: Apply tests-first discipline and choose valuable, proportionate coverage when implementing features, fixing bugs, refactoring, or reviewing tests.
 ---
 
 # TDD Skill
 
-**Announce at start:** "Using TDD: writing test first for [behavior]."
+**Announce at start:** "Using TDD: checking coverage for [behavior]."
 
 ## When to use this skill
 
 - new features that can be unit tested
-- bug fixes (always add a regression test if practical)
-- refactors (protect behavior with tests first)
+- bug fixes (add or strengthen regression coverage when it closes a gap)
+- refactors (confirm existing coverage protects the behavior before changing it)
+- test reviews (assess the policy below; review alone does not authorize edits)
+
+## Test value and cost
+
+- **Distinct failure:** identify what a test would catch and check existing coverage first. Reuse or strengthen an existing test when it already exercises that contract. Trivial edits do not need a new test merely to record that code changed.
+- **Cheapest sufficient layer:** put rule combinations in pure/domain tests, database semantics and races in integration tests, and permissions, wiring and presentation contracts at their relevant boundaries. Keep representative end-to-end checks; do not repeat the whole rule matrix through every layer without a distinct risk.
+- **Proportionate fixtures:** create only data the assertion needs. Full catalogs, seeds and backfills need an integration purpose. Preserve real positive and negative examples so smaller fixtures do not make assertions vacuously pass.
+- **Observable behavior:** avoid assertions that mirror implementation or match source wording unless the structure itself is a required contract. Where safe, consolidate repeated setup while preserving distinct assertions and state isolation.
+- **Runtime is maintenance cost:** measure expensive cases and substantial additions. Use repository-specific commands and budgets; do not invent universal timeouts or silently exclude coverage to meet a speed target. Preserve required security, isolation, parity and recovery contracts.
+- **No test bureaucracy:** no new test-count or coverage-percentage target, or per-test justification document, by default. Explain material coverage tradeoffs and costly additions in the normal plan or review.
 
 ## Research
 
@@ -30,22 +40,22 @@ Before writing tests, do research **in parallel** (invoke multiple tool calls in
 ## Process
 
 1. Define the behavior change (what should be true after).
-2. Write/adjust a test to capture it (make it fail first if possible).
+2. Check whether an existing test captures it. Add or adjust coverage for a real gap (make the regression fail first if practical).
 3. Implement the minimal change to pass.
 4. Refactor if needed (keep passing).
-5. Run the relevant test suite + any linters **in parallel** where they are independent.
+5. Run fast and affected tests during iteration, plus relevant linters **in parallel** where independent. Before final completion or PR submission, follow the full-validation requirements in `compound-v-verify` and the repository.
 
 ## Output requirements
 
 When you change code, include:
 
-- what tests you added/changed
+- what coverage you reused, added or changed
 - how to run them
 - what they prove
 
 ## Bite-sized granularity
 
-Each step should be one action (2-5 minutes):
+When a new regression test is needed, keep the feedback steps small:
 
 1. Write the failing test — step
 2. Run it to confirm it fails — step
