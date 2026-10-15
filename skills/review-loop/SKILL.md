@@ -9,7 +9,7 @@ Every round uses a **fresh** reviewer (a new subagent or a new process, not a fo
 
 ## Pull requests
 
-1. **Round 1** — a fresh reviewer runs `compound-v:review` on the full diff against the default branch. If the user asked for a second opinion from another model, it runs `compound-v:review` too, in parallel.
+1. **Round 1** — a fresh reviewer runs `compound-v:review` on the full diff against the default branch. If the user asked for a second opinion from another model, it runs `compound-v:review` too, in parallel; give it a prefix for its finding IDs (for example `A-M1`) so the two reports never share an ID.
 2. **Fix** every must-fix finding (and that round's polish if it's cheap; leave the rest for the polish pass). Then a fresh reviewer runs `compound-v:followup` on the fix diff (`<last reviewed SHA>..HEAD`). Repeat while follow-ups find must-fix issues.
 3. **Independent pass** — once a round has no must-fix findings, one full-diff pass by the configured second voice:
    - a different model when one is configured (the user's rules name it and how to run it), running `compound-v:review`;

@@ -58,7 +58,14 @@ Only must-fix findings earn another round.
 
 ## Upgrading from 1.x
 
-1.x was a [Promptherder](https://github.com/shermanhuman/promptherder) herd with `/workflow-plan`, `/workflow-execute`, YOLO and `.promptherder/convos/`. 2.0 drops all of that: plan in the host's own plan mode, and reviews live on the PR or issue. Remove the herd (`.promptherder/herds/compound-v`) and install the plugin instead.
+1.x was a [Promptherder](https://github.com/shermanhuman/promptherder) herd with `/workflow-plan`, `/workflow-execute`, YOLO and `.promptherder/convos/`. 2.0 drops all of that: plan in the host's own plan mode, and reviews live on the PR or issue.
+
+Deleting the herd alone leaves what Promptherder generated from it: the old always-on rule in `AGENTS.md` (which still points sessions at `/plan`, `/execute` and YOLO) and the `compound-v-*` and `workflow-*` skill folders, which would sit next to the plugin's skills. In each repository that pulled it:
+
+1. Remove the herd: `rm -rf .promptherder/herds/compound-v`.
+2. Preview, then re-sync so Promptherder deletes the output it generated from the herd (its manifest tracks every file): `promptherder plan --update-lock`, then `promptherder --update-lock`. If you've stopped using Promptherder, delete the generated `AGENTS.md`/`CLAUDE.md` and the `compound-v-*` and `workflow-*` folders under `.claude/skills/` and `.agents/skills/` by hand, keeping any hand-written instructions (Promptherder kept those in `.promptherder/hard-rules.md`).
+3. Check nothing is left: `grep -rl "Compound V workflows" AGENTS.md CLAUDE.md .claude .agents 2>/dev/null` prints nothing.
+4. Install the plugin as above and start a fresh session.
 
 ## Credits
 

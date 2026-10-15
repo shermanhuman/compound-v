@@ -13,7 +13,7 @@ Whoever launched you should give you:
 
 - the repository or worktree, and the diff range (`<base SHA>..<head SHA>`)
 - the pull request number, or the issue the work belongs to
-- the round number (round 1 unless told otherwise)
+- the round number (round 1 unless told otherwise) and the last finding IDs used on the PR, so yours continue from them; when two reviewers run in the same round, each gets its own starting IDs or a prefix
 - where the decisions table lives (PR body, plan issue, or a file)
 - optionally, one check to run instead of all ten
 
