@@ -26,6 +26,7 @@ without touching anything if git can't read the checkout.
 """
 import argparse
 import json
+import os
 import pathlib
 import shutil
 import subprocess
@@ -39,7 +40,10 @@ MARKER_LINES = 15
 
 
 def git(root, *args):
-    return subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True)
+    # The caller's GIT_DIR / GIT_WORK_TREE / GIT_INDEX_FILE could point git at another repository,
+    # whose index would make this checkout's tracked files look untracked.
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_") or k.startswith(("GIT_CONFIG", "GIT_SSH"))}
+    return subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, env=env)
 
 
 def has_marker(path, first_line_only=False):
@@ -55,13 +59,25 @@ def has_marker(path, first_line_only=False):
 def load_manifest(root):
     path = root / ".promptherder/manifest.json"
     if path.is_file() and not path.is_symlink():
-        return json.loads(path.read_text()).get("artifacts") or {}, "working tree"
+        return parse_manifest(path.read_text(), path), "working tree"
     last = git(root, "log", "-1", "--format=%H", "--", ".promptherder/manifest.json").stdout.strip()
     for rev in ([last, f"{last}^"] if last else []):
         shown = git(root, "show", f"{rev}:.promptherder/manifest.json")
         if shown.returncode == 0:
-            return json.loads(shown.stdout).get("artifacts") or {}, f"git {rev}"
+            return parse_manifest(shown.stdout, f"{rev}:.promptherder/manifest.json"), f"git {rev}"
     return {}, "none"
+
+
+def parse_manifest(text, where):
+    try:
+        return json.loads(text).get("artifacts") or {}
+    except (ValueError, AttributeError) as e:
+        sys.exit(f"{where}: unreadable Promptherder manifest ({e}); fix or remove it. Nothing removed")
+
+
+def safe_relative(rel):
+    parts = pathlib.PurePosixPath(rel)
+    return not parts.is_absolute() and ".." not in parts.parts
 
 
 def herd_source_names(root):
@@ -95,8 +111,11 @@ def plan(root):
         return not any(p.is_symlink() for p in parts) and not is_tracked(str(rel))
 
     artifacts, source = load_manifest(root)
-    remove = set()
+    remove, rejected = set(), []
     for rel in artifacts:
+        if not safe_relative(rel):
+            rejected.append(f"{rel} (manifest path outside the checkout, ignored)")
+            continue
         path = root / rel
         if rel.startswith(GENERATED_DIRS) and path.is_file() and usable(path):
             remove.add(rel)
@@ -135,9 +154,10 @@ def plan(root):
     files = set()
     for r in remove:
         p = root / r
-        files.update([r] if p.is_file() else (str(f.relative_to(root)) for f in p.rglob("*") if not f.is_dir()))
+        files.update([r] if p.is_file() or p.is_symlink() else
+                     (str(f.relative_to(root)) for f in p.rglob("*") if f.is_symlink() or not f.is_dir()))
 
-    leftovers = []
+    leftovers = list(rejected)
     for base in SCAN_DIRS:
         top_dir = root / base
         if top_dir.is_symlink():
@@ -146,7 +166,7 @@ def plan(root):
         if top_dir.is_dir():
             for f in top_dir.rglob("*"):
                 rel = str(f.relative_to(root))
-                if not f.is_dir() and not is_tracked(rel) and not covered(rel) and not rel.startswith(KEEP_PREFIXES):
+                if (f.is_symlink() or not f.is_dir()) and not is_tracked(rel) and not covered(rel) and not rel.startswith(KEEP_PREFIXES):
                     leftovers.append(rel)
     for name in ("AGENTS.md", "CLAUDE.md"):
         if (root / name).is_file() and not is_tracked(name) and name not in remove:

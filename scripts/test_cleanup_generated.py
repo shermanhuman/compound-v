@@ -110,12 +110,44 @@ class CleanupTest(unittest.TestCase):
         self.run_script("--apply")
         self.assertTrue((outside / "review/SKILL.md").exists())
 
-    def test_git_failure_removes_nothing(self):
+    def test_bogus_git_dir_in_environment_is_ignored(self):
+        write(self.root, ".claude/skills/review/SKILL.md", MARK + "body\n")
+        self.run_script("--apply", env={"GIT_DIR": "/nonexistent"})
+        self.assertFalse((self.root / ".claude/skills/review").exists())
+        self.assertTrue((self.root / ".claude/skills/tracked-skill/SKILL.md").exists())
+
+    def test_not_a_checkout_removes_nothing(self):
+        plain = self.root.parent / "plain"
+        write(plain, ".claude/skills/review/SKILL.md", MARK + "body\n")
+        with self.assertRaises(SystemExit):
+            with redirect_stdout(io.StringIO()):
+                cleanup_generated.main([str(plain), "--apply"])
+        self.assertTrue((plain / ".claude/skills/review/SKILL.md").exists())
+
+    def test_foreign_git_dir_is_ignored(self):
+        other = self.root.parent / "other"
+        other.mkdir()
+        subprocess.run(["git", "-C", str(other), "init", "-q"], check=True)
+        write(self.root, ".claude/skills/review/SKILL.md", MARK + "body\n")
+        self.run_script("--apply", env={"GIT_DIR": str(other / ".git")})
+        self.assertTrue((self.root / ".claude/skills/tracked-skill/SKILL.md").exists())
+        self.assertFalse((self.root / ".claude/skills/review").exists())
+
+    def test_manifest_paths_cannot_escape(self):
+        victim = write(self.root.parent, "victim.txt", "outside\n")
+        write(self.root, ".promptherder/manifest.json", json.dumps({"artifacts": {
+            ".claude/skills/../../../victim.txt": {}, ".claude/skills/x/../../../README.md": {}}}))
+        output = self.run_script("--apply")
+        self.assertTrue(victim.exists())
+        self.assertTrue((self.root / "README.md").exists())
+        self.assertIn("manifest path outside the checkout", output)
+
+    def test_corrupt_manifest_stops(self):
+        write(self.root, ".promptherder/manifest.json", "{not json")
         write(self.root, ".claude/skills/review/SKILL.md", MARK + "body\n")
         with self.assertRaises(SystemExit):
-            self.run_script("--apply", env={"GIT_DIR": "/nonexistent"})
+            self.run_script("--apply")
         self.assertTrue((self.root / ".claude/skills/review/SKILL.md").exists())
-        self.assertTrue((self.root / ".claude/skills/tracked-skill/SKILL.md").exists())
 
     def test_second_run_is_a_no_op(self):
         write(self.root, ".claude/skills/review/SKILL.md", MARK + "body\n")
