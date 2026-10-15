@@ -26,7 +26,7 @@
     },
     {
       "name": "oh",
-      "description": "Sherman's working agreements: mise first, pull requests as releases, version bumps, release, waxseal, Dockerfiles.",
+      "description": "Sherman's working agreements: mise first, pull requests as releases, version bumps, questions with their context inside, reviewer choices; release, waxseal, mise and Dockerfile skills.",
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/shermanhuman/oh.git",
