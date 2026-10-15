@@ -13,9 +13,9 @@ Read the plan, its decisions table and any issue it lives on. Build a decision t
 
 - **Settled:** rows the user already decided (`accepted` or `rejected`, decided by the user). Never ask them again.
 - **Open:** `ask` rows, choices the planner made on its own, and assumptions the plan relies on without saying so. Hunt for the last kind: defaults, limits, names, who can do what, what happens on failure, what ships first.
-- **Facts are your job.** If a decision needs a fact from the code, the data, the docs or the environment, look it up (dispatch a subagent for anything broad) and put the result in the question. Never ask the user for something you can find yourself.
+- **Facts are your job.** If a decision needs a fact from the code, the data, the docs or the environment, look it up (dispatch a subagent for anything broad) and put the result in the question. Never ask the user for something you can find yourself. Don't wait on a lookup: while it runs, that decision and the ones below it are blocked, so ask the next most consequential decision that isn't, and come back when the fact is in.
 
-Before the first question, give the user the map in a few lines: how many decisions are open, the order you'll take them in, and which ones may disappear depending on early answers.
+Send the user the map as its own message: how many decisions are open, the order you'll take them in, and which ones may disappear depending on early answers. Wait for their go-ahead before the first question; it's also their chance to say "accept the rest" or "let's just talk".
 
 ## Ask one decision at a time
 
@@ -28,7 +28,7 @@ Take the open decision that the most other decisions depend on. Its answer can s
 
 ## After each answer
 
-1. Record it straight away in the plan's decisions table: verdict `accepted` or `rejected`, why (in the user's words when they gave a reason), decided by the user, with the date. Update the plan's issue too when there is one. A long session then survives lost context, and nobody asks the same thing twice.
+1. Record it straight away in the plan's decisions table: verdict `accepted` or `rejected`, why (in the user's words when they gave a reason), decided by the user, with the date. When the user picks an option other than your recommendation, add it as its own `accepted` row. Update the plan's issue too when there is one. A long session then survives lost context, and nobody asks the same thing twice.
 2. Change any step, risk or assumption the answer affects.
 3. Redraw the tree: drop decisions the answer made moot, add the ones it opened, and pick the next most consequential decision.
 
