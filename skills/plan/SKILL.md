@@ -34,6 +34,8 @@ Cut what doesn't earn its place: duplicated steps, anything there "just in case"
 
 Ask only what the code, the data or a sensible default can't answer. When the host has a multiple-choice question tool, use it, and put the full context **inside the question**: the situation and what's at stake in the question text, what happens and what it costs in each option's description, longer detail in a per-option preview where the host supports one, and your recommendation first. Text written before the question is easy to miss. Hosts whose tool asks for short options still get the context in the question text. Ask one question at a time when the answers depend on each other.
 
+When a plan has several open decisions, or the user asks to stress-test it, work through them with `compound-v:interrogate`.
+
 ## The plan's home
 
 When the project uses an issue tracker, every plan gets an issue: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land. Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval.

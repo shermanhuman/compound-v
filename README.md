@@ -35,6 +35,7 @@ The same marketplace also lists [Grugg](https://github.com/shermanhuman/grugg) (
 | Skill | Use |
 |---|---|
 | `compound-v:plan` | Format and habits for any implementation plan, including in plan mode |
+| `compound-v:interrogate` | Settle a plan's open decisions one question at a time, most consequential first, each answer recorded in the decisions table |
 | `compound-v:plan-review` | Fresh, critical review of a finished plan; verdict approve / approve with changes / rework |
 | `compound-v:review` | Ten-check review of a full diff; Must-fix / Polish; posted on the PR |
 | `compound-v:followup` | Review of only the fixes since the last round, with the spinning check |
@@ -70,6 +71,8 @@ Deleting the herd alone leaves what Promptherder generated from it: the old alwa
 ## Credits
 
 Based on [obra/superpowers](https://github.com/obra/superpowers), with the [Antigravity adaptation](https://github.com/anthonylee991/gemini-superpowers-antigravity).
+
+`interrogate` adapts the `grilling` skill from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, Copyright (c) 2026 Matt Pocock): the decision tree, looking facts up instead of asking for them, and not acting until the user confirms. It differs by asking one decision at a time through the host's question tool and recording each answer in the plan's decisions table.
 
 ## License
 
