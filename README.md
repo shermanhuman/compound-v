@@ -62,10 +62,10 @@ Only must-fix findings earn another round.
 
 Deleting the herd alone leaves what Promptherder generated from it: the old always-on rule in `AGENTS.md` (which still points sessions at `/plan`, `/execute` and YOLO) and the old skill and rule folders under `.claude/` and `.agents/`, which Claude Code and Codex keep loading next to the plugin's skills. The files are untracked, so they also survive a `git pull`, and a newly tracked `AGENTS.md` can block one. In each existing checkout, before pulling the change that retires Promptherder there:
 
-1. Install the plugin as above (the cleanup script ships with it).
-2. Preview: `python3 -I ~/.claude/plugins/marketplaces/compound-v/scripts/cleanup_generated.py <checkout>` (from a clone of this repository, `scripts/cleanup_generated.py`). It lists what it would remove and anything it leaves for you.
-3. Remove: the same command with `--apply`. It removes only Promptherder's output: untracked files its manifest lists (from git history if the manifest is already gone), old herd skill folders and Antigravity copies by name, and `AGENTS.md`/`CLAUDE.md` that start with Promptherder's marker. Tracked files, hand-written text, `.claude/settings*.json` and `.claude/worktrees/` are never touched.
-4. Check: `git status --short` shows no `??` under `.claude/` or `.agents/`. Then pull, and start a new session.
+1. Install the plugin as above, or update an existing install so the marketplace clone has the script: `claude plugin marketplace update compound-v` (or let the marketplace auto-update). In Codex, `codex plugin marketplace upgrade compound-v` puts it under `~/.codex/plugins/cache/compound-v/compound-v/<version>/scripts/`.
+2. Preview: `python3 -I ~/.claude/plugins/marketplaces/compound-v/scripts/cleanup_generated.py <checkout>` (from a clone of this repository, `scripts/cleanup_generated.py`). It prints every path it would remove and anything it leaves for you.
+3. Remove: the same command with `--apply`. It removes only untracked files with evidence that Promptherder generated them: its manifest lists them (from git history if the manifest is already gone), they carry Promptherder's marker, or a herd source of the same name exists. Tracked files, `.claude/settings*.json`, `.claude/worktrees/` and anything without that evidence are kept, and it stops if git can't read the checkout. If `AGENTS.md` is left for you, the text above Promptherder's marker is yours: keep it and delete from the marker line down.
+4. Pull, then check: `git status --short --ignored` shows nothing under `.claude/skills/`, `.claude/rules/` (apart from tracked rules) or `.agents/`. Start a new session.
 
 ## Credits
 

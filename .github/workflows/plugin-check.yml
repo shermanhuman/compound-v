@@ -33,3 +33,6 @@ jobs:
 
       - name: Always-on hook output is up to date
         run: python3 scripts/build-hooks.py --check
+
+      - name: Cleanup script removes only Promptherder output
+        run: python3 -I scripts/test_cleanup_generated.py
