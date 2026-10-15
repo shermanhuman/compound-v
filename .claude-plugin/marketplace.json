@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "compound-v",
-      "description": "Plan format, plan review, ten-check code review, follow-up rounds and the review loop.",
+      "description": "Plan format, interrogation of open decisions, plan review, ten-check code review, follow-up rounds and the review loop.",
       "source": {
         "source": "url",
         "url": "https://github.com/shermanhuman/compound-v.git",
