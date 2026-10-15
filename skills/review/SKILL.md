@@ -43,12 +43,13 @@ Rules for findings:
 
 - Cite `file:line` and say what breaks, for whom, and when.
 - No speculative findings, no "could be clearer", no repeats of an earlier round.
+- In later rounds of the same pull request, finding IDs continue from the last round's numbers instead of restarting.
 - Logged decisions in the decisions table are settled. Reopen one only as must-fix, stating the harm.
 - After each finding, search for the same problem elsewhere in the change and the codebase and add those locations.
 
 ## Report
 
-Write the report to a file, then post it.
+Write the report to a file outside the repository (a temp or scratch directory, never the working tree), then post it.
 
 ```markdown
 ## Compound V review — PR #<n>, round <r>
@@ -85,4 +86,4 @@ One or two sentences: what matters most, and whether anything must be fixed befo
 
 Link locations to the hosting service at the reviewed SHA so links stay valid after later pushes. Leave out empty sections.
 
-Post it on the pull request (for GitHub: `gh pr comment <n> --body-file <file>`), or on the issue when there is no PR yet. If you can't post (read-only sandbox, no credentials), return the report text and say it hasn't been posted, so the caller posts it unchanged.
+Post it on the pull request (for GitHub: `gh pr comment <n> --body-file <file>`). If there is no pull request yet, or you can't post (read-only sandbox, no credentials), return the report text and say it hasn't been posted; the review loop posts it unchanged when the PR opens.

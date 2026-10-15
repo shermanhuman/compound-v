@@ -36,7 +36,7 @@ Ask only what the code, the data or a sensible default can't answer. When the ho
 
 ## The plan's home
 
-When the project uses an issue tracker, every plan gets an issue: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land. Run `plan-review` with a fresh reviewer and fold its findings in before asking for approval.
+When the project uses an issue tracker, every plan gets an issue: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land. Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval.
 
 ## Carrying it out
 

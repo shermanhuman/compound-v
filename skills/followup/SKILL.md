@@ -16,7 +16,15 @@ You are a fresh reviewer for a later round. Review **only** what changed since t
 
 ## Read first
 
-1. Every earlier review comment and fix-notes comment on the pull request (for GitHub: `gh pr view <n> --comments`, or `gh api repos/<owner>/<repo>/issues/<n>/comments`).
+1. Every earlier review and fix-notes record on the pull request — all three kinds of record, every page: conversation comments, review summaries and inline review comments. For GitHub:
+
+   ```bash
+   gh api --paginate repos/<owner>/<repo>/issues/<n>/comments
+   gh api --paginate repos/<owner>/<repo>/pulls/<n>/reviews
+   gh api --paginate repos/<owner>/<repo>/pulls/<n>/comments
+   ```
+
+   Without `--paginate` the API returns only the first 30 of each, and `gh pr view --comments` leaves out inline comments, so later findings go missing without any error.
 2. The decisions table.
 3. The fix diff, then the changed files in full where the diff alone doesn't show the effect.
 
@@ -30,7 +38,7 @@ You are a fresh reviewer for a later round. Review **only** what changed since t
 
 ## New issues the fixes caused
 
-Same Must-fix / Polish rules, severities and table as the `review` skill. In the quick check after the polish pass, list new polish as noted, not to fix; only must-fix findings count.
+Same Must-fix / Polish rules, severities and table as the `compound-v:review` skill. Finding IDs continue across rounds on one pull request: if round 1 ended at M2 and m3, this round starts at M3 and m4, so fix notes never confuse two findings. In the quick check after the polish pass, list new polish as noted, not to fix; only must-fix findings count.
 
 ## Spinning check
 
@@ -62,4 +70,4 @@ Must-fix and Polish tables, or "None".
 One or two sentences.
 ```
 
-Post it on the pull request like the `review` skill does; if you can't post, return the text and say so.
+Write it outside the repository (a temp or scratch directory) and post it on the pull request like `compound-v:review` does. If there is no pull request yet, or you can't post, return the text and say so; the review loop posts it.

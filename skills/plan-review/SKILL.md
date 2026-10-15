@@ -18,12 +18,12 @@ Read code from the default branch (`git fetch`, then `git show origin/<default>:
 
 ## Check
 
-1. **Claims hold.** Every `file:line`, count, quoted behaviour, "this already works" and "X is unused" claim — verify it against the code. Where the plan relies on production data or performance, check it with read-only queries when you have access; keep them light. Mark each claim verified or refuted, with evidence. If code-map tools are available (`map_find`, `map_entity`, `map_callers`, `map_impact`), use them for where things are defined and who calls them; otherwise grep.
+1. **Claims hold.** Every `file:line`, count, quoted behaviour, "this already works" and "X is unused" claim — verify it against the code. Where the plan relies on production data or performance, check it with read-only queries when you have access; keep them light. Mark each claim verified or refuted, with evidence. If code-map tools are available (`map_find`, `map_entity`, `map_callers`, `map_impact`), use them for where things are defined and who calls them, and re-check any location they mark as changed since their snapshot against the code you're reviewing; otherwise grep.
 2. **Scope.** The plan delivers the stated goal and the request, nothing important is silently dropped, and nothing extra crept in. Deferred items have a home (an issue), not just a mention.
 3. **Decisions.** Accepted and rejected rows in the decisions table are settled; reopen one only as must-fix, stating the harm. Flag open `ask` rows the plan proceeds without.
 4. **Design traps.** Silent failures, wrong defaults, behaviour that changes for existing users without saying so, a simpler option the plan missed, building more than the problem needs.
 5. **Rollout.** Step order, what's broken between steps, migrations and their order relative to deploys, version bumps, one PR per repository where that's the rule, and whether rollback is real.
-6. **Proof.** Each step's check can actually fail; tests sit at the right layer (see the `testing` skill); user-facing changes have an end-to-end check; success is measurable.
+6. **Proof.** Each step's check can actually fail; tests sit at the right layer (see `compound-v:testing`); user-facing changes have an end-to-end check; success is measurable.
 
 ## Must-fix or polish
 
@@ -55,4 +55,4 @@ Only for must-fix findings whose reasoning isn't obvious from the row.
 approve / approve with changes / rework — in one or two sentences.
 ```
 
-Post it as a comment on the plan's issue (for GitHub: `gh issue comment <n> --body-file <file>`). If you can't post, return the text and say it hasn't been posted.
+Write it outside the repository and post it as a comment on the plan's issue (for GitHub: `gh issue comment <n> --body-file <file>`). If the issue doesn't exist yet (a plan mode that can't write), or you can't post, return the text and say it hasn't been posted; it goes on the issue when the issue is opened.
