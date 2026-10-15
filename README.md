@@ -1,69 +1,69 @@
 # Compound V
 
-A Promptherder herd for scoped planning, execution, review, and persistent task context. Uses Promptherder 1.x native skill compilation.
+A plan-and-review methodology for Claude Code and Codex, packaged as a plugin.
+
+- **Plans** get a one-sentence goal, a decisions table that becomes the job's decisions log, steps that each say how they're checked, rollout and rollback, and out-of-scope items with a home.
+- **Every plan is reviewed** by a fresh reviewer before you're asked to approve it: claims checked against the code and data, scope, design traps, rollout, proof.
+- **Code review** runs ten checks (correctness, edges, security, perf, tests, design, dry, yagni, logging, docs), sorts findings into Must-fix and Polish, and posts the report on the pull request.
+- **Follow-up rounds** review only the fixes, confirm each earlier finding, and stop the loop when it starts spinning: fixes that undo earlier fixes, the same problem recurring, the same lines churning.
+- **The review loop** sequences it all — full review, follow-ups, one independent full-diff pass by a second model or the host's built-in review, a single polish pass — and records every round on the PR.
 
 ## Install
 
-```bash
-promptherder install codex claude
-promptherder pull compound-v
-promptherder plan
-promptherder
+Claude Code:
+
+```text
+/plugin marketplace add shermanhuman/compound-v
+/plugin install compound-v@compound-v
 ```
 
-Existing locked installs must review herd updates with `plan --update-lock` and apply with `--update-lock`.
+Codex:
 
-## Entry points
+```bash
+codex plugin marketplace add shermanhuman/compound-v
+codex plugin add compound-v@compound-v
+```
 
-| Task | Codex | Claude Code |
+The same marketplace also lists [Grugg](https://github.com/shermanhuman/grugg) (terse mode, opt-in) and the author's personal [Oh](https://github.com/shermanhuman/oh) plugins.
+
+**Codex hooks.** Compound V's always-on rules arrive through a session-start hook. Codex skips plugin hooks until you trust them: open `/hooks` once and trust the Compound V hook. Without that, the skills still work but plans and PRs won't be steered to them automatically.
+
+**Updating.** Installed copies change when the plugin's version does. In Claude Code, turn on auto-update for this marketplace in `/plugin`, or run `claude plugin update compound-v@compound-v`. In Codex, run `codex plugin marketplace upgrade compound-v`.
+
+## Skills
+
+| Skill | Use |
+|---|---|
+| `compound-v:plan` | Format and habits for any implementation plan, including in plan mode |
+| `compound-v:plan-review` | Fresh, critical review of a finished plan; verdict approve / approve with changes / rework |
+| `compound-v:review` | Ten-check review of a full diff; Must-fix / Polish; posted on the PR |
+| `compound-v:followup` | Review of only the fixes since the last round, with the spinning check |
+| `compound-v:review-loop` | Who reviews when, when to stop, how rounds are recorded |
+| `compound-v:testing` | What's worth testing and at which layer |
+
+In Claude Code, invoke a skill as `/compound-v:review`; in Codex, as `$compound-v:review`. Both hosts also load them on their own when a task matches.
+
+## Choosing the second voice
+
+The loop's independent pass uses "a different model when one is configured". Name it in your own rules (`AGENTS.md`, `CLAUDE.md`, or a personal plugin) along with the command to run it, for example a Codex model via `codex exec` for a Claude user, or Claude via `claude -p` for a Codex user. Without one, the loop uses the host's built-in review, and failing that a fresh full pass.
+
+## Severity
+
+| Group | Severity | Meaning |
 |---|---|---|
-| Plan | `$workflow-plan` | `/workflow-plan` |
-| Execute | `$workflow-execute` | `/workflow-execute` |
-| Review | `$workflow-review` | `/workflow-review` |
-| Save an idea | `$workflow-idea` | `/workflow-idea` |
-| Add a rule | `$workflow-rule` | `/workflow-rule` |
-| Record versions | `$workflow-stack` | `/workflow-stack` |
+| Must-fix | ⠿ B blocker, ⠷ M major | wrong behaviour, security, data loss, silent failure, broken contract between components, failing rollout or migration |
+| Polish | ⠴ m minor, ⠠ n nit | everything else |
 
-Pass the task or slug after the invocation. A configured command prefix precedes `workflow-`. Legacy `/plan` and similar short aliases are not installed by the native compiler.
+Only must-fix findings earn another round.
 
-Plan-only requests stop at the plan. A later implementation request continues the same task. Full implementation or YOLO requests use callable helpers through planning, execution, review, and fixes without artificial approval stops. Authorization stays limited to the requested task and host permissions.
+## Upgrading from 1.x
 
-Conversation artifacts live under `.promptherder/convos/<date-topic>/`. Project rules live in `.promptherder/hard-rules.md`; observed versions in `.promptherder/stack.md`; deferred ideas in `.promptherder/future-tasks.md`. Source rules require synchronization and host reload to appear in future instruction contexts. Generated host files are not authoring locations.
-
-When installed, Grugg supplies its explicit terse default; Compound V retains review finding IDs and evidence. Oh supplies environment and release guidance. Neither a style skill nor a version bump expands the task into publishing, merging, or deployment.
-
-## Validation
-
-Compiler fixtures validate dependency closure, native discovery, and resource copying. File validation cannot establish actual model adherence; test plan-only, approved execution, review-and-fix, and phase transitions in the installed host before making behavioral claims.
+1.x was a [Promptherder](https://github.com/shermanhuman/promptherder) herd with `/workflow-plan`, `/workflow-execute`, YOLO and `.promptherder/convos/`. 2.0 drops all of that: plan in the host's own plan mode, and reviews live on the PR or issue. Remove the herd (`.promptherder/herds/compound-v`) and install the plugin instead.
 
 ## Credits
 
 Based on [obra/superpowers](https://github.com/obra/superpowers), with the [Antigravity adaptation](https://github.com/anthonylee991/gemini-superpowers-antigravity).
 
-## Required methodology
+## License
 
-Keep the structured plan and decisions table, happy-path walkthrough, affected-files tree, risks/rollback, and verification steps. Execute independent work in batches, research APIs against recorded/actual versions, checkpoint each batch, and stop dependent work on failures. General reviews cover all ten named checks and include strengths, coverage, severity-graded findings, persisted results, and one appropriate action menu. Use fast and affected checks during iteration, then full validation before final completion of code changes or PR submission; reuse still-valid results. Provide appropriate smoke-test commands. Detailed checklists remain in the skills and their referenced documents; native host support does not make them optional.
-
-Testing policy lives in [compound-v-tdd](skills/compound-v-tdd/SKILL.md#test-value-and-cost), with validation scope in [compound-v-verify](skills/compound-v-verify/SKILL.md). Keep coverage proportionate to risk and cost; repository rules own concrete commands and timing budgets.
-
-## Workflow examples
-
-In Claude Code, `/workflow-plan add rate limiting to the API` writes the plan and decisions, including test → code → verify steps, happy path, affected files, risks, and rollback. `SHOW DECISIONS` displays the decision summaries. `/workflow-execute <slug>` advances that plan; an ordinary “implement that plan” request does too. Codex uses the same names with `$` instead of `/`.
-
-`/workflow-review security` targets the security check. A general review runs `correctness`, `edges`, `security`, `perf`, `tests`, `design`, `dry`, `yagni`, `logging`, and `docs`. It produces a coverage table and findings with `⠿ B1`, `⠷ M1`, `⠴ m1`, and `⠠ n1` IDs. For review-only work with findings, `FIX` authorizes blockers/majors and `FIX ALL` authorizes every severity; already-authorized fixes proceed directly.
-
-`/workflow-plan YOLO <task>` runs plan → execute → review → fix, including minor/nit findings within scope. `/workflow-idea add OpenTelemetry tracing` saves a dated checklist item. `/workflow-rule all API routes require authentication` appends the rule and synchronizes configured targets. `/workflow-stack` compares actual pins, recorded versions, and current recommendations; proposed upgrades stay separate from installed versions.
-
-## Persistent files
-
-| Source | Purpose |
-|---|---|
-| `.promptherder/hard-rules.md` | Explicit project rules; track in Git |
-| `.promptherder/stack.md` | Observed versions and separately recorded upgrade proposals |
-| `.promptherder/future-tasks.md` | Confirmed deferred ideas; track in Git |
-| `.promptherder/convos/<slug>/plan.md` | Current scoped plan |
-| `.promptherder/convos/<slug>/decisions.md` | Accepted/rejected/ask decision summaries and rationale |
-| `.promptherder/convos/<slug>/execution.md` | Batch checkpoints and verification |
-| `.promptherder/convos/<slug>/review-*.md` | Collision-safe review reports |
-
-Add `.promptherder/convos/` to `.gitignore` if task artifacts would make PRs noisy. Keep authored rules and stack inventory tracked. Do not blanket-ignore host directories containing hand-maintained skills or settings.
+MIT
