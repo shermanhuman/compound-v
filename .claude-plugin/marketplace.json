@@ -1,0 +1,88 @@
+{
+  "name": "compound-v",
+  "owner": {
+    "name": "Sherman Boyd",
+    "url": "https://github.com/shermanhuman"
+  },
+  "description": "Compound V, Grugg and Oh plugins for Claude Code and Codex.",
+  "plugins": [
+    {
+      "name": "compound-v",
+      "description": "Plan format, plan review, ten-check code review, follow-up rounds and the review loop.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/shermanhuman/compound-v.git",
+        "ref": "main"
+      }
+    },
+    {
+      "name": "grugg",
+      "description": "Terse communication mode and formatters, opt-in.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/shermanhuman/grugg.git",
+        "ref": "main"
+      }
+    },
+    {
+      "name": "oh",
+      "description": "Sherman's working agreements: mise first, pull requests as releases, version bumps, release, waxseal, Dockerfiles.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/shermanhuman/oh.git",
+        "path": "./plugins/oh",
+        "ref": "master"
+      }
+    },
+    {
+      "name": "oh-phoenix",
+      "description": "Phoenix, LiveView, Ecto and DaisyUI patterns and references.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/shermanhuman/oh.git",
+        "path": "./plugins/oh-phoenix",
+        "ref": "master"
+      }
+    },
+    {
+      "name": "oh-tekmetric",
+      "description": "Tekmetric REST API: auth, pagination, sync patterns, undocumented behaviour.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/shermanhuman/oh.git",
+        "path": "./plugins/oh-tekmetric",
+        "ref": "master"
+      }
+    },
+    {
+      "name": "oh-telnyx",
+      "description": "Telnyx Voice API v2 call control: calls, recording, webhook events.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/shermanhuman/oh.git",
+        "path": "./plugins/oh-telnyx",
+        "ref": "master"
+      }
+    },
+    {
+      "name": "oh-postmark",
+      "description": "Postmark API: transactional and batch email, attachments.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/shermanhuman/oh.git",
+        "path": "./plugins/oh-postmark",
+        "ref": "master"
+      }
+    },
+    {
+      "name": "oh-groq",
+      "description": "Groq API: Whisper transcription and audio processing.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/shermanhuman/oh.git",
+        "path": "./plugins/oh-groq",
+        "ref": "master"
+      }
+    }
+  ]
+}
