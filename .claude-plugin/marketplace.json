@@ -26,7 +26,7 @@
     },
     {
       "name": "cartographer",
-      "description": "Multi-repo system map over MCP: callers, impact, schema, cross-repo links. Needs the cartographer binary.",
+      "description": "Multi-repo system map over MCP: callers, impact, schema, cross-repo links. Uses the cartographer binary on PATH, or fetches it with mise.",
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/shermanhuman/cartographer.git",
