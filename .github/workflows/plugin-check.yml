@@ -33,4 +33,3 @@ jobs:
 
       - name: Always-on hook output is up to date
         run: python3 scripts/build-hooks.py --check
-
