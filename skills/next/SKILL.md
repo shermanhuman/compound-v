@@ -21,11 +21,11 @@ Recommend one project with reasons, name two or three runners-up, then offer to 
 
 Run `gh` the way the user's rules say, for example through a tool manager. Keep output compact: titles and counts, never whole bodies.
 
-1. **Open issues**, one line each with checklist progress. Use one `--owner` per owner in scope, or `--repo` for the touched repositories. Rank on labels and milestones only when the repositories actually use them.
+1. **Open issues**, one line each with checklist progress. Use one `--owner` per owner in scope, or `--repo` for the touched repositories. Rank on labels only when the repositories actually use them.
 
    ```bash
    gh search issues --state open --limit 200 --sort updated <--owner X ... | --repo O/R ...> \
-     --json repository,number,title,updatedAt,createdAt,commentsCount,body \
+     --json repository,number,title,updatedAt,createdAt,commentsCount,labels,body \
      --jq '.[] | "\(.repository.nameWithOwner) #\(.number) | \(.title) | upd \(.updatedAt[0:10]) cre \(.createdAt[0:10]) | c\(.commentsCount) | todo \((.body // "") | [scan("(?m)^\\s*[-*] \\[ \\]")] | length) done \((.body // "") | [scan("(?m)^\\s*[-*] \\[[xX]\\]")] | length) | \((.body // "")[0:160] | gsub("\\s+"; " "))"'
    ```
 
@@ -40,7 +40,7 @@ Run `gh` the way the user's rules say, for example through a tool manager. Keep 
 
 3. **The shortlist only** (the five or six issues still in the running):
    - the body and last comment, because progress on a plan issue often lives in its comments, not in ticked boxes: `gh issue view <n> -R <owner>/<repo> --json body,comments --jq '.body, .comments[-1].body'`
-   - the pull requests that reference it: `gh api repos/<owner>/<repo>/issues/<n>/timeline --jq '.[] | select(.event=="cross-referenced") | .source.issue | "\(.repository.full_name) #\(.number) pr=\(.pull_request != null) merged=\(.pull_request.merged_at != null) \(.state)"'`
+   - the pull requests that reference it: `gh api --paginate repos/<owner>/<repo>/issues/<n>/timeline --jq '.[] | select(.event=="cross-referenced") | .source.issue | "\(.repository.full_name) #\(.number) pr=\(.pull_request != null) merged=\(.pull_request.merged_at != null) \(.state)"'`
 
 4. **The user's priorities** that the host already loaded: their rules, and any project or goal notes in memory. Don't go looking for more.
 

@@ -17,7 +17,7 @@ Read the plan, its decisions table and any issue it lives on. Build a decision t
 
 Then sort the open decisions into three piles.
 
-- **Mechanical:** version numbers, check commands, file layout, wording that follows a rule the user already set. Record them as planner decisions and don't show them; the user can read the table.
+- **Mechanical:** version numbers, check commands, file layout, and anything a rule the user already set decides. Record them as planner decisions and don't show them; the user can read the table.
 - **Checklist:** consequential calls you'd make yourself and expect the user to wave through. Every test must hold:
   - the evidence fits in one line (code, data, docs, a row the user already decided, or an explicit user rule)
   - the alternatives are clearly worse, not close
@@ -54,9 +54,10 @@ When the host's question tool has a multi-select mode, the checklist is the firs
   - *Undo:* what reversing costs.
   - *Depends on:* the earlier item, when there is one.
 - **Reading the answer:**
-  - Ticked items are accepted. Unticked items join the queue, and so does everything ticked that depended on one. Nothing ticked queues everything.
+  - Ticked items are accepted. Unticked items join the queue, and so does everything ticked that depended on one. Nothing ticked queues everything (if the tool refuses an empty answer, "none" under Other does the same).
   - Text under Other that names an item and a different choice is a correction: record the user's choice as its own `accepted` row and yours as `rejected`. When it's unclear which item it means, queue that item with the text as its context.
-  - Text under Other that isn't about any item is a new request. Add it to the plan as a decision decided by the user, and say so in your next message.
+  - A steering phrase under Other ("all", "none", "ask me each one") steers, as in *When the user steers*.
+  - Any other text under Other that isn't about an item is a new request. Add it to the plan as a decision decided by the user, and say so in your next message.
 - **This is the only batch.** The queue never batches, because a batch gets skimmed. The checklist can be skimmed safely: an unticked item costs one question, not a wrong decision.
 - **Without multi-select** (a tool limited to a few single-choice questions, a non-interactive run, or no question tool at all): send the checklist as a numbered plain-text list with the same five fields per item, ending "Reply 'all' to accept these, or the numbers to ask about one at a time." Use the host's question tool, where it has one, for the queue.
 

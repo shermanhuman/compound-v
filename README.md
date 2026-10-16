@@ -4,7 +4,7 @@ A plan-and-review method for Claude Code and Codex, packaged as a plugin. Work i
 
 ## The workflow
 
-1. **Pick the work.** `/compound-v:next` reads your open issues and pull requests and recommends one project, with reasons and runners-up. It finishes in-flight work before starting new work, never picks something only you can unblock, and folds small leftovers into the same release. With no argument it looks at the repositories this session has touched; `all` covers every organisation you belong to; a repository or topic narrows it.
+1. **Pick the work.** `/compound-v:next` reads your open issues and pull requests and recommends one project, with reasons and runners-up. It finishes in-flight work before starting new work, never picks something only you can unblock, and folds small leftovers into the same release. With no argument it looks at the repositories this session has touched; `all` covers every organisation you belong to and your own account; a repository or topic narrows it.
 2. **Plan** in the host's plan mode with `compound-v:plan`: a one-sentence goal, a decisions table (`# · Idea · Verdict · Why · Decided`), steps that each say how they're checked, rollout and rollback. Rejected ideas stay in the table, so nobody proposes them again, and reviewers treat decided rows as settled. Every plan gets an issue (plan in the body, reviews as comments), so a long job survives a lost context.
 3. **Plan review** by a fresh reviewer (`compound-v:plan-review`) before you're asked to approve. It checks the plan's claims against the code and data. The trap it exists for is a confident "X is unused" or "this already works" that nobody verified.
 4. **Interrogate** (`compound-v:interrogate`) settles what's left. The calls the evidence already makes come to you as one pre-decided checklist (tick what you accept), and the rest are asked one at a time with the full context inside the question, because text written above a question widget goes unread.
@@ -95,12 +95,12 @@ It assumes GitHub with the `gh` CLI (the review skills post with `gh pr comment`
 
 - **Cost.** A full loop is three to five fresh reviewer runs per pull request, each reading the whole diff and the changed files. In a six-pull-request sample, adding the hosts' built-in reviews on top of the rubric review multiplied input tokens about tenfold (median about 2.6M per rubric review). The light tier exists for prose.
 - **Versions drive updates.** Installed copies stay on the cached version until `version` in `plugin.json` changes, so every change ships with a bump.
-- **Codex hook trust.** Codex skips a plugin's hooks until you trust them in `/hooks`, and it ties trust to the hook's contents, so an update that changes a hook can ask again.
+- **Codex hook trust.** Codex skips a plugin's hooks until you trust them in `/hooks`, and it ties trust to the hook's contents, so an update that changes a hook can ask again (documented by Codex; not yet observed here).
 - **Codex updates.** `codex plugin marketplace upgrade` refreshes the marketplace snapshot; once it reported "already up to date" and kept the old plugin. `codex plugin add <plugin>@compound-v` re-fetches. It also sets that plugin's `enabled = true` in `~/.codex/config.toml`, so check per-repository plugins you'd switched off.
 - **Project-only enabling doesn't install.** A repository's settings can switch a plugin on, but it must already be installed at user scope.
-- **Cloud and remote sessions load no plugins.** Put the rules that must always hold (who merges, what a pull request means, version bumps) in each repository's `AGENTS.md` too.
-- **One marketplace per plugin.** Adding the same plugin from two marketplaces loads it twice, and only one copy's hooks run.
-- **Plugin MCP servers in Codex** don't get `${CLAUDE_PLUGIN_ROOT}` expanded and start in the session's folder. Use a command on PATH.
+- **Cloud and remote sessions load no plugins** (documented for Claude Code; unverified for Codex). Put the rules that must always hold (who merges, what a pull request means, version bumps) in each repository's `AGENTS.md` too.
+- **One marketplace per plugin.** Adding the same plugin from two marketplaces loads it twice, and only one copy's hooks run (documented for Claude Code).
+- **Plugin MCP servers in Codex** don't get `${CLAUDE_PLUGIN_ROOT}` expanded and start in the session's folder (seen in testing with Codex 0.162). Use a command on PATH.
 - **A `codex exec` run with `-s read-only`** can't post comments or call MCP tools. Post its report yourself, unchanged.
 - **Codex's question tool** (`request_user_input`) is single-choice, takes one to three short questions, and works in Plan mode only by default. Interrogate falls back to a numbered text checklist there.
 - **The second voice needs configuring** in your own rules, or the independent pass uses the host's built-in review.

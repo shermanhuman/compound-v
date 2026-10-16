@@ -42,6 +42,7 @@ When the project uses an issue tracker, every plan gets an issue: the plan in th
 
 ## Carrying it out
 
+- Build on a feature branch, in a separate worktree, from a fresh fetch of the default branch. The main checkout may hold someone else's work or a running server.
 - Stop dependent work when a step's check fails; fix the cause before moving on.
 - When reality disagrees with the plan, update the plan and the issue instead of drifting from them quietly.
 - Finish by saying where to see it working: the preview or command, what to look at, and the edge cases worth trying.
