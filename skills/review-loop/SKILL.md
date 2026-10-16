@@ -7,7 +7,26 @@ description: Runs the review rounds for a pull request or a plan — who reviews
 
 Every round uses a **fresh** reviewer (a new subagent or a new process, not a fork of yourself): a reviewer that has seen the code tends to accept its own earlier conclusions. Brief it with the inputs its skill lists and the facts you've already verified, so it doesn't re-derive them.
 
+## Choosing the tier
+
+Pick the tier from the diff before round 1, and say which one and why in the PR body and the first review comment. The user can ask for the full tier at any time.
+
+**Light** covers prose only. The list is closed: anything not on it is full.
+
+- Prose in READMEs, docs and the changelog that gives no instructions. An instruction is a fenced command, an inline command someone would run, or an imperative step, so a procedural section is full.
+- Comment-only code changes, confirmed by `git diff -w` showing only comment lines.
+- Typo and wording fixes in those same files. A string a user or agent sees at runtime (templates, messages, translations, site copy) is code, so it's full.
+- Changes to the PR body only, marketplace or listing descriptions (not their sources), and settings that only switch plugins on or off.
+
+**Full** covers everything else. That includes agent-instruction files (`AGENTS.md`, `CLAUDE.md`, rules, skills, hook text) of any size, and their rounds use the *instructions pass* in [checks.md](../review/references/checks.md) on those files in place of the ten code checks. A mixed diff is full, with each file reviewed by the checks that fit it.
+
+The PR's own version-line bump (`plugin.json`, `mix.exs`, `go.mod`, `package.json` version field) doesn't change the tier. Any other change in those files does, and lockfile changes count as dependency changes: full.
+
+**The light loop.** A fresh reviewer runs the *light pass* in [checks.md](../review/references/checks.md). Fix its polish and post fix notes; that's the whole loop, with no independent pass and no polish or quick-check cycle. A must-fix finding gets one `compound-v:followup` round on its fix. If the finding shows the diff wasn't prose-only, the PR moves to the full tier from there. Merging the default branch in, or a CI fix, needs no round unless it touches something on the full side.
+
 ## Pull requests
+
+Full tier:
 
 1. **Round 1** — a fresh reviewer runs `compound-v:review` on the full diff against the default branch. If the user asked for a second opinion from another model, it runs `compound-v:review` too, in parallel; give it a prefix for its finding IDs (for example `A-M1`) so the two reports never share an ID.
 2. **Fix** every must-fix finding (and that round's polish if it's cheap; leave the rest for the polish pass). Then a fresh reviewer runs `compound-v:followup` on the fix diff (`<last reviewed SHA>..HEAD`). Repeat while follow-ups find must-fix issues.

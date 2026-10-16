@@ -1,6 +1,6 @@
 ---
 name: review
-description: Full code review of a change (a pull request or a branch diff) across ten checks, with findings grouped Must-fix and Polish and the report posted on the pull request. Use for the first full review round of a PR, for an independent full-diff second opinion, or whenever asked to review code changes.
+description: Full code review of a change (a pull request or a branch diff) across ten checks, or a named subset such as the light pass for prose or the instructions pass for agent-instruction files, with findings grouped Must-fix and Polish and the report posted on the pull request. Use for the first full review round of a PR, for an independent full-diff second opinion, or whenever asked to review code changes.
 ---
 
 # Code review
@@ -15,7 +15,7 @@ Whoever launched you should give you:
 - the pull request number, or the issue the work belongs to
 - the round number (round 1 unless told otherwise) and the last finding IDs used on the PR, so yours continue from them; when two reviewers run in the same round, each gets its own starting IDs or a prefix
 - where the decisions table lives (PR body, plan issue, or a file)
-- optionally, one check to run instead of all ten
+- optionally, the checks to run instead of all ten: one named check, the *light pass* (prose-only PRs), or the *instructions pass* (agent-instruction files), all in [references/checks.md](references/checks.md)
 
 If the diff range is missing, review the current branch against the default branch's merge base and say so.
 
@@ -30,7 +30,7 @@ If code-map tools are available (for example `map_find`, `map_entity`, `map_call
 
 ## Checks
 
-Run all ten checks in [references/checks.md](references/checks.md) unless one was named. Independent checks can run in parallel where the host allows; ten checks don't need ten subagents.
+Run all ten checks in [references/checks.md](references/checks.md) unless you were given a subset: one named check, the light pass, or the instructions pass (for agent-instruction files, alongside the code checks for any other files). Independent checks can run in parallel where the host allows; ten checks don't need ten subagents.
 
 ## Must-fix or polish
 
@@ -65,7 +65,7 @@ Reviewed commit `<short SHA>` (<base>..<head>)
 | 1 | `correctness` | ✅ Clean |
 | 2 | `edges` | ⠷ M1 |
 | 3 | `security` | N/A — no input or auth handling |
-...all ten, every time (or "Not assessed — targeted review")
+...all ten, every time (or "Not assessed — targeted review"; a light or instructions pass lists its own checks instead)
 
 ### Must-fix
 | ID | Sev | Location | Issue | Fix |

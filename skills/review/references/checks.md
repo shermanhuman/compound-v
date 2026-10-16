@@ -143,3 +143,29 @@ Flag and remove commented-out code. It's not documentation — it's clutter. Use
 Flag outdated comments that don't match current code behavior. A wrong comment is worse than no comment.
 
 ---
+
+## Light pass (prose-only pull requests)
+
+Run this instead of the ten checks when the review loop picks the light tier. Prose goes wrong by saying something false or by leaving other text saying the old thing, so check against reality, not style.
+
+1. **Every claim is true.** Check each statement against the code, the command-line tool or the version it describes. Run commands where it's cheap, and use `--help` and `--dry-run` where they exist.
+2. **Every name exists.** Paths, flags, commands, links, anchors and identifiers resolve.
+3. **Nothing else still says the old thing.** Before writing findings, search the whole repository, unconditionally, for statements the change made stale (`git grep` for the old names, commands and phrasing). Report every hit as part of the same finding.
+4. **`docs`**, as in check 10.
+
+The coverage table lists these four and marks the ten code checks "Not assessed — light review".
+
+## Instructions pass (agent-instruction files)
+
+Run this instead of the ten code checks on `AGENTS.md`, `CLAUDE.md`, rules folders, skills and hook text. These files are text, but they change how every session behaves, so they get more scrutiny, not less.
+
+1. **Followable.** Each rule says what to do, when, and why, concretely enough that two sessions would act the same way. Flag rules that read well but don't decide anything.
+2. **Consistent.** Nothing contradicts another instruction file, a skill, a hook or a logged decision. Search them all for the topic, not just the changed file.
+3. **Fires where intended.** Triggers, skill descriptions, `paths:` scopes and hook matchers match the situations the rule is for, and nothing broader.
+4. **Real.** Commands, flags, paths, file names and versions exist. Run `--help` where it's cheap.
+5. **Both hosts.** It works in every host the repository targets, or says where it doesn't (tool names, question tools, hook support, sandboxes).
+6. **Said once.** The same rule isn't restated in several places that will drift apart; point to the one home instead.
+7. **Earns its context.** Always-on text is paid for in every session. Cut what a skill or a linked file could carry instead.
+
+The coverage table lists these seven, plus the code checks for any non-instruction files in the diff.
+

@@ -1,7 +1,7 @@
 {
   "name": "compound-v",
-  "version": "2.2.2",
-  "description": "Plan and review methodology: a plan format with a decisions table, one-at-a-time interrogation of open decisions, automatic plan review, a ten-check code review, follow-up rounds that catch spinning, and a review loop that records every round on the pull request.",
+  "version": "2.3.0",
+  "description": "Plan and review methodology: a next-project pick from open issues, a plan format with a decisions table, interrogation of open decisions (a checklist for the clear calls, one question at a time for the rest), automatic plan review, a ten-check code review with light and instructions passes, follow-up rounds that catch spinning, and a review loop that picks a tier and records every round on the pull request.",
   "author": { "name": "Sherman Boyd", "url": "https://github.com/shermanhuman" },
   "homepage": "https://github.com/shermanhuman/compound-v",
   "repository": "https://github.com/shermanhuman/compound-v",
