@@ -3,6 +3,7 @@
 A plan-and-review methodology for Claude Code and Codex, packaged as a plugin.
 
 - **Plans** get a one-sentence goal, a decisions table that becomes the job's decisions log, steps that each say how they're checked, rollout and rollback, and out-of-scope items with a home.
+- **Open decisions get settled** one question at a time, most consequential first, with a recommendation each time and every answer written into the decisions table.
 - **Every plan is reviewed** by a fresh reviewer before you're asked to approve it: claims checked against the code and data, scope, design traps, rollout, proof.
 - **Code review** runs ten checks (correctness, edges, security, perf, tests, design, dry, yagni, logging, docs), sorts findings into Must-fix and Polish, and posts the report on the pull request.
 - **Follow-up rounds** review only the fixes, confirm each earlier finding, and stop the loop when it starts spinning: fixes that undo earlier fixes, the same problem recurring, the same lines churning.
@@ -35,6 +36,7 @@ The same marketplace also lists [Grugg](https://github.com/shermanhuman/grugg) (
 | Skill | Use |
 |---|---|
 | `compound-v:plan` | Format and habits for any implementation plan, including in plan mode |
+| `compound-v:interrogate` | Settle a plan's open decisions one question at a time, most consequential first, each answer recorded in the decisions table |
 | `compound-v:plan-review` | Fresh, critical review of a finished plan; verdict approve / approve with changes / rework |
 | `compound-v:review` | Ten-check review of a full diff; Must-fix / Polish; posted on the PR |
 | `compound-v:followup` | Review of only the fixes since the last round, with the spinning check |
@@ -72,6 +74,8 @@ Without Promptherder installed, remove the `compound-v-*`, `workflow-*` and `rul
 ## Credits
 
 Based on [obra/superpowers](https://github.com/obra/superpowers), with the [Antigravity adaptation](https://github.com/anthonylee991/gemini-superpowers-antigravity).
+
+`interrogate` adapts the `grilling` skill from [mattpocock/skills](https://github.com/mattpocock/skills) at commit `49dd158` (MIT, Copyright (c) 2026 Matt Pocock): the decision tree, looking facts up instead of asking for them, and not acting until the user confirms. It differs by asking one decision at a time through the host's question tool and recording each answer in the plan's decisions table.
 
 ## License
 
