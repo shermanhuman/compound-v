@@ -1,6 +1,6 @@
 # compound-v
 
-A Claude Code and Codex plugin (skills in `skills/`, the always-on hook in `hooks/`) and the marketplace that lists it with the Grugg and Oh plugins (`.claude-plugin/marketplace.json`).
+A Claude Code and Codex plugin (skills in `skills/`, the always-on hook in `hooks/`) and the marketplace that lists it with the Grugg, Oh and Cartographer plugins (`.claude-plugin/marketplace.json`).
 
 - **Merging is a human task.** Never merge a branch, squash-merge a PR, or push to the default branch. Create branches, push feature branches and open PRs; when work is ready, ask the user to merge.
 - **Pull requests start as drafts.** Open the draft (`mise exec -- gh pr create --draft`) before the review loop, not after it as `compound-v:review-loop`'s pre-PR rounds assume; post each round on it as it lands; mark it ready (`mise exec -- gh pr ready`) only after the loop's final round passes with no must-fix findings. A plugin's version bump still lands last, so Version Bump Check stays red on the draft until then.
