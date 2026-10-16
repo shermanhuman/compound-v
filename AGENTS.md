@@ -3,6 +3,7 @@
 A Claude Code and Codex plugin (skills in `skills/`, the always-on hook in `hooks/`) and the marketplace that lists it with the Grugg and Oh plugins (`.claude-plugin/marketplace.json`).
 
 - **Merging is a human task.** Never merge a branch, squash-merge a PR, or push to the default branch. Create branches, push feature branches and open PRs; when work is ready, ask the user to merge.
+- **Pull requests start as drafts.** Open every PR here with `gh pr create --draft`, post each review round on it as it lands, and mark it ready (`gh pr ready`) only after the review loop's final round passes with no must-fix findings.
 - Every PR bumps `version` in `.claude-plugin/plugin.json` (CI checks it): patch for fixes and wording, minor for new skills or behaviour, major for breaking changes. Without a bump, installed copies never update.
 - After editing `hooks/always-on.md`, run `python3 scripts/build-hooks.py` and commit `hooks/session-start.json` too (CI checks they match).
 - Validate before a PR: `claude plugin validate .` and `python3 scripts/build-hooks.py --check`.
