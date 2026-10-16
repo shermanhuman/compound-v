@@ -146,7 +146,7 @@ Flag outdated comments that don't match current code behavior. A wrong comment i
 
 ## Light pass (prose-only pull requests)
 
-Run this instead of the ten checks when the review loop picks the light tier. Prose goes wrong by saying something false or by leaving other text saying the old thing, so check against reality, not style.
+Run this instead of the ten checks when the review loop picks the light tier, and on the prose files of a full-tier diff. Prose goes wrong by saying something false or by leaving other text saying the old thing, so check against reality, not style.
 
 1. **Every claim is true.** Check each statement against the code, the command-line tool or the version it describes. Run commands where it's cheap, and use `--help` and `--dry-run` where they exist.
 2. **Every name exists.** Paths, flags, commands, links, anchors and identifiers resolve.
@@ -167,5 +167,5 @@ Run this instead of the ten code checks on `AGENTS.md`, `CLAUDE.md`, rules folde
 6. **Said once.** The same rule isn't restated in several places that will drift apart; point to the one home instead.
 7. **Earns its context.** Always-on text is paid for in every session. Cut what a skill or a linked file could carry instead.
 
-The coverage table lists these seven, plus the code checks for any non-instruction files in the diff.
+The coverage table lists these seven, plus the code checks for any code and the light-pass items for any prose in the same diff.
 

@@ -26,7 +26,7 @@ Run `gh` the way the user's rules say, for example through a tool manager. Keep 
    ```bash
    gh search issues --state open --limit 200 --sort updated <--owner X ... | --repo O/R ...> \
      --json repository,number,title,updatedAt,createdAt,commentsCount,labels,body \
-     --jq '.[] | "\(.repository.nameWithOwner) #\(.number) | \(.title) | upd \(.updatedAt[0:10]) cre \(.createdAt[0:10]) | c\(.commentsCount) | todo \((.body // "") | [scan("(?m)^\\s*[-*] \\[ \\]")] | length) done \((.body // "") | [scan("(?m)^\\s*[-*] \\[[xX]\\]")] | length) | \((.body // "")[0:160] | gsub("\\s+"; " "))"'
+     --jq '.[] | "\(.repository.nameWithOwner) #\(.number) | \(.title) | upd \(.updatedAt[0:10]) cre \(.createdAt[0:10]) | c\(.commentsCount) | \([.labels[].name] | join(",")) | todo \((.body // "") | [scan("(?m)^\\s*[-*] \\[ \\]")] | length) done \((.body // "") | [scan("(?m)^\\s*[-*] \\[[xX]\\]")] | length) | \((.body // "")[0:160] | gsub("\\s+"; " "))"'
    ```
 
 2. **Open pull requests** in the same scope. A repository with an open pull request of the user's finishes it before anything new starts there.

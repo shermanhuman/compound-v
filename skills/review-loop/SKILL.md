@@ -40,7 +40,7 @@ Full tier:
    Say on the PR which one ran, and why if it fell back. Its must-fix findings go back to step 2.
 4. **Polish pass** — fix all open polish in one go, small fixes only (a redesign now is what makes the next round find new problems). Run the tests, then a quick `compound-v:followup` of only the polish diff. New polish it raises is noted, not fixed; a must-fix sends you back to step 2.
 
-**Stop rule.** Keep going while each round's must-fix findings are new ground. When `compound-v:followup` reports **spinning** — a fix reversing an earlier fix or a logged decision, the same class of finding recurring, or the same lines churning — stop and bring the user the design question instead of patching again. As a cost guard, stop and report after six full rounds on one PR regardless.
+**Stop rule.** Keep going while each round's must-fix findings are new ground. When `compound-v:followup` reports **spinning** — a fix reversing an earlier fix or a logged decision, the same class of finding recurring, or the same lines churning — stop and bring the user the design question instead of patching again. As a cost guard, stop and report after six rounds on one PR regardless. The stop rule and the cost guard apply to both tiers.
 
 A commit that only changes the version number needs no round of its own. Merging the default branch into the branch, or a CI fix, gets a `compound-v:followup` round.
 
@@ -64,7 +64,7 @@ A commit that only changes the version number needs no round of its own. Merging
 
 - Each review is posted as a comment (the review skills do this; if a reviewer couldn't post, post its text unchanged and say whose it is).
 - After addressing a round, post one fix-notes comment answering each finding by ID: the fix and its commit SHA, or the evidence for refuting it, or "noted" for polish left alone.
-- When a round ran before a pull request existed (a plan, or a host that can't open one), post it when the PR opens; reviewers return their text until then. Finding IDs continue across rounds on one PR (round 2 starts after round 1's last number).
+- When a round ran before a pull request existed (for example on a host that can't open one), post it when the PR opens; reviewers return their text until then. Finding IDs continue across rounds on one PR (round 2 starts after round 1's last number).
 - Add decisions made during review to the decisions table in the PR body, with who and when.
 
 ## Plans

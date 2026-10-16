@@ -30,7 +30,7 @@ If code-map tools are available (for example `map_find`, `map_entity`, `map_call
 
 ## Checks
 
-Run all ten checks in [references/checks.md](references/checks.md) unless you were given a subset: one named check, the light pass, or the instructions pass (for agent-instruction files, alongside the code checks for any other files). Independent checks can run in parallel where the host allows; ten checks don't need ten subagents.
+Run all ten checks in [references/checks.md](references/checks.md) unless you were given a subset: one named check, the light pass, or the instructions pass. In a full-tier diff that mixes file kinds, run each where it fits: the code checks on code, the instructions pass on agent-instruction files, and the light-pass items on prose. Independent checks can run in parallel where the host allows; ten checks don't need ten subagents.
 
 ## Must-fix or polish
 
