@@ -4,7 +4,7 @@
     "name": "Sherman Boyd",
     "url": "https://github.com/shermanhuman"
   },
-  "description": "Compound V, Grugg and Oh plugins for Claude Code and Codex.",
+  "description": "Compound V, Grugg, Oh and Cartographer plugins for Claude Code and Codex.",
   "plugins": [
     {
       "name": "compound-v",
@@ -21,6 +21,16 @@
       "source": {
         "source": "url",
         "url": "https://github.com/shermanhuman/grugg.git",
+        "ref": "main"
+      }
+    },
+    {
+      "name": "cartographer",
+      "description": "Multi-repo system map over MCP: callers, impact, schema, cross-repo links. Needs the cartographer binary.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/shermanhuman/cartographer.git",
+        "path": "./agent-plugin",
         "ref": "main"
       }
     },

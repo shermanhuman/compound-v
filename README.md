@@ -25,7 +25,7 @@ codex plugin marketplace add shermanhuman/compound-v
 codex plugin add compound-v@compound-v
 ```
 
-The same marketplace also lists [Grugg](https://github.com/shermanhuman/grugg) (terse mode, opt-in) and the author's personal [Oh](https://github.com/shermanhuman/oh) plugins.
+The same marketplace also lists [Grugg](https://github.com/shermanhuman/grugg) (terse mode, opt-in), [Cartographer](https://github.com/shermanhuman/cartographer) (a code map over MCP, which the review skills use when it's installed; it needs the `cartographer` binary) and the author's personal [Oh](https://github.com/shermanhuman/oh) plugins.
 
 **Codex hooks.** Compound V's always-on rules arrive through a session-start hook. Codex skips plugin hooks until you trust them: open `/hooks` once and trust the Compound V hook. Without that, the skills still work but plans and PRs won't be steered to them automatically.
 
