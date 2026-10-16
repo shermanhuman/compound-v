@@ -13,7 +13,7 @@ Read the plan, its decisions table and any issue it lives on. Build a decision t
 
 - **Settled:** rows the user already decided (`accepted` or `rejected`, decided by the user). Never ask them again.
 - **Open:** `ask` rows, choices the planner made on its own, and assumptions the plan relies on without saying so. Hunt for the last kind: defaults, limits, names, who can do what, what happens on failure, what ships first.
-- **Facts are your job.** If a decision needs a fact from the code, the data, the docs or the environment, look it up (dispatch a subagent for anything broad) and put the result in the question. Never ask the user for something you can find yourself. Don't wait on a lookup: while it runs, that decision and the ones below it are blocked, so ask the next most consequential decision that isn't, and come back when the fact is in.
+- **Facts are your job.** If a decision needs a fact from the code, the data, the docs or the environment, look it up (dispatch a subagent for anything broad) and put the result in the question. Never ask the user for something you can find yourself. If a fact is still out when its decision comes up, don't wait: that decision and the ones below it are blocked, so ask the next most consequential one that isn't, and come back when the fact is in.
 
 Send the user the map: how many decisions are open, the order you'll take them in, and which ones may disappear depending on early answers. Where the host has a question tool, send it as a question whose options are start, accept the rest, summarize first, and let's just talk. Otherwise send it as its own message and wait for the go-ahead.
 
@@ -23,7 +23,7 @@ The user waits between questions, and you can't work while a question is open. D
 
 - **Gather every fact up front.** While building the map, look up the facts all the open decisions need, in one parallel batch. Then no question has to wait on a lookup.
 - **Prepare the next question before sending this one.** Know which decision comes next for each likely answer, and have its facts and options ready.
-- **Record and ask in one step.** After an answer, make the plan edits and send the next question in the same response, not one after the other.
+- **Record and ask in one step.** After an answer, make the plan edits and send the next question in the same response, not as two separate responses.
 
 ## Ask one decision at a time
 
