@@ -20,7 +20,7 @@ Pick the tier from the diff before round 1, and say which one and why in the PR 
 
 **Full** covers everything else. That includes agent-instruction files (`AGENTS.md`, `CLAUDE.md`, rules, skills, hook text) of any size, and their rounds use the *instructions pass* in [checks.md](../review/references/checks.md) on those files in place of the ten code checks. A mixed diff is full, with each file reviewed by the checks that fit it: the code checks for code, the instructions pass for instruction files, and the light-pass items for prose.
 
-The PR's own version-line bump (the version line in any manifest: `plugin.json`, `marketplace.json`, `mix.exs`, `go.mod`, `package.json`) doesn't change the tier. Any other change in those files does, and lockfile changes count as dependency changes: full.
+The PR's own version-line bump (the version line in any manifest: `plugin.json`, `marketplace.json`, `mix.exs`, `go.mod`, `package.json`) doesn't change the tier, and neither does a change to a plugin or listing entry's `description` text in those files. Any other change in them does, and lockfile changes count as dependency changes: full.
 
 **The light loop.** A fresh reviewer runs the *light pass* in [checks.md](../review/references/checks.md). Fix its polish and post fix notes; that's the whole loop, with no independent pass and no polish or quick-check cycle. A must-fix finding gets a `compound-v:followup` round on its fix, repeated while follow-ups find must-fix issues, as in the full tier's step 2. If a finding shows the diff wasn't prose-only, the PR moves to the full tier from there. Merging the default branch in, or a CI fix, needs no round unless it touches something on the full side.
 

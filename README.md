@@ -93,7 +93,7 @@ Only must-fix findings earn another round.
 
 It assumes GitHub with the `gh` CLI (the review skills post with `gh pr comment` and read with `gh api --paginate`), Claude Code or Codex, and an issue tracker.
 
-- **Cost.** A full loop is three to five fresh reviewer runs per pull request, each reading the whole diff and the changed files. In a six-pull-request sample, adding the hosts' built-in reviews on top of the rubric review multiplied input tokens about tenfold (median about 2.6M per rubric review). The light tier exists for prose.
+- **Cost.** A full loop is three to five fresh reviewer runs per pull request: round 1 and the independent pass read the whole diff and the changed files, and follow-ups read the fixes. In a six-pull-request sample, adding the hosts' built-in reviews on top of the rubric review multiplied input tokens about tenfold (median about 2.6M per rubric review). The light tier exists for prose.
 - **Versions drive updates.** Installed copies stay on the cached version until `version` in `plugin.json` changes, so every change ships with a bump.
 - **Codex hook trust.** Codex skips a plugin's hooks until you trust them in `/hooks`, and it ties trust to the hook's contents, so an update that changes a hook can ask again (documented by Codex; not yet observed here).
 - **Codex updates.** `codex plugin marketplace upgrade` refreshes the marketplace snapshot; once it reported "already up to date" and kept the old plugin. `codex plugin add <plugin>@compound-v` re-fetches. It also sets that plugin's `enabled = true` in `~/.codex/config.toml`, so check per-repository plugins you'd switched off.

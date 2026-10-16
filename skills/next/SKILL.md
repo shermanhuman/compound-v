@@ -13,7 +13,7 @@ Recommend one project with reasons, name two or three runners-up, then offer to 
 `$ARGUMENTS` is empty, `all`, a repository or a topic.
 
 - **Empty:** the repositories this session has touched, judged from what you've seen in this conversation: the working directory's repository, worktrees you used, repositories you edited, and ones whose pull requests or issues you handled. Say which ones you used. If the session hasn't touched any, use `all` and say so.
-- **`all`:** every open issue in each organisation the user belongs to plus their own account (`gh api user/orgs --jq '.[].login'` and `gh api user --jq .login`), including issues other people filed. Skip any owner the user's rules exclude.
+- **`all`:** every open issue in each organisation the user belongs to plus their own account (`gh api --paginate user/orgs --jq '.[].login'` and `gh api user --jq .login`), including issues other people filed. Skip any owner the user's rules exclude.
 - **A repository:** match it against repository names in the `all` scope, partial names included (`admin` finds `acme-admin`). Ask if two match. Rank that repository's issues, and still check other repositories for work a release there depends on.
 - **Anything else is a topic** (billing, search, secrets, …): within the `all` scope, keep the issues that are about it by meaning, not exact word, and say which ones matched.
 
@@ -32,11 +32,11 @@ Run `gh` the way the user's rules say, for example through a tool manager. Keep 
 2. **Open pull requests** in the same scope. A repository with an open pull request of the user's finishes it before anything new starts there.
 
    ```bash
-   gh search prs --state open <same scope flags> \
+   gh search prs --state open --limit 200 <same scope flags> \
      --json repository,number,title,isDraft,author --jq '.[] | "\(.repository.nameWithOwner) #\(.number) draft=\(.isDraft) by=\(.author.login) \(.title)"'
    ```
 
-   For each of the user's: `gh pr view <n> -R <owner>/<repo> --json mergeable,mergeStateStatus,statusCheckRollup` says whether it's blocked.
+   Both searches stop at 200 results. If either returns exactly 200, say the survey was capped and narrow the scope (per owner or repository) rather than ranking a partial list as if it were complete. For each of the user's: `gh pr view <n> -R <owner>/<repo> --json mergeable,mergeStateStatus,statusCheckRollup` says whether it's blocked.
 
 3. **The shortlist only** (the five or six issues still in the running):
    - the body and last comment, because progress on a plan issue often lives in its comments, not in ticked boxes: `gh issue view <n> -R <owner>/<repo> --json body,comments --jq '.body, .comments[-1].body'`

@@ -75,7 +75,7 @@ Take the queued decision that the most other decisions depend on. Its answer can
 ## After each answer
 
 1. Record it straight away in the plan's decisions table: verdict `accepted` or `rejected`, why (in the user's words when they gave a reason), decided by the user, with the date. When the user picks an option other than your recommendation, add it as its own `accepted` row.
-   - For the checklist, do it in one edit. Each ticked item becomes `accepted`, decided by "user (checklist)" with the date. Each unticked item becomes `ask`, keeping its why, decided "—".
+   - For the checklist, do it in one edit, from the same resolved answer that builds the queue. Each ticked item becomes `accepted`, decided by "user (checklist)" with the date, unless it went back to the queue because something it depends on was unticked. Every queued item, unticked or re-queued, becomes `ask`, keeping its why, decided "—".
    - Update the plan's issue too when there is one. A long session then survives lost context, and nobody asks the same thing twice.
 2. Change any step, risk or assumption the answer affects.
 3. Redraw the tree: drop decisions the answer made moot, add the ones it opened, and pick the next most consequential decision. After the checklist, the first queue question goes in the same response as the edits.
