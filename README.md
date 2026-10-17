@@ -1,22 +1,38 @@
 # Compound V
 
-A plan-and-review methodology for Claude Code and Codex, packaged as a plugin.
+A plan-and-review method for Claude Code and Codex, packaged as a plugin. Work is planned with a decisions log, checked by reviewers who haven't seen it before, and merged by a person, one release per pull request. Most of it exists because something specific went wrong without it; each step below says what.
 
-- **Plans** get a one-sentence goal, a decisions table that becomes the job's decisions log, steps that each say how they're checked, rollout and rollback, and out-of-scope items with a home.
-- **Open decisions get settled** one question at a time, most consequential first, with a recommendation each time and every answer written into the decisions table.
-- **Every plan is reviewed** by a fresh reviewer before you're asked to approve it: claims checked against the code and data, scope, design traps, rollout, proof.
-- **Code review** runs ten checks (correctness, edges, security, perf, tests, design, dry, yagni, logging, docs), sorts findings into Must-fix and Polish, and posts the report on the pull request.
-- **Follow-up rounds** review only the fixes, confirm each earlier finding, and stop the loop when it starts spinning: fixes that undo earlier fixes, the same problem recurring, the same lines churning.
-- **The review loop** sequences it all — full review, follow-ups, one independent full-diff pass by a second model or the host's built-in review, a single polish pass — and records every round on the PR.
+## The workflow
+
+1. **Pick the work.** `/compound-v:next` reads your open issues and pull requests and recommends one project, with reasons and runners-up. It finishes in-flight work before starting new work, never picks something only you can unblock, and folds small leftovers into the same release. With no argument it looks at the repositories this session has touched; `all` covers every organisation you belong to and your own account; a repository or topic narrows it.
+2. **Plan** in the host's plan mode with `compound-v:plan`: a one-sentence goal, a decisions table (`# · Idea · Verdict · Why · Decided`), steps that each say how they're checked, rollout and rollback. Rejected ideas stay in the table, so nobody proposes them again, and reviewers treat decided rows as settled. Every plan gets an issue (plan in the body, reviews as comments), so a long job survives a lost context.
+3. **Plan review** by a fresh reviewer (`compound-v:plan-review`) before you're asked to approve. It checks the plan's claims against the code and data. The trap it exists for is a confident "X is unused" or "this already works" that nobody verified.
+4. **Interrogate** (`compound-v:interrogate`) settles what's left. The calls the evidence already makes come to you as one pre-decided checklist (tick what you accept), and the rest are asked one at a time with the full context inside the question, because text written above a question widget goes unread.
+5. **Build in a worktree** on a branch from a fresh fetch. The main checkout may hold someone else's work or a running dev server.
+6. **Review loop** (`compound-v:review-loop`) at the tier the diff needs:
+   - *Full:* round 1 runs ten checks on the whole diff, follow-ups review only each fix, then an independent full-diff pass by a second voice, then one polish pass.
+   - *Light* (prose-only diffs): one focused pass that checks every claim against reality and sweeps the repository for text the change made stale.
+
+   Agent-instruction files (`AGENTS.md`, rules, skills, hooks) get the full tier with an *instructions* pass instead of the code checks.
+
+   Why it's built this way:
+   - **Fresh reviewers each round:** a reviewer that has seen the code tends to accept its own earlier conclusions.
+   - **Every page of all three comment endpoints:** unpaginated reads stop at 30, and `gh pr view --comments` leaves out inline comments, so findings disappear without an error.
+   - **The stop rule:** fixes that undo fixes, the same finding coming back, or the same lines churning mean patching won't converge, so the design question goes to you.
+   - **Findings are hypotheses:** a wrong premise adopted unchecked spreads.
+7. **You merge, and a merge is a release.** The agent never merges or pushes to the default branch. Pull requests stay drafts until the last review round has no must-fix findings.
+8. **Follow-ups go to issues:** a real piece of work gets its own issue, and small leftovers go in one "Follow-ups from #N" checklist. Never a local list, because local notes made unfinished work look finished.
 
 ## Install
 
 Claude Code:
 
-```text
-/plugin marketplace add shermanhuman/compound-v
-/plugin install compound-v@compound-v
+```bash
+claude plugin marketplace add shermanhuman/compound-v
+claude plugin install compound-v@compound-v
 ```
+
+Then start a new session, or run `/reload-plugins` in an open one. Inside a session, `/plugin` opens the same thing as a panel.
 
 Codex:
 
@@ -25,29 +41,44 @@ codex plugin marketplace add shermanhuman/compound-v
 codex plugin add compound-v@compound-v
 ```
 
-The same marketplace also lists [Grugg](https://github.com/shermanhuman/grugg) (terse mode, opt-in), [Cartographer](https://github.com/shermanhuman/cartographer) (a code map over MCP, which the review skills use when it's installed; it runs the `cartographer` binary from PATH, or fetches it with mise) and the author's personal [Oh](https://github.com/shermanhuman/oh) plugins.
+Then start a new session and open `/hooks` to trust the Compound V hook. Codex skips plugin hooks until you do, and without the hook the skills still work, but plans and pull requests aren't steered to them.
 
-**Codex hooks.** Compound V's always-on rules arrive through a session-start hook. Codex skips plugin hooks until you trust them: open `/hooks` once and trust the Compound V hook. Without that, the skills still work but plans and PRs won't be steered to them automatically.
+The same marketplace lists [Grugg](https://github.com/shermanhuman/grugg) (terse mode, opt-in), [Cartographer](https://github.com/shermanhuman/cartographer) (a code map over MCP that the review skills use when it's installed; it runs the `cartographer` binary from PATH, or fetches it with mise) and the author's personal [Oh](https://github.com/shermanhuman/oh) plugins. Install them the same way, by name.
 
-**Updating.** Installed copies change when the plugin's version does. In Claude Code, turn on auto-update for this marketplace in `/plugin`, or run `claude plugin update compound-v@compound-v`. In Codex, run `codex plugin marketplace upgrade compound-v`.
+## Updating
+
+Installed copies change only when a plugin's version does.
+
+- **Claude Code:** turn on auto-update for this marketplace in `/plugin` (it's off by default for third-party marketplaces), or run `claude plugin update compound-v@compound-v`. Updates apply at the next session, or after `/reload-plugins`. `claude plugin marketplace update` only refreshes the listing; it doesn't update installed plugins.
+- **Codex:** run `codex plugin add compound-v@compound-v` to fetch the new version. If `/hooks` asks, trust the hook again.
+
+## Switching a plugin on per repository
+
+For a plugin only some repositories need (a framework's skills, an API's reference), install it once at user scope, switch it off in your user settings, and switch it on in each repository that wants it:
+
+- **Claude Code:** `"<plugin>@compound-v": false` under `enabledPlugins` in `~/.claude/settings.json`, and `true` in the repository's committed `.claude/settings.json`. Worktrees of the repository follow it.
+- **Codex:** `enabled = false` under `[plugins."<plugin>@compound-v"]` in `~/.codex/config.toml`, and `enabled = true` in the repository's committed `.codex/config.toml`. Codex reads that file only once the project path itself is trusted; a trusted parent folder doesn't count.
+
+Sessions that span several repositories (started from a parent folder) don't pick up any one repository's settings. Switch a plugin on at user scope instead when you want it there.
 
 ## Skills
 
 | Skill | Use |
 |---|---|
+| `compound-v:next` | Recommend the next project from open issues and pull requests, then offer to plan it |
 | `compound-v:plan` | Format and habits for any implementation plan, including in plan mode |
-| `compound-v:interrogate` | Settle a plan's open decisions one question at a time, most consequential first, each answer recorded in the decisions table |
+| `compound-v:interrogate` | Settle a plan's open decisions: the clear calls confirmed in one checklist, the rest asked one at a time, every answer in the decisions table |
 | `compound-v:plan-review` | Fresh, critical review of a finished plan; verdict approve / approve with changes / rework |
-| `compound-v:review` | Ten-check review of a full diff; Must-fix / Polish; posted on the PR |
+| `compound-v:review` | Review of a full diff: ten code checks, or the light or instructions pass; Must-fix / Polish; posted on the PR |
 | `compound-v:followup` | Review of only the fixes since the last round, with the spinning check |
-| `compound-v:review-loop` | Who reviews when, when to stop, how rounds are recorded |
+| `compound-v:review-loop` | Which tier, who reviews when, when to stop, how rounds are recorded |
 | `compound-v:testing` | What's worth testing and at which layer |
 
-In Claude Code, invoke a skill as `/compound-v:review`; in Codex, as `$compound-v:review`. Both hosts also load them on their own when a task matches.
+In Claude Code, invoke a skill as `/compound-v:next`; in Codex, as `$compound-v:next`. Both hosts also load skills on their own when a task matches.
 
 ## Choosing the second voice
 
-The loop's independent pass uses "a different model when one is configured". Name it in your own rules (`AGENTS.md`, `CLAUDE.md`, or a personal plugin) along with the command to run it, for example a Codex model via `codex exec` for a Claude user, or Claude via `claude -p` for a Codex user. Without one, the loop uses the host's built-in review, and failing that a fresh full pass.
+The full tier's independent pass uses "a different model when one is configured". Name it in your own rules (`AGENTS.md`, `CLAUDE.md`, or a personal plugin) along with the command to run it, for example a Codex model via `codex exec` for a Claude user, or Claude via `claude -p` for a Codex user. Without one, the loop uses the host's built-in review, and failing that a fresh full pass.
 
 ## Severity
 
@@ -58,25 +89,32 @@ The loop's independent pass uses "a different model when one is configured". Nam
 
 Only must-fix findings earn another round.
 
+## Gotchas for adopters
+
+It assumes GitHub with the `gh` CLI (the review skills post with `gh pr comment` and read with `gh api --paginate`), Claude Code or Codex, and an issue tracker.
+
+- **Cost.** A full loop is three to five fresh reviewer runs per pull request: round 1 and the independent pass read the whole diff and the changed files, and follow-ups read the fixes. In a six-pull-request sample, adding the hosts' built-in reviews on top of the rubric review multiplied input tokens about tenfold (median about 2.6M per rubric review). The light tier exists for prose.
+- **Versions drive updates.** Installed copies stay on the cached version until `version` in `plugin.json` changes, so every change ships with a bump.
+- **Codex hook trust.** Codex skips a plugin's hooks until you trust them in `/hooks`, and it ties trust to the hook's contents, so an update that changes a hook can ask again (documented by Codex; not yet observed here).
+- **Codex updates.** `codex plugin marketplace upgrade` refreshes the marketplace snapshot; once it reported "already up to date" and kept the old plugin. `codex plugin add <plugin>@compound-v` re-fetches. It also sets that plugin's `enabled = true` in `~/.codex/config.toml`, so check per-repository plugins you'd switched off.
+- **Project-only enabling doesn't install.** A repository's settings can switch a plugin on, but it must already be installed at user scope.
+- **Cloud and remote sessions load no plugins** (documented for Claude Code; unverified for Codex). Put the rules that must always hold (who merges, what a pull request means, version bumps) in each repository's `AGENTS.md` too.
+- **One marketplace per plugin.** Adding the same plugin from two marketplaces loads it twice, and only one copy's hooks run (documented for Claude Code).
+- **Plugin MCP servers in Codex** don't get `${CLAUDE_PLUGIN_ROOT}` expanded and start in the session's folder (seen in testing with Codex 0.162). Use a command on PATH.
+- **A `codex exec` run with `-s read-only`** can't post comments or call MCP tools. Post its report yourself, unchanged.
+- **Codex's question tool** (`request_user_input`) is single-choice, takes one to three short questions, and works in Plan mode only by default. Interrogate falls back to a numbered text checklist there.
+- **The second voice needs configuring** in your own rules, or the independent pass uses the host's built-in review.
+- **Open sessions keep the old version** after an update until they restart or run `/reload-plugins`.
+
 ## Upgrading from 1.x
 
-1.x was a [Promptherder](https://github.com/shermanhuman/promptherder) herd with `/workflow-plan`, `/workflow-execute`, YOLO and `.promptherder/convos/`. 2.0 drops all of that: plan in the host's own plan mode, and reviews live on the PR or issue.
-
-Deleting the herd alone leaves what Promptherder generated from it: the old always-on rule in `AGENTS.md` (which still points sessions at `/plan`, `/execute` and YOLO) and the old skill and rule folders under `.claude/` and `.agents/`, which Claude Code and Codex keep loading next to the plugin's skills. The files are untracked, so they also survive a `git pull`, and a newly tracked `AGENTS.md` can block one. Let Promptherder remove its own output, in each existing checkout, before pulling the change that retires it there:
-
-1. Remove the herds: `rm -rf .promptherder/herds/compound-v` (or `.promptherder/herds` to retire Promptherder entirely).
-2. Preview, then re-sync, so Promptherder deletes every file its manifest says it generated from them: `promptherder plan --update-lock`, then `promptherder --update-lock`. If you're retiring Promptherder, undo what the sync wrote to its own tracked files, or the pull that deletes them will abort: `git restore .promptherder` (if you keep Promptherder, commit them instead).
-3. If you're retiring Promptherder, the generated `AGENTS.md` and `CLAUDE.md` stay behind. Text above the line beginning `<!-- Auto-generated by promptherder` is yours: copy it somewhere first, because the pull brings tracked versions of these files that replace them, then delete both files. Rules you added with `/rule` were in `.promptherder/hard-rules.md`; check they're in the new `AGENTS.md`.
-4. Tidy the folders the sync emptied, then check nothing old is left: `find .claude/skills .agents -type d -empty -delete 2>/dev/null`, then `find .claude/skills .claude/rules .agents/skills -maxdepth 1 \( -name 'compound-v-*' -o -name 'workflow-*' -o -name rule-browser \) 2>/dev/null` prints nothing. Pull, and check `git status --short` shows nothing untracked under `.claude/` or `.agents/`. Put the text you saved in step 3 back at the top of the new `AGENTS.md`/`CLAUDE.md` and commit it.
-5. Install the plugin as above if you haven't (in Codex, also trust its hook in `/hooks`), and start a new session.
-
-Without Promptherder installed, remove the `compound-v-*`, `workflow-*` and `rule-browser` folders under `.claude/skills/` and `.agents/skills/` by hand, and the generated `AGENTS.md`/`CLAUDE.md` as in step 3.
+1.x was a [Promptherder](https://github.com/shermanhuman/promptherder) herd. To move an existing checkout to the plugin, follow [docs/upgrading-from-1x.md](docs/upgrading-from-1x.md).
 
 ## Credits
 
 Based on [obra/superpowers](https://github.com/obra/superpowers), with the [Antigravity adaptation](https://github.com/anthonylee991/gemini-superpowers-antigravity).
 
-`interrogate` adapts the `grilling` skill from [mattpocock/skills](https://github.com/mattpocock/skills) at commit `49dd158` (MIT, Copyright (c) 2026 Matt Pocock): the decision tree, looking facts up instead of asking for them, and not acting until the user confirms. It differs by asking one decision at a time through the host's question tool and recording each answer in the plan's decisions table.
+`interrogate` adapts the `grilling` skill from [mattpocock/skills](https://github.com/mattpocock/skills) at commit `49dd158` (MIT, Copyright (c) 2026 Matt Pocock): the decision tree, looking facts up instead of asking for them, and not acting until the user confirms. It differs by confirming clear calls in one checklist, asking the rest one decision at a time through the host's question tool, and recording each answer in the plan's decisions table.
 
 ## License
 
