@@ -159,13 +159,13 @@ The coverage table lists these four and marks the ten code checks "Not assessed 
 
 Run this instead of the ten code checks on `AGENTS.md`, `CLAUDE.md`, rules folders, skills and hook text. These files are text, but they change how every session behaves, so they get more scrutiny, not less.
 
-1. **Followable.** Each rule says what to do, when, and why, concretely enough that two sessions would act the same way. Flag rules that read well but don't decide anything.
+1. **Followable.** Each rule says what to do and when, concretely enough that two sessions would act the same way; the why only where the rule would be misapplied without it. Flag rules that read well but don't decide anything.
 2. **Consistent.** Nothing contradicts another instruction file, a skill, a hook or a logged decision. Search them all for the topic, not just the changed file.
 3. **Fires where intended.** Triggers, skill descriptions, `paths:` scopes and hook matchers match the situations the rule is for, and nothing broader.
 4. **Real.** Commands, flags, paths, file names and versions exist. Run `--help` where it's cheap.
 5. **Both hosts.** It works in every host the repository targets, or says where it doesn't (tool names, question tools, hook support, sandboxes).
 6. **Said once.** The same rule isn't restated in several places that will drift apart; point to the one home instead.
-7. **Earns its context.** Always-on text is paid for in every session. Cut what a skill or a linked file could carry instead.
+7. **Brief.** Every word costs context in each session that loads it, always-on text most. Flag restatements, explanations the model doesn't need, more than one example, and hedges. Cut what a skill or a linked file could carry instead.
 
 The coverage table lists these seven, plus the code checks for any code and the light-pass items for any prose in the same diff.
 
