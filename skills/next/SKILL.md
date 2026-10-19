@@ -25,22 +25,22 @@ Run `gh` the way the user's rules say, for example through a tool manager. Keep 
 
    ```bash
    gh search issues --state open --limit 200 --sort updated <--owner X ... | --repo O/R ...> \
-     --json repository,number,title,updatedAt,createdAt,commentsCount,labels,body \
-     --jq '.[] | "\(.repository.nameWithOwner) #\(.number) | \(.title) | upd \(.updatedAt[0:10]) cre \(.createdAt[0:10]) | c\(.commentsCount) | \([.labels[].name] | join(",")) | todo \((.body // "") | [scan("(?m)^\\s*[-*] \\[ \\]")] | length) done \((.body // "") | [scan("(?m)^\\s*[-*] \\[[xX]\\]")] | length) | \((.body // "")[0:160] | gsub("\\s+"; " "))"'
+     --json repository,number,url,title,updatedAt,createdAt,commentsCount,labels,body \
+     --jq '.[] | "\(.repository.nameWithOwner) #\(.number) \(.url) | \(.title) | upd \(.updatedAt[0:10]) cre \(.createdAt[0:10]) | c\(.commentsCount) | \([.labels[].name] | join(",")) | todo \((.body // "") | [scan("(?m)^\\s*[-*] \\[ \\]")] | length) done \((.body // "") | [scan("(?m)^\\s*[-*] \\[[xX]\\]")] | length) | \((.body // "")[0:160] | gsub("\\s+"; " "))"'
    ```
 
 2. **Open pull requests** in the same scope. A repository with an open pull request of the user's finishes it before anything new starts there.
 
    ```bash
    gh search prs --state open --limit 200 <same scope flags> \
-     --json repository,number,title,isDraft,author --jq '.[] | "\(.repository.nameWithOwner) #\(.number) draft=\(.isDraft) by=\(.author.login) \(.title)"'
+     --json repository,number,url,title,isDraft,author --jq '.[] | "\(.repository.nameWithOwner) #\(.number) \(.url) draft=\(.isDraft) by=\(.author.login) \(.title)"'
    ```
 
    Both searches stop at 200 results. If either returns exactly 200, say the survey was capped and narrow the scope (per owner or repository) rather than ranking a partial list as if it were complete. For each of the user's: `gh pr view <n> -R <owner>/<repo> --json mergeable,mergeStateStatus,statusCheckRollup` says whether it's blocked.
 
 3. **The shortlist only** (the five or six issues still in the running):
    - the body and last comment, because progress on a plan issue often lives in its comments, not in ticked boxes: `gh issue view <n> -R <owner>/<repo> --json body,comments --jq '.body, .comments[-1].body'`
-   - the pull requests that reference it: `gh api --paginate repos/<owner>/<repo>/issues/<n>/timeline --jq '.[] | select(.event=="cross-referenced") | .source.issue | "\(.repository.full_name) #\(.number) pr=\(.pull_request != null) merged=\(.pull_request.merged_at != null) \(.state)"'`
+   - the pull requests that reference it: `gh api --paginate repos/<owner>/<repo>/issues/<n>/timeline --jq '.[] | select(.event=="cross-referenced") | .source.issue | "\(.repository.full_name) #\(.number) \(.html_url) pr=\(.pull_request != null) merged=\(.pull_request.merged_at != null) \(.state)"'`
 
 4. **The user's priorities** that the host already loaded: their rules, and any project or goal notes in memory. Don't go looking for more.
 
@@ -48,7 +48,7 @@ Run `gh` the way the user's rules say, for example through a tool manager. Keep 
 
 Use judgment, in this order, with each criterion breaking ties left by the one above. Don't compute scores.
 
-1. **Finish what's in flight.** If the user has an open pull request in a repository that's a draft, red, conflicting or behind, it's the pick for that repository. One that's ready and green goes under *Needs you* ("merge #n"), and new work in that repository waits behind it. Someone else's pull request doesn't block the user's; say it's there.
+1. **Finish what's in flight.** If the user has an open pull request in a repository that's a draft, red, conflicting or behind, it's the pick for that repository. One that's ready and green goes under *Needs you* ("merge [#n](<url>)"), and new work in that repository waits behind it. Someone else's pull request doesn't block the user's; say it's there.
 2. **Half-done releases:** a plan or issue where part has shipped and a counterpart (another repository, a rollout step) is still open.
 3. **Blocked on the user:** a decision, spending, or a secret only they hold is never the pick. Give it one line naming the decision.
 4. **Impact:** what end users of the software see, then production safety and security, then developer tooling and CI, then housekeeping. The user's own priorities, when their rules or notes state them, refine this.
@@ -58,16 +58,16 @@ Use judgment, in this order, with each criterion breaking ties left by the one a
 
 ## Answer
 
-Under 25 lines, plain text, no tables:
+Under 25 lines, plain text, no tables, every issue and pull request a link to its URL:
 
 ```text
 Next: <repo> — <one-line project>
 Why now: <two or three sentences: state, impact, what blocks what>
-Release: <issues and items folded in, by number; the open PR to finish first, if any>
+Release: <issues and items folded in, as links; the open PR to finish first, if any>
 Needs you: <decisions or inputs, or "nothing">
 
 Runners-up:
-- <repo> #n — <one line, and why it lost>
+- [<repo>#n](<url>) — <one line, and why it lost>
 
 Housekeeping: <issues that look done or stale, "close?">
 ```
