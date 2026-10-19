@@ -165,7 +165,7 @@ Run this instead of the ten code checks on `AGENTS.md`, `CLAUDE.md`, rules folde
 4. **Real.** Commands, flags, paths, file names and versions exist. Run `--help` where it's cheap.
 5. **Both hosts.** It works in every host the repository targets, or says where it doesn't (tool names, question tools, hook support, sandboxes).
 6. **Said once.** The same rule isn't restated in several places that will drift apart; point to the one home instead.
-7. **Brief.** Every word costs context in each session that loads it, always-on text most. Flag restatements, explanations the model doesn't need, more than one example, and hedges. Cut what a skill or a linked file could carry instead.
+7. **Brief.** Every word costs context in each session that loads it, always-on text most. Flag restatements, more than one example of the same thing, and hedges. Cut what a skill or a linked file could carry instead.
 
 The coverage table lists these seven, plus the code checks for any code and the light-pass items for any prose in the same diff.
 

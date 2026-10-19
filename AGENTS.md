@@ -7,5 +7,5 @@ A Claude Code and Codex plugin (skills in `skills/`, the always-on hook in `hook
 - Every PR bumps `version` in `.claude-plugin/plugin.json` (CI checks it): patch for fixes and wording, minor for new skills or behaviour, major for breaking changes. Without a bump, installed copies never update.
 - After editing `hooks/always-on.md`, run `python3 scripts/build-hooks.py` and commit `hooks/session-start.json` too (CI checks they match).
 - Validate before a PR: `claude plugin validate .` and `python3 scripts/build-hooks.py --check`.
-- Keep instructions brief: say what to do and when, give the why only when it prevents misuse, one example at most. The instructions pass in `skills/review/references/checks.md` enforces this.
+- Keep instructions brief: say what to do and when, give the why only when it prevents misuse, one example per point. The instructions pass in `skills/review/references/checks.md` enforces this.
 - Skills stay generic: no product, company, model or person names. Personal choices belong in the user's own rules (for example the Oh plugin).
