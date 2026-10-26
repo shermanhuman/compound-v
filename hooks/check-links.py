@@ -22,10 +22,10 @@ STRIP = [
     re.compile(r"!?\[[^\]\n]*\]\([^)\n]*\)"),  # markdown links and images
     re.compile(r"<https?://[^>\s]*>|https?://\S+"),  # URLs
 ]
-# Not run/build/job/check numbers, not C#/F#; "issue 5 minutes" is not issue 5.
+# Not run/build/job numbers, not C#/F#; "issue 5 minutes" is not issue 5.
 BARE = re.compile(
-    r"(?<![&/\w])(?<!\b(?:run|job) )(?<!\bbuild )(?<!\bcheck )(?!(?:[CF]#))(?:[\w.-]+/)?[\w.-]*#\d+\b"
-    r"|\b(?:PRs?|pull requests?|issues?)[ \t]+#?\d+\b(?![ \t]+(?:seconds?|minutes?|hours?|days?|weeks?|of)\b)(?!-\d)"
+    r"(?<![&/\w.-])(?<!\b(?:run|job) )(?<!\bbuild )(?!(?:[CF]#))(?:[\w.-]+/)?[\w.-]*#\d+\b"
+    r"|\b(?:PRs?|pull requests?|issues?)[ \t]+#?\d+\b(?![ \t]+(?:seconds?|minutes?|hours?|days?|weeks?|months?|years?|of)\b)(?!-\d)"
     r"|\b(?:PR|GH)-\d+\b",
     re.I,
 )
@@ -39,6 +39,8 @@ EXAMPLES = [
     ("```\ngit log  # 12 commits\nissue 5\n```", []),
     ("Rounds 1–9 passed; step 2 of 7; &#123; entity", []),
     ("CI run #512 and build #7 passed; C#12 and F#5 are languages.", []),
+    ("I'll check #12; build compound-v#19.", ["#12", "compound-v#19"]),
+    ("An issue 5 months ago.", []),
     ("An issue 5 minutes ago; issue 2023-01-01.", []),
     ("Tracked as PR-10 and GH-12.", ["PR-10", "GH-12"]),
     ("~~~\nsee #12\n~~~", []),
@@ -93,7 +95,7 @@ def main() -> None:
         text = str(data.get("last_assistant_message") or "")
         try:
             text = last_reply(data["transcript_path"]) + "\n" + text
-        except (OSError, KeyError, TypeError):
+        except (OSError, KeyError, TypeError, ValueError):
             pass
         refs = bare_references(text)
     except (TypeError, ValueError):
@@ -117,11 +119,22 @@ if __name__ == "__main__":
         with tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False) as f:
             f.write("\n".join(json.dumps(e) for e in TRANSCRIPT))
         # The current turn only, without tool results.
-        got = last_reply(f.name)
-        os.unlink(f.name)
+        try:
+            got = last_reply(f.name)
+        finally:
+            os.unlink(f.name)
         if got != "Working on #4.":
             failed.append(("last_reply", "Working on #4.", got))
+        # main() checks last_assistant_message even with no transcript.
+        import io
+        from contextlib import redirect_stdout
+
+        sys.stdin, out = io.StringIO(json.dumps({"last_assistant_message": "Fixed in PR #10."})), io.StringIO()
+        with redirect_stdout(out):
+            main()
+        if "PR #10" not in out.getvalue():
+            failed.append(("main", "a block naming PR #10", out.getvalue()))
         for t, want, got in failed:
             print(f"FAIL {t!r}: want {want}, got {got}")
-        sys.exit(1 if failed else print(f"{len(EXAMPLES) + 1} examples pass") or 0)
+        sys.exit(1 if failed else print(f"{len(EXAMPLES) + 2} examples pass") or 0)
     main()
