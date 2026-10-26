@@ -39,7 +39,7 @@ EXAMPLES = [
     ("```\ngit log  # 12 commits\nissue 5\n```", []),
     ("Rounds 1–9 passed; step 2 of 7; &#123; entity", []),
     ("CI run #512 and build #7 passed; C#12 and F#5 are languages.", []),
-    ("I'll check #12; build compound-v#19.", ["#12", "compound-v#19"]),
+    ("I'll check #12; check compound-v#19.", ["#12", "compound-v#19"]),
     ("An issue 5 months ago.", []),
     ("An issue 5 minutes ago; issue 2023-01-01.", []),
     ("Tracked as PR-10 and GH-12.", ["PR-10", "GH-12"]),
