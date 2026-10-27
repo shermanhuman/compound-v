@@ -18,14 +18,17 @@ import sys
 
 STRIP = [
     re.compile(r"```.*?```|~~~.*?~~~", re.S),  # fenced code
-    re.compile(r"`[^`\n]*`"),  # inline code
+    re.compile(r"(?:^|\n)(?:(?: {4}|\t)[^\n]*(?:\n|$))+"),  # indented code
+    re.compile(r"(`+)[^\n]*?\1"),  # inline code, any number of backticks
     re.compile(r"!?\[[^\]\n]*\]\([^)\n]*\)"),  # markdown links and images
     re.compile(r"<https?://[^>\s]*>|https?://\S+"),  # URLs
 ]
+# Reference-style links: `[text][ref]`, `[ref][]` and `[ref]` with a `[ref]: url` line.
+DEFINITION = re.compile(r"^[ ]{0,3}\[([^\]\n]+)\]:[ \t]*\S+.*$", re.M)
 # Not run/build/job numbers, not C#/F#; "issue 5 minutes" is not issue 5.
 BARE = re.compile(
     r"(?<![&/\w.-])(?<!\b(?:run|job) )(?<!\bbuild )(?!(?:[CF]#))(?:[\w.-]+/)?[\w.-]*#\d+\b"
-    r"|\b(?:PRs?|pull requests?|issues?)[ \t]+#?\d+\b(?![ \t]+(?:seconds?|minutes?|hours?|days?|weeks?|months?|years?|of)\b)(?!-\d)"
+    r"|\b(?:PRs?|pull requests?|issues?) #?\d+\b(?! (?:seconds?|minutes?|hours?|days?|weeks?|months?|years?|commits?|times?)\b)(?!-\d)"
     r"|\b(?:PR|GH)-\d+\b",
     re.I,
 )
@@ -45,6 +48,11 @@ EXAMPLES = [
     ("Tracked as PR-10 and GH-12.", ["PR-10", "GH-12"]),
     ("~~~\nsee #12\n~~~", []),
     ("the issue\n5 lines", []),
+    ("See ``#12`` and `` issue 5 ``.", []),
+    ("Intro:\n\n    issue 12\n\nDone.", []),
+    ("See [#12][fix] and [#13].\n\n[fix]: https://github.com/o/r/issues/12\n[#13]: https://github.com/o/r/issues/13", []),
+    ("See PR 12 of the upstream repository.", ["PR 12"]),
+    ("CI run  #512 passed; I fixed the issue 2 commits ago.", []),
 ]
 
 TRANSCRIPT = [
@@ -57,8 +65,13 @@ TRANSCRIPT = [
 
 
 def bare_references(text: str) -> list[str]:
+    labels = {m.group(1).lower() for m in DEFINITION.finditer(text)}
+    text = DEFINITION.sub(" ", text)
     for pattern in STRIP:
         text = pattern.sub(" ", text)
+    text = re.sub(r"\[([^\]\n]+)\](?:\[([^\]\n]*)\])?", lambda m: " " if (m.group(2) or m.group(1)).lower() in labels else m.group(0), text)
+    # One space between words, so "run  #512" reads as "run #512".
+    text = re.sub(r"[ \t]+", " ", text)
     found = []
     for m in BARE.finditer(text):
         ref = m.group(0)
@@ -75,31 +88,35 @@ def last_reply(transcript: str) -> str:
                 entry = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            message = entry.get("message") or {}
-            content = message.get("content")
+            if not isinstance(entry, dict):
+                continue
+            message = entry.get("message")
+            content = message.get("content") if isinstance(message, dict) else None
             blocks = content if isinstance(content, list) else [{"type": "text", "text": content}] if isinstance(content, str) else []
+            blocks = [b for b in blocks if isinstance(b, dict)]
             if entry.get("type") == "user":
-                # A tool result is part of the assistant's turn; a typed message starts a new one.
-                if any(b.get("type") == "text" for b in blocks if isinstance(b, dict)):
+                # A tool result is part of the assistant's turn; anything else the user sends (text, an image) starts a new one.
+                if any(b.get("type") != "tool_result" for b in blocks):
                     texts = []
             elif entry.get("type") == "assistant":
-                texts += [b.get("text", "") for b in blocks if isinstance(b, dict) and b.get("type") == "text"]
+                texts += [b["text"] for b in blocks if b.get("type") == "text" and isinstance(b.get("text"), str)]
     return "\n".join(texts)
 
 
 def main() -> None:
     try:
         data = json.load(sys.stdin)
-        if data.get("stop_hook_active"):
-            return
-        text = str(data.get("last_assistant_message") or "")
-        try:
-            text = last_reply(data["transcript_path"]) + "\n" + text
-        except (OSError, KeyError, TypeError, ValueError):
-            pass
-        refs = bare_references(text)
-    except (TypeError, ValueError):
+    except ValueError:
         return
+    if not isinstance(data, dict) or data.get("stop_hook_active"):
+        return
+    text = data.get("last_assistant_message")
+    text = text if isinstance(text, str) else ""
+    try:
+        text = last_reply(data["transcript_path"]) + "\n" + text
+    except Exception:  # a bad transcript must not stop the final-message check
+        pass
+    refs = bare_references(text)
     if refs:
         reason = (
             "Your reply names issues or PRs without a link: "
@@ -134,7 +151,27 @@ if __name__ == "__main__":
             main()
         if "PR #10" not in out.getvalue():
             failed.append(("main", "a block naming PR #10", out.getvalue()))
+        # Odd input fails open; an image-only user turn starts a new reply.
+        for odd in ["null", "[]", '{"last_assistant_message": 5}']:
+            sys.stdin, out = io.StringIO(odd), io.StringIO()
+            with redirect_stdout(out):
+                main()
+            if out.getvalue():
+                failed.append(("main", f"no block for {odd}", out.getvalue()))
+        with tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False) as f:
+            f.write("\n".join(json.dumps(e) for e in [
+                {"type": "assistant", "message": {"content": [{"type": "text", "text": "See issue 12."}]}},
+                {"type": "user", "message": {"content": [{"type": "image", "source": {}}]}},
+                {"message": "oops"},
+                {"type": "assistant", "message": {"content": [{"type": "text", "text": "A cat."}]}},
+            ]))
+        try:
+            got = last_reply(f.name)
+        finally:
+            os.unlink(f.name)
+        if got != "A cat.":
+            failed.append(("last_reply after an image", "A cat.", got))
         for t, want, got in failed:
             print(f"FAIL {t!r}: want {want}, got {got}")
-        sys.exit(1 if failed else print(f"{len(EXAMPLES) + 2} examples pass") or 0)
+        sys.exit(1 if failed else print(f"{len(EXAMPLES) + 6} examples pass") or 0)
     main()
