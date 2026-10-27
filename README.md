@@ -22,6 +22,7 @@ A plan-and-review method for Claude Code and Codex, packaged as a plugin. Work i
    - **Findings are hypotheses:** a wrong premise adopted unchecked spreads.
 7. **You merge, and a merge is a release.** The agent never merges or pushes to the default branch. Pull requests stay drafts until the last review round has no must-fix findings.
 8. **Follow-ups go to issues:** a real piece of work gets its own issue, and small leftovers go in one "Follow-ups from #N" checklist. Never a local list, because local notes made unfinished work look finished.
+9. **Issue and PR references are links.** A Stop hook (`hooks/check-links.py`) sends a reply back once when it names an issue or PR, such as `#12`, `repo#12` or `PR 12`, outside a markdown link, a URL or code. Run, build and job numbers like `run #512` are left alone; a rare false match costs one rewrite. A reminder at session start wasn't enough: over a long session it stopped being followed.
 
 ## Install
 
@@ -99,6 +100,7 @@ It assumes GitHub with the `gh` CLI (the review skills post with `gh pr comment`
 - **Codex updates.** `codex plugin marketplace upgrade` refreshes the marketplace snapshot; once it reported "already up to date" and kept the old plugin. `codex plugin add <plugin>@compound-v` re-fetches. It also sets that plugin's `enabled = true` in `~/.codex/config.toml`, so check per-repository plugins you'd switched off.
 - **Project-only enabling doesn't install.** A repository's settings can switch a plugin on, but it must already be installed at user scope.
 - **Cloud and remote sessions load no plugins** (documented for Claude Code; unverified for Codex). Put the rules that must always hold (who merges, what a pull request means, version bumps) in each repository's `AGENTS.md` too.
+- **The link check needs `python3` on PATH and a POSIX shell** (on Windows, Git Bash, which Claude Code uses for hooks when installed). Without them, every reply goes through unchecked; any failure to start the check lets the reply through rather than sending it back. Codex passes the same Stop fields, so the check should read its reply from `last_assistant_message` there (unverified for Codex), and changing `hooks/hooks.json` can ask for hook trust again.
 - **One marketplace per plugin.** Adding the same plugin from two marketplaces loads it twice, and only one copy's hooks run (documented for Claude Code).
 - **Plugin MCP servers in Codex** don't get `${CLAUDE_PLUGIN_ROOT}` expanded and start in the session's folder (seen in testing with Codex 0.162). Use a command on PATH.
 - **A `codex exec` run with `-s read-only`** can't post comments or call MCP tools. Post its report yourself, unchanged.
