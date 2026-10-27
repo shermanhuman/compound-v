@@ -16,15 +16,15 @@ import json
 import re
 import sys
 
+FENCED = re.compile(r"```.*?```|~~~.*?~~~", re.S)  # stripped before indented code
 STRIP = [
-    re.compile(r"```.*?```|~~~.*?~~~", re.S),  # fenced code
     re.compile(r"(`+)[^\n]*?\1"),  # inline code, any number of backticks
     re.compile(r"!?\[[^\]\n]*\]\([^)\n]*\)"),  # markdown links and images
     re.compile(r"<https?://[^>\s]*>|https?://\S+"),  # URLs
 ]
 # Reference-style links: `[text][ref]`, `[ref][]` and `[ref]` with a `[ref]: url` line.
 DEFINITION = re.compile(
-    r"""^[ ]{0,3}\[([^\]\n]+)\]:[ \t]*(?:<[^>\n]*>|\S+)(?:[ \t]+(?:"[^"\n]*"|'[^'\n]*'|\([^)\n]*\)))?[ \t]*$""", re.M
+    r"""^[ ]{0,3}\[([^\]\n]+)\]:[ \t]*(?:<[^>\n]*>|\S+)(?:[ \t]+(?:"[^"\n]*"|'[^'\n]*'|\([^)\n]*\)))?[ \t]*\r?$""", re.M
 )
 LIST_ITEM = re.compile(r"^ {0,3}(?:[-*+]|\d{1,9}[.)])(?:\s|$)")
 # Not run/build/job numbers, not C#/F#; "issue 5 minutes" is not issue 5.
@@ -60,6 +60,10 @@ EXAMPLES = [
     ("Intro paragraph\n    issue 12 continues", ["issue 12"]),
     ("[note]: this is prose, see #12", ["#12"]),
     ("Done issue 2 of 7 and PR 1 of 3.", []),
+    ("- a\n  continued\n\n    See #12", ["#12"]),
+    ("- a\n\tfixed #12", ["#12"]),
+    ("    code #12\nmore #13", ["#13"]),
+    ("[fix]: https://x/y\r\nsee [#12][fix]", []),
 ]
 
 TRANSCRIPT = [
@@ -73,7 +77,9 @@ TRANSCRIPT = [
 
 def strip_indented_code(text: str) -> str:
     """Blank out indented code: a four-space or tab line after a blank line,
-    outside a list. Indented list items and continuations stay prose."""
+    outside a list. Indented list items and continuations stay prose, and so
+    (a known trade-off) do code right after a heading and code nested in a
+    list item."""
     out, prev_blank, in_list, in_code = [], True, False, False
     for line in text.split("\n"):
         indented = line.startswith("    ") or line.startswith("\t")
@@ -83,7 +89,7 @@ def strip_indented_code(text: str) -> str:
             continue
         in_code = False
         if line.strip():
-            in_list = bool(LIST_ITEM.match(line)) or (indented and in_list)
+            in_list = bool(LIST_ITEM.match(line)) or (in_list and line[0] in " \t")
             prev_blank = False
         else:
             prev_blank = True
@@ -94,9 +100,8 @@ def strip_indented_code(text: str) -> str:
 def bare_references(text: str) -> list[str]:
     labels = {m.group(1).lower() for m in DEFINITION.finditer(text)}
     text = DEFINITION.sub(" ", text)
-    text = STRIP[0].sub(" ", text)
-    text = strip_indented_code(text)
-    for pattern in STRIP[1:]:
+    text = strip_indented_code(FENCED.sub(" ", text))
+    for pattern in STRIP:
         text = pattern.sub(" ", text)
     text = re.sub(r"\[([^\]\n]+)\](?:\[([^\]\n]*)\])?", lambda m: " " if (m.group(2) or m.group(1)).lower() in labels else m.group(0), text)
     # One space between words, so "run  #512" reads as "run #512".
