@@ -18,17 +18,19 @@ import sys
 
 STRIP = [
     re.compile(r"```.*?```|~~~.*?~~~", re.S),  # fenced code
-    re.compile(r"(?:^|\n)(?:(?: {4}|\t)[^\n]*(?:\n|$))+"),  # indented code
     re.compile(r"(`+)[^\n]*?\1"),  # inline code, any number of backticks
     re.compile(r"!?\[[^\]\n]*\]\([^)\n]*\)"),  # markdown links and images
     re.compile(r"<https?://[^>\s]*>|https?://\S+"),  # URLs
 ]
 # Reference-style links: `[text][ref]`, `[ref][]` and `[ref]` with a `[ref]: url` line.
-DEFINITION = re.compile(r"^[ ]{0,3}\[([^\]\n]+)\]:[ \t]*\S+.*$", re.M)
+DEFINITION = re.compile(
+    r"""^[ ]{0,3}\[([^\]\n]+)\]:[ \t]*(?:<[^>\n]*>|\S+)(?:[ \t]+(?:"[^"\n]*"|'[^'\n]*'|\([^)\n]*\)))?[ \t]*$""", re.M
+)
+LIST_ITEM = re.compile(r"^ {0,3}(?:[-*+]|\d{1,9}[.)])(?:\s|$)")
 # Not run/build/job numbers, not C#/F#; "issue 5 minutes" is not issue 5.
 BARE = re.compile(
     r"(?<![&/\w.-])(?<!\b(?:run|job) )(?<!\bbuild )(?!(?:[CF]#))(?:[\w.-]+/)?[\w.-]*#\d+\b"
-    r"|\b(?:PRs?|pull requests?|issues?) #?\d+\b(?! (?:seconds?|minutes?|hours?|days?|weeks?|months?|years?|commits?|times?)\b)(?!-\d)"
+    r"|\b(?:PRs?|pull requests?|issues?) #?\d+\b(?! (?:seconds?|minutes?|hours?|days?|weeks?|months?|years?|commits?|times?)\b| of \d)(?!-\d)"
     r"|\b(?:PR|GH)-\d+\b",
     re.I,
 )
@@ -53,6 +55,11 @@ EXAMPLES = [
     ("See [#12][fix] and [#13].\n\n[fix]: https://github.com/o/r/issues/12\n[#13]: https://github.com/o/r/issues/13", []),
     ("See PR 12 of the upstream repository.", ["PR 12"]),
     ("CI run  #512 passed; I fixed the issue 2 commits ago.", []),
+    ("- Item\n    - fixed in #12", ["#12"]),
+    ("1. Step\n    - see PR #10\n- Item\n\n    See #12 for details.", ["PR #10", "#12"]),
+    ("Intro paragraph\n    issue 12 continues", ["issue 12"]),
+    ("[note]: this is prose, see #12", ["#12"]),
+    ("Done issue 2 of 7 and PR 1 of 3.", []),
 ]
 
 TRANSCRIPT = [
@@ -64,10 +71,32 @@ TRANSCRIPT = [
 ]
 
 
+def strip_indented_code(text: str) -> str:
+    """Blank out indented code: a four-space or tab line after a blank line,
+    outside a list. Indented list items and continuations stay prose."""
+    out, prev_blank, in_list, in_code = [], True, False, False
+    for line in text.split("\n"):
+        indented = line.startswith("    ") or line.startswith("\t")
+        if indented and (in_code or (prev_blank and not in_list)):
+            in_code = True
+            out.append("")
+            continue
+        in_code = False
+        if line.strip():
+            in_list = bool(LIST_ITEM.match(line)) or (indented and in_list)
+            prev_blank = False
+        else:
+            prev_blank = True
+        out.append(line)
+    return "\n".join(out)
+
+
 def bare_references(text: str) -> list[str]:
     labels = {m.group(1).lower() for m in DEFINITION.finditer(text)}
     text = DEFINITION.sub(" ", text)
-    for pattern in STRIP:
+    text = STRIP[0].sub(" ", text)
+    text = strip_indented_code(text)
+    for pattern in STRIP[1:]:
         text = pattern.sub(" ", text)
     text = re.sub(r"\[([^\]\n]+)\](?:\[([^\]\n]*)\])?", lambda m: " " if (m.group(2) or m.group(1)).lower() in labels else m.group(0), text)
     # One space between words, so "run  #512" reads as "run #512".
