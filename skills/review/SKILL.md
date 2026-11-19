@@ -54,7 +54,7 @@ Write the report to a file outside the repository (a temp or scratch directory, 
 ```markdown
 ## Compound V review — PR #<n>, round <r>
 
-Reviewed commit `<short SHA>` (<base>..<head>) · Tier: <light | full> (<the passes run, and why>)
+Reviewed commit `<short SHA>` (<base>..<head>) · Tier: <light | instructions | full> (<the passes run, and why>)
 
 ### Strengths
 - 3–5 specific things done well, with file:line. Don't invent any.
@@ -76,6 +76,9 @@ Reviewed commit `<short SHA>` (<base>..<head>) · Tier: <light | full> (<the pas
 | ID | Sev | Location | Issue | Fix |
 |---|---|---|---|---|
 | m1 | ⠴ | ... | ... | ... |
+
+### Sources
+Instructions pass only (check 8): source, URL, fetched, stated date or version.
 
 ### Details
 Only for must-fix findings whose reasoning isn't obvious from the row.

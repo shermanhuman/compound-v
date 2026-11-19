@@ -13,7 +13,7 @@ A plan-and-review method for Claude Code and Codex, packaged as a plugin. Work i
    - *Full:* round 1 runs ten checks on the whole diff, follow-ups review only each fix, then an independent full-diff pass by a second voice, then one polish pass.
    - *Light* (prose-only diffs): one focused pass that checks every claim against reality and sweeps the repository for text the change made stale.
 
-   Agent-instruction files (`AGENTS.md`, rules, skills, hooks) get the full tier with an *instructions* pass instead of the code checks.
+   Agent-instruction files (`AGENTS.md`, rules, skills, hooks) get their own *instructions* tier: two voices in round 1, each checking the change against today's official guidance (dated sources), acting it out on concrete situations, and sending choices the user never made back to them.
 
    Why it's built this way:
    - **Fresh reviewers each round:** a reviewer that has seen the code tends to accept its own earlier conclusions.

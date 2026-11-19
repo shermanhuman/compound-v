@@ -18,9 +18,18 @@ Pick the tier from the diff before round 1, and say which one and why in the PR 
 - Typo and wording fixes in those same files. A string a user or agent sees at runtime (templates, messages, translations, site copy) is code, so it's full.
 - Changes to the PR body only, marketplace or listing descriptions (not their sources), and settings that only switch plugins on or off.
 
-**Full** covers everything else. That includes agent-instruction files (`AGENTS.md`, `CLAUDE.md`, rules, skills, hook text) of any size, and their rounds use the *instructions pass* in [checks.md](../review/references/checks.md) on those files in place of the ten code checks. A mixed diff is full, with each file reviewed by the checks that fit it: the code checks for code, the instructions pass for instruction files, and the light-pass items for prose.
+**Instructions** covers a diff of agent-instruction files only (`AGENTS.md`, `CLAUDE.md`, rules, skills and their references, hook text and the hook output generated from it), plus the manifest and README lines that describe them. Its rounds use the *instructions pass* in [checks.md](../review/references/checks.md), all thirteen checks.
+
+**Full** covers everything else. A mixed diff is full, with each file reviewed by the checks that fit it: the code checks for code, the instructions pass for instruction files, and the light-pass items for prose.
 
 The PR's own version-line bump (the version line in any manifest: `plugin.json`, `marketplace.json`, `mix.exs`, `go.mod`, `package.json`) doesn't change the tier, and neither does a change to a plugin or listing entry's `description` text in those files. Any other change in them does, and lockfile changes count as dependency changes: full.
+
+**The instructions loop.**
+
+1. **Round 1, two voices:** a fresh reviewer and the second voice (the configured different model, or else a second fresh reviewer) each run the instructions pass on the full diff, in parallel, with prefixed finding IDs. Each does the current-practice check itself, so two independent readings of today's guidance reach the PR.
+2. **Whose-choice findings go to the user** in one decision packet before any fix round; they aren't patched.
+3. **Fix and follow up** as in the full tier's step 2, then its **polish pass** (step 4). There is no separate independent pass: round 1 already had two voices.
+4. **Churn stop:** when one line or clause has been rewritten in three rounds, stop and bring the user the design question.
 
 **The light loop.** A fresh reviewer runs the *light pass* in [checks.md](../review/references/checks.md). Fix its polish and post fix notes; that's the whole loop, with no independent pass and no polish or quick-check cycle. A must-fix finding gets a `compound-v:followup` round on its fix, repeated while follow-ups find must-fix issues, as in the full tier's step 2. If a finding shows the diff wasn't prose-only, the PR moves to the full tier from there. Merging the default branch in, or a CI fix, needs no round unless it touches something on the full side.
 

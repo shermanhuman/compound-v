@@ -166,6 +166,12 @@ Run this instead of the ten code checks on `AGENTS.md`, `CLAUDE.md`, rules folde
 5. **Both hosts.** It works in every host the repository targets, or says where it doesn't (tool names, question tools, hook support, sandboxes).
 6. **Said once.** The same rule isn't restated in several places that will drift apart; point to the one home instead.
 7. **Brief.** Every word costs context in each session that loads it, always-on text most. Flag restatements, more than one example of the same thing, and hedges. Cut what a skill or a linked file could carry instead.
+8. **Current practice.** Fetch today's official guidance for what the diff touches: the host's docs for skills, rules files, hooks, plugins and memory, the model vendor's prompting guide, and the other host's equivalents when the repository targets both. Never answer this check from memory; best practice changes fast. List each source with its URL, the date you fetched it and any date or version it states. Flag where the change diverges, and where sources disagree, cite both and say what each would mean for the change instead of picking one.
+9. **Act it out.** Walk at least three concrete situations through the changed text as an agent would follow it, one of them an awkward input or edge case, and report what the agent does in each. A wrong action in any of them is a finding.
+10. **Whose choice.** Every choice the user will see (wording, defaults, surfaces, names, what they get asked) traces to a decision the user logged. Report any that doesn't as a question for the user, not as a fix.
+11. **Evidence and cost.** For each added or changed rule: its type (guardrail, process or economy), what it prevents or produces, and how it will be measured. Report the always-on characters added or removed, and the total against the host's cap for session-start context.
+12. **History.** Where the user's rules name a rough-edge or feedback log, read its entries for the skill or rule: does the change address them, or bring one back?
+13. **Across plugins.** Search the other installed plugins, rules files and memories for the same rule. It keeps one home; elsewhere a pointer.
 
-The coverage table lists these seven, plus the code checks for any code and the light-pass items for any prose in the same diff.
+The coverage table lists these thirteen, plus the code checks for any code and the light-pass items for any prose in the same diff. The report adds a **Sources** table for check 8: source, URL, fetched, stated date or version.
 
