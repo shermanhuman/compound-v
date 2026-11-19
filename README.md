@@ -7,7 +7,7 @@ A plan-and-review method for Claude Code and Codex, packaged as a plugin. Work i
 1. **Pick the work.** `/compound-v:next` reads your open issues and pull requests and recommends one project, with reasons and runners-up. It finishes in-flight work before starting new work, never picks something only you can unblock, and folds small leftovers into the same release. With no argument it looks at the repositories this session has touched; `all` covers every organisation you belong to and your own account; a repository or topic narrows it.
 2. **Plan** in the host's plan mode with `compound-v:plan`: a one-sentence goal, a decisions table (`# · Idea · Verdict · Why · Decided`), steps that each say how they're checked, rollout and rollback. Rejected ideas stay in the table, so nobody proposes them again, and reviewers treat decided rows as settled. Every plan gets an issue (plan in the body, reviews as comments), so a long job survives a lost context.
 3. **Plan review** by a fresh reviewer (`compound-v:plan-review`) before you're asked to approve. It checks the plan's claims against the code and data. The trap it exists for is a confident "X is unused" or "this already works" that nobody verified.
-4. **Interrogate** (`compound-v:interrogate`) settles what's left. The calls the evidence already makes come to you as one pre-decided checklist (tick what you accept), and the rest are asked one at a time with the full context inside the question, because text written above a question widget goes unread.
+4. **Interrogate** (`compound-v:interrogate`) settles what's left in one round trip. After the research, the plan and every open decision come to you as one packet: options shown rather than described, recommendations pre-filled, and the clear calls listed as decided unless you object. Reply `ok`, or only your changes, because text written above a question widget goes unread.
 5. **Build in a worktree** on a branch from a fresh fetch. The main checkout may hold someone else's work or a running dev server.
 6. **Review loop** (`compound-v:review-loop`) at the tier the diff needs:
    - *Full:* round 1 runs ten checks on the whole diff, follow-ups review only each fix, then an independent full-diff pass by a second voice, then one polish pass.
@@ -68,7 +68,7 @@ Sessions that span several repositories (started from a parent folder) don't pic
 |---|---|
 | `compound-v:next` | Recommend the next project from open issues and pull requests, then offer to plan it |
 | `compound-v:plan` | Format and habits for any implementation plan, including in plan mode |
-| `compound-v:interrogate` | Settle a plan's open decisions: the clear calls confirmed in one checklist, the rest asked one at a time, every answer in the decisions table |
+| `compound-v:interrogate` | Settle a plan's open decisions in one packet: every decision at once with options shown and recommendations pre-filled, every answer in the decisions table |
 | `compound-v:plan-review` | Fresh, critical review of a finished plan; verdict approve / approve with changes / rework |
 | `compound-v:review` | Review of a full diff: ten code checks, or the light or instructions pass; Must-fix / Polish; posted on the PR |
 | `compound-v:followup` | Review of only the fixes since the last round, with the spinning check |
@@ -104,7 +104,7 @@ It assumes GitHub with the `gh` CLI (the review skills post with `gh pr comment`
 - **One marketplace per plugin.** Adding the same plugin from two marketplaces loads it twice, and only one copy's hooks run (documented for Claude Code).
 - **Plugin MCP servers in Codex** don't get `${CLAUDE_PLUGIN_ROOT}` expanded and start in the session's folder (seen in testing with Codex 0.162). Use a command on PATH.
 - **A `codex exec` run with `-s read-only`** can't post comments or call MCP tools. Post its report yourself, unchanged.
-- **Codex's question tool** (`request_user_input`) is single-choice, takes one to three short questions, and works in Plan mode only by default. Interrogate falls back to a numbered text checklist there.
+- **Codex's question tool** (`request_user_input`) is single-choice, takes one to three short questions, and works in Plan mode only by default. Interrogate sends its packet as a page or plain text there.
 - **The second voice needs configuring** in your own rules, or the independent pass uses the host's built-in review.
 - **Open sessions keep the old version** after an update until they restart or run `/reload-plugins`.
 
