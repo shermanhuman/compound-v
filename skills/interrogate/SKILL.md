@@ -28,9 +28,9 @@ The packet has a top (the goal, the plan in a few lines, the count such as "6 de
 
 Pick one surface and send everything on it:
 
-- **Plain text** by default: the packet in Markdown, with mocks and diagrams as code blocks or links to rendered files.
+- **Plain text** by default, even when the question tool would also fit: the packet in Markdown, with mocks and diagrams as code blocks or links to rendered files.
 - **A page** when the packet has visuals text can't carry, or is too long for chat: an artifact or published page where the host has one, otherwise a local HTML file written outside the working tree, its path given to the user. Answers come back in chat unless the page can deliver them.
-- **The question tool** only when the whole packet fits in a single call: the goal and count in the first question's text, every decision as a question with previews for what each option shows, and the clear calls as one multi-select "tick any you object to" question. Nothing the user needs may sit only in text before the widget; the user doesn't read it. Never spread one packet across several calls.
+- **The question tool** when the user or the host prefers it and the whole packet fits in a single call of a tool that has multi-select: the goal and count in the first question's text, every decision as a question with previews for what each option shows, and the clear calls as one multi-select "tick any you object to" question with a "None, all fine" option. Nothing the user needs may sit only in text before the widget; the user doesn't read it. Never spread one packet across several calls.
 
 ## After the answers
 
@@ -38,7 +38,8 @@ Pick one surface and send everything on it:
    - A decision the reply doesn't mention takes its recommendation, recorded as decided by "user (accepted the recommendation)". `ok` does this for all of them.
    - Before applying a default, check its links against the answers: a decision a chosen option makes moot is recorded `rejected` with "not applicable after 2B"; one whose condition is still open stays `ask`. Clear calls get the same check.
    - A chosen letter is `accepted`, decided by the user, dated, with their reason when they gave one; an option other than your recommendation gets its own `accepted` row.
-   - These stay `ask` and join the follow-up: More discussion, an objection to a clear call, a note with no letter, and any answer that conflicts with an earlier one.
+   - A note with no letter that settles the decision ("7: neither, keep the current name") is the user's own option, recorded `accepted`.
+   - These stay or go back to `ask` and join the follow-up: More discussion, an objection to a clear call, a note that asks something or leaves the choice open, and any answer that conflicts with an earlier one.
    - Update the plan's issue too, then change the steps, risks and assumptions the answers affect.
 2. **One follow-up packet** for everything still open and any decision the answers opened that nobody could have foreseen, built the same way and showing the missing information. If a More discussion reply didn't say what was missing, first ask in one plain-text message what's missing for all of them. Never fall back to one question at a time.
 3. **Log rough edges** only where the user's rules name a home for them; with no home, list them in your final summary. One line each: the skill, the kind, the decision, and what was missing. Kinds: `more-discussion` (the packet didn't present what the user needed), `foreseeable-follow-up` (a follow-up asked something the first packet could have), `override-knowable` (the user overrode a recommendation for a reason the research could have found).
