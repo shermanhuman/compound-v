@@ -35,7 +35,7 @@ Run all ten checks in [references/checks.md](references/checks.md) unless you we
 
 ## Must-fix or polish
 
-Every finding is one or the other.
+Every finding is one or the other, except a check-10 finding, which is a question for the user.
 
 - **Must-fix**: wrong behaviour for a user, a security problem, data loss or corruption, a silent failure, a broken contract between components, or a rollout or migration that would fail. Severity ⠿ **B** (blocker) or ⠷ **M** (major).
 - **Polish**: everything else — wording, naming, docs, small races with no real effect, test tidiness, style. Severity ⠴ **m** (minor) or ⠠ **n** (nit).

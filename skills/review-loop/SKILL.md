@@ -26,11 +26,11 @@ The PR's own version-line bump (the version line in any manifest: `plugin.json`,
 
 **The instructions loop.**
 
-0. **Audit first** where the host has an instruction audit (in Claude Code, `/doctor prompt-audit <path>`): run it on the changed files before round 1 and fix its mechanical findings (wrong references, contradictions, dated wording); anything that's a choice goes to the user as in step 6 of *Before acting on any round*.
-1. **Round 1, two voices:** a fresh reviewer and the second voice (the configured different model, or else a second fresh reviewer) each run the instructions pass on the full diff, in parallel, with prefixed finding IDs. Each does the current-practice check itself, so it needs live web access (a Codex reviewer: `-c web_search="live"`), and its brief carries what its sandbox can't reach, such as the user's rough-edge log.
+0. **Audit first** where the host has an instruction audit (in Claude Code, `/doctor prompt-audit <path>`, run in a headless session such as `claude -p "/doctor prompt-audit <path>"`, one file or directory per run): fix its mechanical findings (wrong references, contradictions, dated wording) before round 1; its choices join round 1's packet for the user.
+1. **Round 1, two voices:** a fresh reviewer and the second voice (the configured different model, or else a second fresh reviewer) each run the instructions pass on the full diff, in parallel, with prefixed finding IDs. Each does the current-practice check itself, so it needs live web access (a Codex reviewer: `-c web_search="live"`), and its brief carries what its sandbox can't reach, such as the user's rough-edge log. If a voice returns check 8 Not assessed, rerun it with live access, or say on the PR that only one reading was made.
 2. **Fix and follow up** as in the full tier's step 2, then its **polish pass** (step 4). There is no separate independent pass: round 1 already had two voices.
 
-**The light loop.** A fresh reviewer runs the *light pass* in [checks.md](../review/references/checks.md). Fix its polish and post fix notes; that's the whole loop, with no independent pass and no polish or quick-check cycle. A must-fix finding gets a `compound-v:followup` round on its fix, repeated while follow-ups find must-fix issues, as in the full tier's step 2. If a finding shows the diff wasn't prose-only, the PR moves to the full tier from there. Merging the default branch in, or a CI fix, needs no round unless it touches something on the full side.
+**The light loop.** A fresh reviewer runs the *light pass* in [checks.md](../review/references/checks.md). Fix its polish and post fix notes; that's the whole loop, with no independent pass and no polish or quick-check cycle. A must-fix finding gets a `compound-v:followup` round on its fix, repeated while follow-ups find must-fix issues, as in the full tier's step 2. If a finding shows the diff wasn't prose-only, the PR moves to the instructions or full tier from there. Merging the default branch in, or a CI fix, needs no round unless it touches something on the full side.
 
 ## Pull requests
 
@@ -66,8 +66,8 @@ A commit that only changes the version number needs no round of its own. Merging
 
    Without `--paginate` the API returns only the first 30 of each, and `gh pr view --comments` leaves out inline comments, so later findings go missing without any error.
 4. Treat each finding as a hypothesis: find the line of code or the read-only query that would prove it wrong, then adopt, adapt or refute it with that evidence.
-5. Fix or refute every valid must-fix finding (only the user may waive one).
-6. Findings under *Questions for the user* aren't patched, in any tier: send them in one decision packet before the next fix round, and record each answer in the decisions table.
+5. Findings under *Questions for the user* aren't patched, in any tier: send them in one decision packet before fixing this round's findings, and record each answer in the decisions table.
+6. Fix or refute every valid must-fix finding (only the user may waive one).
 
 ## Record every round on the PR
 
