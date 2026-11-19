@@ -1,6 +1,6 @@
 ---
 name: review
-description: Full code review of a change (a pull request or a branch diff) across ten checks, or a named subset such as the light pass for prose or the instructions pass for agent-instruction files, with findings grouped Must-fix and Polish and the report posted on the pull request. Use for the first full review round of a PR, for an independent full-diff second opinion, or whenever asked to review code changes.
+description: Full code review of a change (a pull request or a branch diff) across ten checks, or a named subset such as the light pass for prose, the instructions pass for agent-instruction files, or one review persona's slice, with findings grouped Must-fix and Polish and the report posted on the pull request. Use for the first full review round of a PR, for an independent full-diff second opinion, or whenever asked to review code changes.
 ---
 
 # Code review
@@ -16,13 +16,14 @@ Whoever launched you should give you:
 - the round number (round 1 unless told otherwise) and the last finding IDs used on the PR, so yours continue from them; when two reviewers run in the same round, each gets its own starting IDs or a prefix
 - where the decisions table lives (PR body, plan issue, or a file)
 - optionally, the checks to run instead of all ten: one named check, the *light pass* (prose-only PRs), or the *instructions pass* (agent-instruction files), all in [references/checks.md](references/checks.md)
+- or a **persona** from [references/personas.md](references/personas.md): run only its checks, on the review bundle you were given or forked with
 - for the instructions pass: the hosts the repository targets, and the rough-edge or feedback log the user's rules name
 
 If the diff range is missing, review the current branch against the default branch's merge base and say so.
 
 ## Read first
 
-1. The full diff, then every changed file in full.
+1. The full diff, then every changed file in full. A persona reads the review bundle instead and opens a file only where the bundle isn't enough.
 2. The repository's own rules (`AGENTS.md`, `CLAUDE.md`, rules folders).
 3. The plan issue and its decisions table, when there is one.
 4. Versions actually pinned (`mix.exs`/`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles). Research version-specific behaviour against these, not from memory.
@@ -94,5 +95,7 @@ One or two sentences: what matters most, and whether anything must be fixed befo
 ```
 
 Link locations to the hosting service at the reviewed SHA so links stay valid after later pushes. Leave out empty sections. In a public repository, cite private sources (logs, memories, private issues or plugins) by link or number and don't quote them.
+
+A persona doesn't post: it returns its report (Coverage for its checks, Must-fix, Polish, Questions, and *Outside my area*) to the review session, which scores and posts one report for the round.
 
 Post it on the pull request (for GitHub: `gh pr comment <n> --body-file <file>`). If there is no pull request yet, or you can't post (read-only sandbox, no credentials), return the report text and say it hasn't been posted; the review loop posts it unchanged when the PR opens.

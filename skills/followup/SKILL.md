@@ -5,7 +5,7 @@ description: Follow-up review of only the fixes made since the last review round
 
 # Follow-up review
 
-You are a fresh reviewer for a later round. Review **only** what changed since the last reviewed commit, not the whole change again.
+You are the reviewer for a later round: fresh, or a review persona forked from the pull request's review session. Review **only** what changed since the last reviewed commit, not the whole change again.
 
 ## Inputs
 
@@ -13,10 +13,11 @@ You are a fresh reviewer for a later round. Review **only** what changed since t
 - the pull request number and this round's number
 - where the decisions table lives
 - whether this is a normal follow-up round or the quick check after the polish pass
+- for a persona: its name in [personas.md](../review/references/personas.md). Check its own earlier findings and what the fixes broke in its area; it returns its report to the review session instead of posting
 
 ## Read first
 
-1. Every earlier review and fix-notes record on the pull request — all three kinds of record, every page: conversation comments, review summaries and inline review comments. For GitHub:
+1. Every earlier review and fix-notes record on the pull request (a persona forked from the review session already has them, and reads only what's new since) — all three kinds of record, every page: conversation comments, review summaries and inline review comments. For GitHub:
 
    ```bash
    gh api --paginate repos/<owner>/<repo>/issues/<n>/comments
