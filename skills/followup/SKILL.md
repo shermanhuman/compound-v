@@ -38,7 +38,7 @@ You are a fresh reviewer for a later round. Review **only** what changed since t
 
 ## New issues the fixes caused
 
-Same Must-fix / Polish rules, severities and table as the `compound-v:review` skill. Finding IDs continue across rounds on one pull request: if round 1 ended at M2 and m3, this round starts at M3 and m4, so fix notes never confuse two findings. In the quick check after the polish pass, list new polish as noted, not to fix; only must-fix findings count.
+Same Must-fix / Polish rules, severities and table as the `compound-v:review` skill. A fix that adds a choice the user hasn't decided (a surface, default, name or something they'll be asked) goes under *Questions for the user*, as in that skill. Finding IDs continue across rounds on one pull request: if round 1 ended at M2 and m3, this round starts at M3 and m4, so fix notes never confuse two findings. In the quick check after the polish pass, list new polish as noted, not to fix; only must-fix findings count.
 
 ## Spinning check
 
@@ -61,7 +61,7 @@ Reviewed fixes `<last SHA>..<head SHA>`
 (table above)
 
 ### New findings
-Must-fix and Polish tables, or "None".
+Must-fix, Polish and Questions for the user tables, or "None".
 
 ### Spinning
 "None", or what's recurring and the design question it raises.
