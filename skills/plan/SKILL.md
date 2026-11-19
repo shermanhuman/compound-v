@@ -32,7 +32,7 @@ Cut what doesn't earn its place: duplicated steps, anything there "just in case"
 
 ## Asking questions
 
-Ask only what the code, the data or a sensible default can't answer, and ask it all at once. Research every open decision first, then put the plan and every decision in front of the user together as one packet: each with its context, the options shown (mocks, diagrams, diffs, example output) rather than described, and your recommendation pre-filled so `ok` accepts them all. Never ask one question after another, and never spread a packet across several question-tool calls.
+Ask only what the code, the data or a sensible default can't answer, and ask it all at once, as one packet after the research, never one question after another.
 
 `compound-v:interrogate` is the procedure: use it whenever a plan has open decisions before approval, or the user asks to stress-test one.
 

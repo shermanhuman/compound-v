@@ -13,36 +13,35 @@ Settle every decision in the plan in one round trip. The user's time is the scar
 2. **Find every fact first.** Look up what each decision needs from the code, data, docs and environment, in one parallel batch, with subagents for anything broad. Never ask the user for a fact you can find.
 3. **Sort.**
    - **Mechanical** (versions, file layout, check commands): record in the table, don't show.
-   - **Clear calls:** the evidence fits in one line, the alternatives are clearly worse, it's cheap to undo, and it touches nothing the user sees (product direction, names, wording, spend, security, privacy). These go on the packet's "decided unless you object" list.
+   - **Clear calls:** the evidence fits in one line, the alternatives are clearly worse, it's cheap to undo, it touches nothing the user sees (product direction, names, wording, spend, security, privacy), it conflicts with no user decision, and what it depends on is settled. An `ask` row qualifies only when a fact found since makes it clear-cut. These go on the packet's "decided unless you object" list.
    - **Decisions:** everything else. When in doubt, it's a decision.
 4. **Make each decision concrete.**
    - **The question** in one sentence, and what it changes.
    - **Show, don't tell.** Put the thing itself in front of the user: the mock or screenshot, the diagram, the diff or config, example output under each option, the numbers. Describe only what can't be shown.
    - **Options** lettered A, B, C, each with what happens and what it costs. Recommendation first, marked. The last option is always **More discussion**, for when the packet didn't give the user enough to decide.
    - **Links between decisions:** when one answer changes another decision, say how ("if 2B, skip 5") instead of holding the second one back.
-5. **Record before sending.** Clear calls go in the table as `accepted` (planner); packet decisions as `ask`. The packet then survives lost context.
+5. **Record before sending.** Clear calls go in the table as `accepted` (planner), packet decisions as `ask`. A packet sent as plain text or a page is also posted on the plan's issue, so a reply like `2B` can still be read after lost context.
 
 ## Present it once
 
-Everything goes out together, in one message or on one page:
+The packet has a top (the goal, the plan in a few lines, the count such as "6 decisions, 9 decided unless you object", a link to the full plan), the decisions numbered from 1 in order of consequence, the clear calls numbered on from there with one line of evidence each, and how to answer: "Reply `ok` to take every recommendation, or only your changes: `2B, 5C, 7: <note>`, `4: more` for more discussion, `12: no` to object to a clear call."
 
-- **Top:** the goal, the plan in a few lines, the count ("6 decisions, 9 decided unless you object") and a link to the full plan.
-- **Decisions**, most consequential first.
-- **Decided unless you object:** one line each, with its evidence.
-- **How to answer:** "Reply `ok` to take every recommendation, or only your changes: `2B, 5C, 7: <note>`, or `4: more` for more discussion."
+Pick one surface and send everything on it:
 
-Use the richest surface the host offers:
-
-- **A page** when the host can show one (an artifact, a published page, a local HTML file the user opens): best for mocks, diagrams and long packets. Collect the answers on the page when it can.
-- **The question tool** only when the whole packet fits in a single call, every decision at once, with previews for what each option shows. Never spread one packet across several calls.
-- **Plain text** otherwise: the same packet in Markdown, with mocks and diagrams as code blocks or links to rendered files.
+- **Plain text** by default: the packet in Markdown, with mocks and diagrams as code blocks or links to rendered files.
+- **A page** when the packet has visuals text can't carry, or is too long for chat: an artifact or published page where the host has one, otherwise a local HTML file written outside the working tree, its path given to the user. Answers come back in chat unless the page can deliver them.
+- **The question tool** only when the whole packet fits in a single call: the goal and count in the first question's text, every decision as a question with previews for what each option shows, and the clear calls as one multi-select "tick any you object to" question. Nothing the user needs may sit only in text before the widget; the user doesn't read it. Never spread one packet across several calls.
 
 ## After the answers
 
-1. Record every answer in one edit: `accepted` or `rejected`, why (in the user's words when they gave a reason), decided by the user, dated. `ok` takes every recommendation; record those as decided by "user (accepted the recommendation)". An option other than your recommendation gets its own `accepted` row. Update the plan's issue too.
-2. Change the steps, risks and assumptions the answers affect.
-3. If the answers ask for more discussion, open decisions nobody could have foreseen, conflict with an earlier answer, or ask a question about a question, send **one follow-up packet** with all of them, built the same way, showing the missing information. Never fall back to one question at a time.
-4. **Log rough edges** where the user's rules say they go (otherwise as a comment on the plan's issue), one line each: the skill, the kind, the decision, and what was missing. Kinds: `more-discussion` (the packet didn't present what the user needed), `foreseeable-follow-up` (a follow-up packet asked something the first one could have), `override-knowable` (the user overrode a recommendation for a reason the research could have found).
+1. **Resolve first, then record, in one edit.**
+   - A decision the reply doesn't mention takes its recommendation, recorded as decided by "user (accepted the recommendation)". `ok` does this for all of them.
+   - Before applying a default, check its links against the answers: a decision a chosen option makes moot is recorded `rejected` with "not applicable after 2B"; one whose condition is still open stays `ask`. Clear calls get the same check.
+   - A chosen letter is `accepted`, decided by the user, dated, with their reason when they gave one; an option other than your recommendation gets its own `accepted` row.
+   - These stay `ask` and join the follow-up: More discussion, an objection to a clear call, a note with no letter, and any answer that conflicts with an earlier one.
+   - Update the plan's issue too, then change the steps, risks and assumptions the answers affect.
+2. **One follow-up packet** for everything still open and any decision the answers opened that nobody could have foreseen, built the same way and showing the missing information. If a More discussion reply didn't say what was missing, first ask in one plain-text message what's missing for all of them. Never fall back to one question at a time.
+3. **Log rough edges** only where the user's rules name a home for them; with no home, list them in your final summary. One line each: the skill, the kind, the decision, and what was missing. Kinds: `more-discussion` (the packet didn't present what the user needed), `foreseeable-follow-up` (a follow-up asked something the first packet could have), `override-knowable` (the user overrode a recommendation for a reason the research could have found).
 
 If the user asks to talk instead, talk it through in prose until they want the packet again.
 
