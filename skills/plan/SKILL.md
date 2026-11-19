@@ -32,7 +32,7 @@ Cut what doesn't earn its place: duplicated steps, anything there "just in case"
 
 ## Asking questions
 
-Ask only what the code, the data or a sensible default can't answer, and ask it all at once, as one packet after the research, never one question after another.
+Ask only what the code, the data or a sensible default can't answer, and ask it all at once, as one packet on a web page after the research, never one question after another.
 
 `compound-v:interrogate` is the procedure: use it whenever a plan has open decisions before approval, or the user asks to stress-test one.
 

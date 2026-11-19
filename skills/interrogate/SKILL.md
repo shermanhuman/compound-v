@@ -20,17 +20,17 @@ Settle every decision in the plan in one round trip. The user's time is the scar
    - **Show, don't tell.** Put the thing itself in front of the user: the mock or screenshot, the diagram, the diff or config, example output under each option, the numbers. Describe only what can't be shown.
    - **Options** lettered A, B, C, each with what happens and what it costs. Recommendation first, marked. The last option is always **More discussion**, for when the packet didn't give the user enough to decide.
    - **Links between decisions:** when one answer changes another decision, say how ("if 2B, skip 5") instead of holding the second one back.
-5. **Record before sending.** Clear calls go in the table as `accepted` (planner), packet decisions as `ask`. A packet sent as plain text or a page is also posted on the plan's issue, so a reply like `2B` can still be read after lost context.
+5. **Record before sending.** Clear calls go in the table as `accepted` (planner), packet decisions as `ask`. The packet's link and text are also posted on the plan's issue, so a reply like `2B` can still be read after lost context.
 
 ## Present it once
 
 The packet has a top (the goal, the plan in a few lines, the count such as "6 decisions, 9 decided unless you object", a link to the full plan), the decisions numbered from 1 in order of consequence, the clear calls numbered on from there with one line of evidence each, and how to answer: "Reply `ok` to take every recommendation, or only your changes: `2B, 5C, 7: <note>`, `4: more` for more discussion, `12: no` to object to a clear call."
 
-Pick one surface and send everything on it:
+Put the packet on a web page, never only in the chat:
 
-- **Plain text** by default, even when the question tool would also fit: the packet in Markdown, with mocks and diagrams as code blocks or links to rendered files.
-- **A page** when the packet has visuals text can't carry, or is too long for chat: an artifact or published page where the host has one, otherwise a local HTML file written outside the working tree, its path given to the user. Answers come back in chat unless the page can deliver them.
-- **The question tool** when the user or the host prefers it and the whole packet fits in a single call of a tool that has multi-select: the goal and count in the first question's text, every decision as a question with previews for what each option shows, and the clear calls as one multi-select "tick any you object to" question with a "None, all fine" option. Nothing the user needs may sit only in text before the widget; the user doesn't read it. Never spread one packet across several calls.
+- **Where:** the decision page or board the user's rules name; otherwise an artifact or published page where the host has one; otherwise a local HTML file written outside the working tree. The chat message carries only the link, the count and how to answer.
+- **Answers** are collected on the page when it can deliver them back to the session; otherwise the user replies in chat in the answer format above.
+- **Fallback:** only when no page can be shown at all, or the user asks for it in chat, send the same packet as plain text in one message. Never spread a packet across several messages or question-tool calls.
 
 ## After the answers
 
