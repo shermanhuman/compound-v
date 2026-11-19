@@ -28,7 +28,7 @@ The packet has a top (the goal, the plan in a few lines, the count such as "6 de
 
 Put the packet on a web page, never only in the chat:
 
-- **Where:** the decision page or board the user's rules name; otherwise an artifact or published page where the host has one; otherwise a local HTML file written outside the working tree. The chat message carries only the link, the count and how to answer.
+- **Where:** the decision page or board the user's rules name; otherwise an artifact or published page where the host has one; otherwise a local HTML file written outside the working tree. The chat carries only the link.
 - **Answers** are collected on the page when it can deliver them back to the session; otherwise the user replies in chat in the answer format above.
 - **Fallback:** only when no page can be shown at all, or the user asks for it in chat, send the same packet as plain text in one message. Never spread a packet across several messages or question-tool calls.
 
