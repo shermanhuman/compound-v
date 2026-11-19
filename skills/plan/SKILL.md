@@ -32,9 +32,9 @@ Cut what doesn't earn its place: duplicated steps, anything there "just in case"
 
 ## Asking questions
 
-Ask only what the code, the data or a sensible default can't answer. When the host has a multiple-choice question tool, use it, and put the full context **inside the question**: the situation and what's at stake in the question text, what happens and what it costs in each option's description, longer detail in a per-option preview where the host supports one, and your recommendation first. Text written before the question is easy to miss. Hosts whose tool asks for short options still get the context in the question text. Ask one question at a time when the answers depend on each other.
+Ask only what the code, the data or a sensible default can't answer, and ask it all at once, as one packet on a web page after the research, never one question after another.
 
-When the user asks to stress-test a plan, or wants its `ask` rows and the planner's own calls confirmed before approval, work through them with `compound-v:interrogate`: it confirms the clear calls in one checklist and asks the rest one at a time.
+`compound-v:interrogate` is the procedure: use it whenever a plan has open decisions before approval, or the user asks to stress-test one.
 
 ## The plan's home
 

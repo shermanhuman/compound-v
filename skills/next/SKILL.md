@@ -72,4 +72,4 @@ Runners-up:
 Housekeeping: <issues that look done or stale, "close?">
 ```
 
-Then ask through the host's question tool, repeating that context inside the question, since the widget hides the text above it. The options: start the pick in plan mode, take a runner-up, or widen the scope. On start, enter plan mode, use the `compound-v:plan` format, and make the issue the plan's home. Without a question tool, ask in one plain sentence. The pick itself creates nothing and closes nothing.
+Then ask through the host's question tool, repeating that context inside the question, since the widget hides the text above it. The options: start the pick in plan mode, take a runner-up, widen the scope, or more discussion (the tool's own free-text option where choices are capped at three); on more discussion, ask in plain text what's missing. On start, enter plan mode, use the `compound-v:plan` format, and make the issue the plan's home. Without a question tool, ask in one plain sentence. The pick itself creates nothing and closes nothing.
