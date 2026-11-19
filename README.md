@@ -104,7 +104,7 @@ It assumes GitHub with the `gh` CLI (the review skills post with `gh pr comment`
 - **One marketplace per plugin.** Adding the same plugin from two marketplaces loads it twice, and only one copy's hooks run (documented for Claude Code).
 - **Plugin MCP servers in Codex** don't get `${CLAUDE_PLUGIN_ROOT}` expanded and start in the session's folder (seen in testing with Codex 0.162). Use a command on PATH.
 - **A `codex exec` run with `-s read-only`** can't post comments or call MCP tools. Post its report yourself, unchanged.
-- **Codex's question tool** (`request_user_input`) is single-choice, takes one to three short questions, and works in Plan mode only by default. Interrogate sends its packet as plain text or a page there, unless the whole packet fits one call.
+- **Codex's question tool** (`request_user_input`) is single-choice, takes one to three short questions, and works in Plan mode only by default. Interrogate sends its packet as plain text or a page there.
 - **The second voice needs configuring** in your own rules, or the independent pass uses the host's built-in review.
 - **Open sessions keep the old version** after an update until they restart or run `/reload-plugins`.
 
