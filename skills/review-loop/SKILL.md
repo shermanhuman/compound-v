@@ -11,14 +11,14 @@ Every round uses a **fresh** reviewer (a new subagent or a new process, not a fo
 
 Pick the tier from the diff before round 1, and say which one and why in the PR body and the first review comment. The user can ask for the full tier at any time.
 
-**Light** covers prose only. The list is closed: anything not on it is full.
+**Light** covers prose only. The list is closed: anything not on it is instructions or full.
 
 - Prose in READMEs, docs and the changelog that gives no instructions. An instruction is a fenced command, an inline command someone would run, or an imperative step, so a procedural section is full.
 - Comment-only code changes, confirmed by `git diff -w` showing only comment lines.
 - Typo and wording fixes in those same files. A string a user or agent sees at runtime (templates, messages, translations, site copy) is code, so it's full.
 - Changes to the PR body only, marketplace or listing descriptions (not their sources), and settings that only switch plugins on or off.
 
-**Instructions** covers a diff of agent-instruction files only (`AGENTS.md`, `CLAUDE.md`, rules, skills and their references, hook text and the hook output generated from it), plus the manifest and README lines that describe them. Its rounds use the *instructions pass* in [checks.md](../review/references/checks.md), all thirteen checks.
+**Instructions** covers a diff of agent-instruction files only (`AGENTS.md`, `CLAUDE.md`, rules, skills and their references, subagent definitions and commands, hook text and the hook output generated from it), plus the manifest and README lines that describe them. Its rounds use the *instructions pass* in [checks.md](../review/references/checks.md).
 
 **Full** covers everything else. A mixed diff is full, with each file reviewed by the checks that fit it: the code checks for code, the instructions pass for instruction files, and the light-pass items for prose.
 
@@ -26,10 +26,9 @@ The PR's own version-line bump (the version line in any manifest: `plugin.json`,
 
 **The instructions loop.**
 
-1. **Round 1, two voices:** a fresh reviewer and the second voice (the configured different model, or else a second fresh reviewer) each run the instructions pass on the full diff, in parallel, with prefixed finding IDs. Each does the current-practice check itself, so two independent readings of today's guidance reach the PR.
-2. **Whose-choice findings go to the user** in one decision packet before any fix round; they aren't patched.
-3. **Fix and follow up** as in the full tier's step 2, then its **polish pass** (step 4). There is no separate independent pass: round 1 already had two voices.
-4. **Churn stop:** when one line or clause has been rewritten in three rounds, stop and bring the user the design question.
+0. **Audit first** where the host has an instruction audit (in Claude Code, `/doctor prompt-audit <path>`): run it on the changed files before round 1 and fix its mechanical findings (wrong references, contradictions, dated wording); anything that's a choice goes to the user as in step 6 of *Before acting on any round*.
+1. **Round 1, two voices:** a fresh reviewer and the second voice (the configured different model, or else a second fresh reviewer) each run the instructions pass on the full diff, in parallel, with prefixed finding IDs. Each does the current-practice check itself, so it needs live web access (a Codex reviewer: `-c web_search="live"`), and its brief carries what its sandbox can't reach, such as the user's rough-edge log.
+2. **Fix and follow up** as in the full tier's step 2, then its **polish pass** (step 4). There is no separate independent pass: round 1 already had two voices.
 
 **The light loop.** A fresh reviewer runs the *light pass* in [checks.md](../review/references/checks.md). Fix its polish and post fix notes; that's the whole loop, with no independent pass and no polish or quick-check cycle. A must-fix finding gets a `compound-v:followup` round on its fix, repeated while follow-ups find must-fix issues, as in the full tier's step 2. If a finding shows the diff wasn't prose-only, the PR moves to the full tier from there. Merging the default branch in, or a CI fix, needs no round unless it touches something on the full side.
 
@@ -49,7 +48,7 @@ Full tier:
    Say on the PR which one ran, and why if it fell back. Its must-fix findings go back to step 2.
 4. **Polish pass** — fix all open polish in one go, small fixes only (a redesign now is what makes the next round find new problems). Run the tests, then a quick `compound-v:followup` of only the polish diff. New polish it raises is noted, not fixed; a must-fix sends you back to step 2.
 
-**Stop rule.** Keep going while each round's must-fix findings are new ground. When `compound-v:followup` reports **spinning** — a fix reversing an earlier fix or a logged decision, the same class of finding recurring, or the same lines churning — stop and bring the user the design question instead of patching again. As a cost guard, stop and report after six rounds on one PR regardless. The stop rule and the cost guard apply to both tiers.
+**Stop rule.** Keep going while each round's must-fix findings are new ground. When `compound-v:followup` reports **spinning** — a fix reversing an earlier fix or a logged decision, the same class of finding recurring, or the same lines churning (in the instructions tier, one line or clause rewritten in three rounds) — stop and bring the user the design question instead of patching again. As a cost guard, stop and report after six rounds on one PR regardless. The stop rule and the cost guard apply to every tier.
 
 A commit that only changes the version number needs no round of its own. Merging the default branch into the branch, or a CI fix, gets a `compound-v:followup` round.
 
@@ -68,11 +67,12 @@ A commit that only changes the version number needs no round of its own. Merging
    Without `--paginate` the API returns only the first 30 of each, and `gh pr view --comments` leaves out inline comments, so later findings go missing without any error.
 4. Treat each finding as a hypothesis: find the line of code or the read-only query that would prove it wrong, then adopt, adapt or refute it with that evidence.
 5. Fix or refute every valid must-fix finding (only the user may waive one).
+6. Findings under *Questions for the user* aren't patched, in any tier: send them in one decision packet before the next fix round, and record each answer in the decisions table.
 
 ## Record every round on the PR
 
 - Each review is posted as a comment (the review skills do this; if a reviewer couldn't post, post its text unchanged and say whose it is).
-- After addressing a round, post one fix-notes comment answering each finding by ID: the fix and its commit SHA, or the evidence for refuting it, or "noted" for polish left alone.
+- After addressing a round, post one fix-notes comment answering each finding by ID: the fix and its commit SHA, or the evidence for refuting it, or "noted" for polish left alone; for a question, the user's answer and its decisions row.
 - When a round ran before a pull request existed (for example on a host that can't open one), post it when the PR opens; reviewers return their text until then. Finding IDs continue across rounds on one PR (round 2 starts after round 1's last number).
 - Add decisions made during review to the decisions table in the PR body, with who and when.
 

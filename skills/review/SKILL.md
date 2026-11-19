@@ -16,6 +16,7 @@ Whoever launched you should give you:
 - the round number (round 1 unless told otherwise) and the last finding IDs used on the PR, so yours continue from them; when two reviewers run in the same round, each gets its own starting IDs or a prefix
 - where the decisions table lives (PR body, plan issue, or a file)
 - optionally, the checks to run instead of all ten: one named check, the *light pass* (prose-only PRs), or the *instructions pass* (agent-instruction files), all in [references/checks.md](references/checks.md)
+- for the instructions pass: the hosts the repository targets, and the rough-edge or feedback log the user's rules name
 
 If the diff range is missing, review the current branch against the default branch's merge base and say so.
 
@@ -77,16 +78,21 @@ Reviewed commit `<short SHA>` (<base>..<head>) · Tier: <light | instructions | 
 |---|---|---|---|---|
 | m1 | ⠴ | ... | ... | ... |
 
+### Questions for the user
+| ID | Location | The choice | Options |
+|---|---|---|---|
+| Q1 | ... | ... | ... |
+
 ### Sources
 Instructions pass only (check 8): source, URL, fetched, stated date or version.
 
 ### Details
-Only for must-fix findings whose reasoning isn't obvious from the row.
+Must-fix reasoning that isn't obvious from the row, and the instructions pass's situations (check 9) and rule costs (check 11).
 
 ### Verdict
 One or two sentences: what matters most, and whether anything must be fixed before merge.
 ```
 
-Link locations to the hosting service at the reviewed SHA so links stay valid after later pushes. Leave out empty sections.
+Link locations to the hosting service at the reviewed SHA so links stay valid after later pushes. Leave out empty sections. In a public repository, cite private sources (logs, memories, private issues or plugins) by link or number and don't quote them.
 
 Post it on the pull request (for GitHub: `gh pr comment <n> --body-file <file>`). If there is no pull request yet, or you can't post (read-only sandbox, no credentials), return the report text and say it hasn't been posted; the review loop posts it unchanged when the PR opens.

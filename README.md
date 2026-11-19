@@ -79,7 +79,7 @@ In Claude Code, invoke a skill as `/compound-v:next`; in Codex, as `$compound-v:
 
 ## Choosing the second voice
 
-The full tier's independent pass uses "a different model when one is configured". Name it in your own rules (`AGENTS.md`, `CLAUDE.md`, or a personal plugin) along with the command to run it, for example a Codex model via `codex exec` for a Claude user, or Claude via `claude -p` for a Codex user. Without one, the loop uses the host's built-in review, and failing that a fresh full pass.
+The full tier's independent pass and the instructions tier's round 1 use "a different model when one is configured". Name it in your own rules (`AGENTS.md`, `CLAUDE.md`, or a personal plugin) along with the command to run it, for example a Codex model via `codex exec` for a Claude user, or Claude via `claude -p` for a Codex user. Without one, the loop uses the host's built-in review, and failing that a fresh full pass.
 
 ## Severity
 
