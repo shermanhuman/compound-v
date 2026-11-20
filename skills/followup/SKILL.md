@@ -5,7 +5,12 @@ description: Follow-up review of only the fixes made since the last review round
 
 # Follow-up review
 
-You are the reviewer for a later round: fresh, or a review persona forked from the pull request's review session. Review **only** what changed since the last reviewed commit, not the whole change again.
+You are the reviewer for a later round: fresh, or a review persona forked from the pull request's review session. Review **only** what changed since the last reviewed commit, not the whole change again, and read the replies to earlier findings.
+
+- **Never re-raise a rejected finding**: one the validator rejected, or one whose refutation an earlier follow-up accepted. The author's word alone doesn't make a finding rejected.
+- **Never lower the depth** an earlier round used.
+- If the fix range only merges the default branch and the pull request's own lines are unchanged (`git diff <last reviewed SHA>..HEAD` restricted to the PR's files is empty), keep the earlier result and say so instead of reviewing again.
+- The evidence rule and validation apply as in `compound-v:review`.
 
 ## Inputs
 

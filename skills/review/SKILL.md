@@ -43,11 +43,17 @@ Every finding is one or the other, except an instructions-pass *whose choice* fi
 
 Rules for findings:
 
+- **The evidence rule.** A must-fix quotes the line (`file:line` and the text) and states its precondition: what has to be true for the harm to happen. For something *missing* (no idempotency key, no authorization check, an undelivered plan step), quote the place where it should be and name what's missing. A must-fix is introduced or newly exposed by this change, discrete and actionable, something the author would fix, needs no unstated assumption, and names the code it affects. A finding that can't meet this is at most polish.
+- Check the change against [references/patterns.md](references/patterns.md) at the levels it marks, and the stack forms in the user's rules where they exist.
 - Cite `file:line` and say what breaks, for whom, and when.
 - No speculative findings, no "could be clearer", no repeats of an earlier round.
 - In later rounds of the same pull request, finding IDs continue from the last round's numbers instead of restarting.
 - Logged decisions in the decisions table are settled. Reopen one only as must-fix, stating the harm.
 - After each finding, search for the same problem elsewhere in the change and the codebase and add those locations.
+
+## Validate must-fix findings
+
+Before the report is posted, every must-fix finding goes to a validator: a fresh reviewer that didn't write it, following [references/validator.md](references/validator.md), up to 8 findings per validator. Confirmed and unresolved findings stay; rejected ones move to *Rejected by the validator* with the refuting evidence. When you're running as one persona, the review session validates; return your findings unvalidated.
 
 ## Report
 
@@ -79,6 +85,11 @@ Reviewed commit `<short SHA>` (<base>..<head>) · Tier: <light | instructions | 
 |---|---|---|---|---|
 | m1 | ⠴ | ... | ... | ... |
 
+### Rejected by the validator
+| ID | Finding | Evidence it's not a problem |
+|---|---|---|
+| M3 | ... | ... |
+
 ### Questions for the user
 | ID | Location | The choice | Options |
 |---|---|---|---|
@@ -96,6 +107,6 @@ One or two sentences: what matters most, and whether anything must be fixed befo
 
 Link locations to the hosting service at the reviewed SHA so links stay valid after later pushes. Leave out empty sections. In a public repository, cite private sources (logs, memories, private issues or plugins) by link or number and don't quote them.
 
-A persona doesn't post: it returns its report (Coverage for its checks, Must-fix, Polish, Questions, and *Outside my area*) to the review session, which scores and posts one report for the round.
+A persona doesn't post: it writes its report (Coverage for its checks, Must-fix, Polish, Questions, and *Outside my area*) to the file the review session names, which validates and posts one report for the round.
 
 Post it on the pull request (for GitHub: `gh pr comment <n> --body-file <file>`). If there is no pull request yet, or you can't post (read-only sandbox, no credentials), return the report text and say it hasn't been posted; the review loop posts it unchanged when the PR opens.
