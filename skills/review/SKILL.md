@@ -44,7 +44,7 @@ Every finding is one or the other, except an instructions-pass *whose choice* fi
 Rules for findings:
 
 - **The evidence rule.** A must-fix quotes the line (`file:line` and the text) and states its precondition: what has to be true for the harm to happen. For something *missing* (no idempotency key, no authorization check, an undelivered plan step), quote the place where it should be and name what's missing. A must-fix is introduced or newly exposed by this change, discrete and actionable, something the author would fix, needs no unstated assumption, and names the code it affects. A finding that can't meet this is at most polish.
-- On code changes, check against [references/patterns.md](references/patterns.md) at the levels it marks, and the stack forms in the user's rules where they exist (not on prose or instruction files).
+- On code changes, check against [references/patterns.md](references/patterns.md) at the levels it marks, and the stack forms in the user's rules where they exist; not on prose or instruction files.
 - Cite `file:line` and say what breaks, for whom, and when.
 - No speculative findings, no "could be clearer", no repeats of an earlier round.
 - In later rounds of the same pull request, finding IDs continue from the last round's numbers instead of restarting.

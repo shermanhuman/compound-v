@@ -85,7 +85,7 @@ The full tier's independent pass and the instructions tier's round 1 use "a diff
 
 By default every PR gets one fresh reviewer per round. For high-consequence changes (the production boundary, data handling, money, authentication), the user's rules can switch on persona mode. One review session per PR reads the diff once, and specialist reviewers (`skills/review/references/personas.md`) fork from it in parallel, sharing the cached read. A validator re-checks every must-fix finding, and a fresh final pass closes it out.
 
-In a blind benchmark of 20 real bugs, personas found about twice as many real problems as a single reviewer, at about 3.5× the cost, but caught two fewer of the known bugs (16 against 18), which is why the mode is opt-in.
+In a blind benchmark of 20 real bugs, personas found about twice as many real problems as a single reviewer, at about 3.9× the cost, but caught two fewer of the known bugs (16 against 18), which is why the mode is opt-in.
 
 ## Severity
 
