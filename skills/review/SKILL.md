@@ -44,7 +44,7 @@ Every finding is one or the other, except an instructions-pass *whose choice* fi
 Rules for findings:
 
 - **The evidence rule.** A must-fix quotes the line (`file:line` and the text) and states its precondition: what has to be true for the harm to happen. For something *missing* (no idempotency key, no authorization check, an undelivered plan step), quote the place where it should be and name what's missing. A must-fix is introduced or newly exposed by this change, discrete and actionable, something the author would fix, needs no unstated assumption, and names the code it affects. A finding that can't meet this is at most polish.
-- Check the change against [references/patterns.md](references/patterns.md) at the levels it marks, and the stack forms in the user's rules where they exist.
+- On code changes, check against [references/patterns.md](references/patterns.md) at the levels it marks, and the stack forms in the user's rules where they exist (not on prose or instruction files).
 - Cite `file:line` and say what breaks, for whom, and when.
 - No speculative findings, no "could be clearer", no repeats of an earlier round.
 - In later rounds of the same pull request, finding IDs continue from the last round's numbers instead of restarting.
@@ -62,7 +62,7 @@ Write the report to a file outside the repository (a temp or scratch directory, 
 ```markdown
 ## Compound V review — PR #<n>, round <r>
 
-Reviewed commit `<short SHA>` (<base>..<head>) · Tier: <light | instructions | full> (<the passes run, and why>)
+Reviewed commit `<short SHA>` (<base>..<head>) · compound-v <version> · Tier: <light | instructions | full> (<the passes run, and why>)
 
 ### Strengths
 - Specific things done well, with file:line: as many as are real, none invented.
@@ -79,6 +79,7 @@ Reviewed commit `<short SHA>` (<base>..<head>) · Tier: <light | instructions | 
 | ID | Sev | Location | Issue | Fix |
 |---|---|---|---|---|
 | B1 | ⠿ | [lib/x.ex:42](<blob link at the reviewed SHA>) | ... | ... |
+| M2 | ⠷ unresolved | ... | ... (persona mode: the validator couldn't settle it) | ... |
 
 ### Polish
 | ID | Sev | Location | Issue | Fix |
