@@ -32,13 +32,13 @@ If code-map tools are available (for example `map_find`, `map_entity`, `map_call
 
 ## Checks
 
-Run all ten checks in [references/checks.md](references/checks.md) unless you were given a subset: one named check, the light pass, or the instructions pass. In a full-tier diff that mixes file kinds, run each where it fits: the code checks on code, the instructions pass on agent-instruction files, and the light-pass items on prose. Independent checks can run in parallel where the host allows; ten checks don't need ten subagents.
+Run all ten checks in [references/checks.md](references/checks.md) unless you were given a subset: one named check, the light pass, the instructions pass, or a persona's slice. In a full-tier diff that mixes file kinds, run each where it fits: the code checks on code, the instructions pass on agent-instruction files, and the light-pass items on prose. Independent checks can run in parallel where the host allows; ten checks don't need ten subagents.
 
 ## Must-fix or polish
 
 Every finding is one or the other, except an instructions-pass *whose choice* finding, which is a question for the user.
 
-- **Must-fix**: wrong behaviour for a user, a security problem, data loss or corruption, a silent failure, a broken contract between components, or a rollout or migration that would fail. Severity ⠿ **B** (blocker) or ⠷ **M** (major).
+- **Must-fix**: wrong behaviour for a user, a security problem, data loss or corruption, a silent failure, a broken contract between components, a rollout or migration that would fail, or a violation of a pattern [references/patterns.md](references/patterns.md) marks Required. Severity ⠿ **B** (blocker) or ⠷ **M** (major).
 - **Polish**: everything else — wording, naming, docs, small races with no real effect, test tidiness, style. Severity ⠴ **m** (minor) or ⠠ **n** (nit).
 
 Rules for findings:
@@ -65,7 +65,7 @@ Write the report to a file outside the repository (a temp or scratch directory, 
 Reviewed commit `<short SHA>` (<base>..<head>) · Tier: <light | instructions | full> (<the passes run, and why>)
 
 ### Strengths
-- 3–5 specific things done well, with file:line. Don't invent any.
+- Specific things done well, with file:line: as many as are real, none invented.
 
 ### Coverage
 | # | Check | Result |

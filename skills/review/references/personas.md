@@ -1,6 +1,6 @@
 # Review personas
 
-Each persona runs a slice of the checks in [checks.md](checks.md) on the review bundle. The review session picks every persona whose trigger the diff (or a later fix diff) matches. Depth says how hard the persona works: **deep** personas get the most capable model and effort the user's rules name, **standard** ones a cheaper setting. Where the rules name neither, all personas run at the session's own setting.
+Each persona runs what its row names on the review bundle: numbered checks from [checks.md](checks.md), or, for `api`, `ops` and `ui`, the area the row describes. The review session picks every persona whose trigger the diff (or a later fix diff) matches. Depth says how hard the persona works: **deep** personas get the most capable model and effort the user's rules name, **standard** ones a cheaper setting. Where the rules name neither, all personas run at the session's own setting.
 
 | Persona | Checks | Also looks for | Runs when the diff touches | Depth |
 |---|---|---|---|---|

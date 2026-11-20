@@ -85,7 +85,7 @@ The full tier's independent pass and the instructions tier's round 1 use "a diff
 
 | Group | Severity | Meaning |
 |---|---|---|
-| Must-fix | ⠿ B blocker, ⠷ M major | wrong behaviour, security, data loss, silent failure, broken contract between components, failing rollout or migration |
+| Must-fix | ⠿ B blocker, ⠷ M major | wrong behaviour, security, data loss, silent failure, broken contract between components, failing rollout or migration, a Required pattern broken |
 | Polish | ⠴ m minor, ⠠ n nit | everything else |
 
 Only must-fix findings earn another round.

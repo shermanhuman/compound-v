@@ -16,7 +16,7 @@ A validator checks a reviewer's must-fix findings against the code before anyone
    - **unresolved**: neither can be shown from the code.
 3. On a **protected subject** (data loss or corruption, authentication or authorization, injection, secrets, concurrency, public contracts between components, money), reject only with refuting evidence. Doubt alone leaves the finding unresolved, and it stays.
 
-Spend about five tool calls per finding. Don't change code, and don't re-rank severity: a confirmed must-fix stays a must-fix.
+Read only what the claim depends on and stop once the verdict is clear; a finding the code can't settle that way is unresolved. Don't change code, and don't re-rank severity: a confirmed must-fix stays a must-fix.
 
 ## Output
 
