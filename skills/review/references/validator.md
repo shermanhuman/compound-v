@@ -13,8 +13,8 @@ A validator checks a reviewer's must-fix findings against the code before anyone
 2. Decide:
    - **confirmed**: the code at the reviewed commit has the problem as stated, under the stated precondition;
    - **rejected**: the code shows it doesn't. Cite the refuting evidence (file:line and what it shows);
-   - **unresolved**: neither can be shown from the code.
-3. On a **protected subject** (data loss or corruption, authentication or authorization, injection, secrets, concurrency, public contracts between components, money), reject only with refuting evidence. Doubt alone leaves the finding unresolved, and it stays.
+   - **unresolved**: neither can be shown from the code. It stays in the report as a must-fix, marked unresolved, for the author to settle.
+3. On a **protected subject** (data loss or corruption, authentication or authorization, injection, secrets, concurrency, public contracts between components, money), doubt alone is never grounds to reject.
 
 Read only what the claim depends on and stop once the verdict is clear; a finding the code can't settle that way is unresolved. Don't change code, and don't re-rank severity: a confirmed must-fix stays a must-fix.
 

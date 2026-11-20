@@ -81,6 +81,12 @@ In Claude Code, invoke a skill as `/compound-v:next`; in Codex, as `$compound-v:
 
 The full tier's independent pass and the instructions tier's round 1 use "a different model when one is configured". Name it in your own rules (`AGENTS.md`, `CLAUDE.md`, or a personal plugin) along with the command to run it, for example a Codex model via `codex exec` for a Claude user, or Claude via `claude -p` for a Codex user. Without one, the full tier uses the host's built-in review, and failing that a fresh full pass; the instructions tier uses a second fresh reviewer.
 
+## Persona mode (opt-in)
+
+By default every PR gets one fresh reviewer per round. For high-consequence changes (the production boundary, data handling, money, authentication), the user's rules can switch on persona mode. One review session per PR reads the diff once, and specialist reviewers (`references/personas.md`) fork from it in parallel, sharing the cached read. A validator re-checks every must-fix finding, and a fresh final pass closes it out.
+
+In a blind benchmark of 20 real bugs, personas found about twice as many real problems as a single reviewer, at about 3.5× the cost. They caught no more of the known bugs, which is why the mode is opt-in.
+
 ## Severity
 
 | Group | Severity | Meaning |

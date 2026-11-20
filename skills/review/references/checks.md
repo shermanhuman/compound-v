@@ -27,7 +27,7 @@ Check for race conditions. Shared state needs guards: mutexes, channels, or atom
 Simulate partial failure: if step 3 of 5 fails, are steps 1-2 cleaned up or left dangling?
 Consider external failures: what happens when the API/DB/filesystem is unavailable or slow?
 Watch for type coercion traps: charset, timezone (DST, leap years, leap seconds), integer overflow for the language version in use.
-Check for retry/recovery: transient failures (network timeouts, 503s) should be retried where appropriate, and every retry must be safe: the operation is idempotent or carries a stable idempotency key, and an ambiguous failure (a timeout after sending) is reconciled rather than resent. See patterns D3, D5 and D8 in [patterns.md](patterns.md).
+Check for retry/recovery: transient failures (network timeouts, 503s) should be retried where appropriate, and every retry must be safe: the operation is idempotent or carries a stable idempotency key, and an ambiguous failure (a timeout after sending) is replayed only under a still-valid idempotency key, otherwise reconciled before acting again. See patterns D3, D5 and D8 in [patterns.md](patterns.md).
 
 ---
 

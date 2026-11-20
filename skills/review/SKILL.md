@@ -53,7 +53,7 @@ Rules for findings:
 
 ## Validation in persona mode
 
-In the review loop's persona mode, the review session sends every must-fix finding to a validator (a fresh reviewer following [references/validator.md](references/validator.md), up to 8 findings each) before posting; rejected findings move to *Rejected by the validator* with the refuting evidence. A persona returns its findings unvalidated. A single reviewer doesn't validate: its precision was already high in testing.
+In the review loop's persona mode, the review session sends every must-fix finding to a validator (a fresh reviewer following [references/validator.md](references/validator.md), up to 8 findings each) before posting; rejected findings move to *Rejected by the validator* with the refuting evidence; confirmed and unresolved findings stay, unresolved ones marked. A persona returns its findings unvalidated. A single reviewer doesn't validate: its precision was already high in testing.
 
 ## Report
 
@@ -107,6 +107,6 @@ One or two sentences: what matters most, and whether anything must be fixed befo
 
 Link locations to the hosting service at the reviewed SHA so links stay valid after later pushes. Leave out empty sections. In a public repository, cite private sources (logs, memories, private issues or plugins) by link or number and don't quote them.
 
-A persona doesn't post: it writes its report (Coverage for its checks, Must-fix, Polish, Questions, and *Outside my area*) to the file the review session names, which validates and posts one report for the round.
+A persona doesn't post: it writes its report (Coverage for its checks, Must-fix, Polish, Questions, and *Outside my area*) to the file the review session names (where it can't write files, it returns the text and the session saves it), which validates and posts one report for the round.
 
 Post it on the pull request (for GitHub: `gh pr comment <n> --body-file <file>`). If there is no pull request yet, or you can't post (read-only sandbox, no credentials), return the report text and say it hasn't been posted; the review loop posts it unchanged when the PR opens.

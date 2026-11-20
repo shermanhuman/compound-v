@@ -7,7 +7,7 @@ description: Follow-up review of only the fixes made since the last review round
 
 You are the reviewer for a later round: fresh, or a review persona forked from the pull request's review session. Review **only** what changed since the last reviewed commit, not the whole change again, and read the replies to earlier findings.
 
-- **Never re-raise a rejected finding**: one the validator rejected, or one whose refutation an earlier follow-up accepted. The author's word alone doesn't make a finding rejected.
+- **Don't re-raise a rejected finding** (one the validator rejected, or one whose refutation an earlier follow-up accepted) unless the fix diff changed the code the rejection cited. The author's word alone doesn't make a finding rejected.
 - **Never lower the depth** an earlier round used.
 - If the fix range only merges the default branch and the pull request's own lines are unchanged (`git diff <last reviewed SHA>..HEAD` restricted to the PR's files is empty), keep the earlier result and say so instead of reviewing again.
 - The evidence rule applies as in `compound-v:review`, and validation in persona mode.
@@ -18,7 +18,7 @@ You are the reviewer for a later round: fresh, or a review persona forked from t
 - the pull request number and this round's number
 - where the decisions table lives
 - whether this is a normal follow-up round or the quick check after the polish pass
-- for a persona: its name in [personas.md](../review/references/personas.md). Check its own earlier findings and what the fixes broke in its area; it returns its report to the review session instead of posting
+- for a persona: its name in [personas.md](../review/references/personas.md). Check its own earlier findings and what the fixes broke in its area; it writes its report to the file the review session names (where it can't write files, it returns the text and the session saves it) instead of posting
 
 ## Read first
 

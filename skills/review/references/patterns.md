@@ -1,6 +1,6 @@
 # Preferred patterns
 
-The reviewer checks every change against these, at the level marked. **Required**: a violation is a must-fix, under the evidence rule (quote the line, state the precondition). **Recommended**: a violation is polish. Stack-specific forms (Ecto, Oban, Go, Rust) live in the user's own rules; apply them where they exist.
+The reviewer checks every change against these, at the level marked. **Required**: a violation is a must-fix, under the evidence rule (quote the line, state the precondition). **Recommended**: a violation is polish. Stack-specific forms live in the user's own rules; apply them where they exist. The list applies to code changes only, not to prose or instruction files.
 
 Flag a pattern only where the change introduces or newly exposes the problem, and skip anything that doesn't apply (a one-off local script needs no idempotency key).
 
@@ -12,10 +12,10 @@ Flag a pattern only where the change introduces or newly exposes the problem, an
 | D2 | **A timeout on every external call**, shorter than its caller's deadline | Required | An HTTP, database or RPC call relying on a library default, or with none |
 | D3 | **Stable idempotency keys** on outbound side effects (charges, messages, emails, CRM writes), built from durable state; where the vendor has none, record the external ID first and look it up before re-creating | Required | A key generated per attempt; a retried create with no key |
 | D4 | **Jobs, consumers and scripts are safe to run twice**, including after stopping halfway | Required | A job that inserts or sends without checking what an earlier attempt did |
-| D5 | **A retry is safe only when the outcome is known.** After a timeout that may have succeeded, reconcile; never resend blindly | Required | Retrying a non-idempotent call after an ambiguous failure |
+| D5 | **Resend after an unknown outcome only when replay is idempotent.** After a timeout that may have succeeded, either replay under the same still-valid idempotency key (the provider returns the first result), or reconcile before acting again | Required | Resending a call with no idempotency protection after an ambiguous failure |
 | D6 | **Webhooks: verify the raw body, store the receipt under a unique event ID and enqueue the work in one transaction, answer fast**, and never depend on delivery order | Required | Business logic or outbound calls inside the request; dedupe by read-then-insert; verifying re-encoded JSON |
 | D7 | **No external call inside a database transaction.** Enqueue the effect as a job in the same transaction instead | Required | A send, HTTP call, process spawn or broadcast inside a transaction block |
-| D8 | **Retry only what's retryable** (timeouts, connection errors, 408/429/5xx), with backoff and jitter, capped, in one layer; a 429 waits for `Retry-After` | Required | Retries stacked across layers; a fixed sleep loop; retrying 4xx |
+| D8 | **Retry only what's retryable** (timeouts, connection errors, 408/429/5xx), with backoff and jitter, capped, in one layer; a 429 waits for `Retry-After` | Required | Retries stacked across layers; a fixed sleep loop; retrying non-retryable 4xx responses |
 | D9 | **Uniqueness in the database**: a unique index (partial where needed), with the conflict handled | Required | An existence check followed by an insert |
 | D10 | **Job uniqueness that fits**: the keys, period and states that define a duplicate are explicit, and jobs that must not collapse don't share a key | Recommended | A bare `unique: true`; one key shared by different kinds of work |
 | D11 | **Guard concurrent read-modify-write**: atomic updates, a row lock inside a transaction, or optimistic locking; claim work with skip-locked; one lock order; re-check state after locking | Required | Read, compute, write back with nothing in between |
@@ -41,7 +41,7 @@ Circuit breakers and sagas are not checked: behind a job queue, per-vendor queue
 |---|---|---|
 | S1 | **One place for each fact (DRY).** Duplicated knowledge (a rule, constant or schema in two places) is the finding, not similar-looking lines | Required |
 | S2 | **The simplest design that meets the requirement (KISS).** A more complex design names the requirement that needs it | Required |
-| S3 | **Nothing for requirements nobody stated (YAGNI).** No option without a caller, no abstraction with one implementation | Required |
+| S3 | **Nothing for requirements nobody stated (YAGNI).** No option without a caller; no abstraction with one implementation, except at a boundary S7 allows | Required |
 | S4 | One responsibility per module, context or package; the web layer holds no business rules | Recommended |
 | S5 | Talk only to direct collaborators: one context doesn't query another's tables; it calls its public functions | Recommended |
 | S6 | High cohesion, low coupling: no dependency cycles between contexts or packages | Recommended |
