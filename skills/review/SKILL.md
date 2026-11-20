@@ -51,9 +51,9 @@ Rules for findings:
 - Logged decisions in the decisions table are settled. Reopen one only as must-fix, stating the harm.
 - After each finding, search for the same problem elsewhere in the change and the codebase and add those locations.
 
-## Validate must-fix findings
+## Validation in persona mode
 
-Before the report is posted, every must-fix finding goes to a validator: a fresh reviewer that didn't write it, following [references/validator.md](references/validator.md), up to 8 findings per validator. Confirmed and unresolved findings stay; rejected ones move to *Rejected by the validator* with the refuting evidence. When you're running as one persona, the review session validates; return your findings unvalidated.
+In the review loop's persona mode, the review session sends every must-fix finding to a validator (a fresh reviewer following [references/validator.md](references/validator.md), up to 8 findings each) before posting; rejected findings move to *Rejected by the validator* with the refuting evidence. A persona returns its findings unvalidated. A single reviewer doesn't validate: its precision was already high in testing.
 
 ## Report
 
@@ -85,7 +85,7 @@ Reviewed commit `<short SHA>` (<base>..<head>) · Tier: <light | instructions | 
 |---|---|---|---|---|
 | m1 | ⠴ | ... | ... | ... |
 
-### Rejected by the validator
+### Rejected by the validator (persona mode only)
 | ID | Finding | Evidence it's not a problem |
 |---|---|---|
 | M3 | ... | ... |

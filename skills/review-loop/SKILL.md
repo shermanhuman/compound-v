@@ -1,6 +1,6 @@
 ---
 name: review-loop
-description: Runs the review rounds for a pull request or a plan — who reviews when, how findings are validated and fixes verified, the optional persona mode, when to stop, and how every round is recorded on the PR or issue. Use before opening a pull request, after pushing new commits to one, when asked to run or continue a review round, and after finishing a plan.
+description: Runs the review rounds for a pull request or a plan — who reviews when, how fixes are verified, the opt-in persona mode, when to stop, and how every round is recorded on the PR or issue. Use before opening a pull request, after pushing new commits to one, when asked to run or continue a review round, and after finishing a plan.
 ---
 
 # Review loop
@@ -38,8 +38,8 @@ Open the pull request as a draft before round 1, so each round is posted on it a
 
 Full tier:
 
-1. **Round 1** — a fresh reviewer runs `compound-v:review` on the full diff against the default branch, and a validator checks its must-fix findings (the review skill says how). If the user asked for a second opinion from another model, it runs `compound-v:review` too, in parallel; give it a prefix for its finding IDs (for example `A-M1`) so the two reports never share an ID.
-2. **Fix** every must-fix finding (and that round's polish if it's cheap; leave the rest for the polish pass). Then a fresh reviewer runs `compound-v:followup` on the fix diff (`<last reviewed SHA>..HEAD`), with its must-fix findings validated the same way. Repeat while follow-ups find must-fix issues.
+1. **Round 1** — a fresh reviewer runs `compound-v:review` on the full diff against the default branch. If the user asked for a second opinion from another model, it runs `compound-v:review` too, in parallel; give it a prefix for its finding IDs (for example `A-M1`) so the two reports never share an ID.
+2. **Fix** every must-fix finding (and that round's polish if it's cheap; leave the rest for the polish pass). Then a fresh reviewer runs `compound-v:followup` on the fix diff (`<last reviewed SHA>..HEAD`). Repeat while follow-ups find must-fix issues.
 3. **Independent pass** — once a round has no must-fix findings, one full-diff pass by the configured second voice:
    - a different model when one is configured (the user's rules name it and how to run it), running `compound-v:review`;
    - otherwise the host's built-in review: in Claude Code, `/code-review high`, plus `/security-review` when the change touches authentication, user input, secrets or infrastructure; in Codex, `codex review`;
@@ -48,7 +48,7 @@ Full tier:
    Say on the PR which one ran, and why if it fell back. Its must-fix findings go back to step 2.
 4. **Polish pass** — fix all open polish in one go, small fixes only (a redesign now is what makes the next round find new problems). Run the tests, then a quick `compound-v:followup` of only the polish diff. New polish it raises is noted, not fixed; a must-fix sends you back to step 2.
 
-**Persona mode** runs when the user's rules switch it on. Its entry gate: a diff that touches none of the deep areas (`security`, `api`, `schema`, `instructions`; `correctness`, `design` and `tests` run on any code and don't count) and is under the size limit the user's rules set gets the single-reviewer loop above instead.
+**Persona mode** runs when the user's rules switch it on, typically for high-consequence changes (the production boundary, data handling, money, authentication), where finding more is worth several times the cost. Its entry gate: a diff that touches none of the deep areas (`security`, `api`, `schema`, `instructions`; `correctness`, `design` and `tests` run on any code and don't count) and is under the size limit the user's rules set gets the single-reviewer loop above instead.
 
 
 1. **Read once.** A fresh review session builds one bundle for the pull request: the diff hunks with enough surrounding lines to follow them (whole files only where hunks aren't enough), code-map facts for the changed functions when a map covers the repository (callers, callees, routes, schema), the git history and earlier review comments on the touched lines, the repository's rules and the decisions table. It leaves out generated, vendored and lock files, and lists them. It then picks every persona in [personas.md](../review/references/personas.md) whose trigger the diff matches, and the round comment says which and why. It runs where the session keeps a transcript and can be resumed, and names itself and every reviewer `<repo>#<n> r<round> <role>` in their first prompt, so cost can be measured.
