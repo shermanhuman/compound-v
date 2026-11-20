@@ -1,6 +1,5 @@
-## Review checks (run in parallel)
+## Review checks
 
-Each check is independent; run them concurrently where the host provides parallel tool calls or subagents.
 Checks marked 🔍 call for research against the versions the project actually pins (`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles).
 
 ---
@@ -28,7 +27,7 @@ Check for race conditions. Shared state needs guards: mutexes, channels, or atom
 Simulate partial failure: if step 3 of 5 fails, are steps 1-2 cleaned up or left dangling?
 Consider external failures: what happens when the API/DB/filesystem is unavailable or slow?
 Watch for type coercion traps: charset, timezone (DST, leap years, leap seconds), integer overflow for the language version in use.
-Check for retry/recovery: transient failures (network timeouts, 503s) should have retry mechanisms where appropriate.
+Check for retry/recovery: transient failures (network timeouts, 503s) should be retried where appropriate, and every retry must be safe: the operation is idempotent or carries a stable idempotency key, and an ambiguous failure (a timeout after sending) is replayed only when the operation is idempotent (naturally, or under a still-valid idempotency key), otherwise reconciled before acting again. See patterns D3, D5 and D8 in [patterns.md](patterns.md).
 
 ---
 
@@ -56,7 +55,6 @@ Look for unnecessary allocations or copies in hot paths. Eliminate them.
 Check timeouts on network/DB calls, bounded reads on untrusted input, and pagination on list endpoints. Report missing controls where the operation needs them; a local file read does not require pagination.
 Check for blocking operations in async/concurrent contexts. They stall everything.
 Flag large payloads loaded fully into memory. Use streaming where the data size is unbounded.
-Look for caching opportunities: repeated expensive computations or fetches that could be cached.
 Check database queries for missing indexes. Queries on unindexed columns are silent performance killers.
 
 ---
@@ -96,12 +94,8 @@ Handle errors the language's way: Go returns errors, Elixir uses ok/error tuples
 
 ### 🔁 7. `dry` — single point of truth
 
-Apply DRY (Single Point of Truth): every piece of knowledge should have one unambiguous, authoritative representation in the codebase.
-Identify repeated code — same logic in multiple functions, same constant in multiple files.
-Extract shared logic into a reusable function, module, or variable.
-Call the reusable unit instead of duplicating code. Update logic in one place — changes reflect everywhere.
-Respect the Rule of Three: below 3 occurrences, duplication may be acceptable. Don't abstract too early.
-Check for copy-pasted code with minor variations. Parameterize the differences.
+Find duplicated knowledge: a rule, constant, schema or policy stated in more than one place, so that changing one leaves the other wrong (pattern S1 in [patterns.md](patterns.md)).
+Similar-looking lines are not duplication. Below three occurrences of merely similar code, leave it (Rule of Three).
 
 ---
 
@@ -153,7 +147,7 @@ Run this instead of the ten checks when the review loop picks the light tier, an
 3. **Nothing else still says the old thing.** Before writing findings, search the whole repository, unconditionally, for statements the change made stale (`git grep` for the old names, commands and phrasing). Report every hit as part of the same finding.
 4. **`docs`**, as in check 10.
 
-The coverage table lists these four and marks the ten code checks "Not assessed — light review".
+The coverage table lists these four checks only.
 
 ## Instructions pass (agent-instruction files)
 
