@@ -89,7 +89,7 @@ A plan with no critical questions that the user's rules don't require approval f
 
 ## The plan's home
 
-When the project uses an issue tracker, every plan gets an issue: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land. Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval.
+A patch's short note goes in its pull request's description, with no issue of its own and no plan review; the PR's review covers it. For anything bigger, when the project uses an issue tracker, every plan gets an issue: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land. Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval.
 
 ## Carrying it out
 
