@@ -20,7 +20,7 @@ Split the work into stages (phases, waves, a pilot, a first version and then the
 - a dependency on another repository's release;
 - the user asking for it.
 
-"Lower risk" or "learn first" isn't a reason on its own; name the specific risk a single delivery would run.
+"Lower risk" or "learn first" isn't a reason on its own; name the specific risk a single delivery would run. Moving part of the goal to Out of scope is a stage too.
 
 ## Sections
 
