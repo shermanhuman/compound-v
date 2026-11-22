@@ -32,6 +32,18 @@ The PR's own version-line bump (the version line in any manifest: `plugin.json`,
 
 **The light loop.** A fresh reviewer runs the *light pass* in [checks.md](../review/references/checks.md). Fix its polish and post fix notes; that's the whole loop, with no independent pass and no polish or quick-check cycle. A must-fix finding gets a `compound-v:followup` round on its fix, repeated while follow-ups find must-fix issues. If a finding shows the diff wasn't prose-only, the PR moves to the instructions or full tier from there. Merging the default branch in, or a CI fix, needs no round unless it touches something outside the light list.
 
+## Before any round: the author's check
+
+Before asking for any review, check your own work, since a reviewer's round costs far more than these do:
+- every factual claim in the change quotes its source;
+- every command the change recommends, and every test it adds, has been run;
+- every rule restated from another document is cited instead;
+- when a reviewer left a reproduction or fuzz script on an earlier round, rerun it against the fix.
+
+## Reviews don't block
+
+While a review runs, keep working: on the next step, or on another goal. Start both voices of a round together, and fix the first report's findings while the other finishes. Only must-fix findings earn another round; polish is fixed and noted in the fix notes, with no re-review unless a polish fix changes behaviour.
+
 ## Pull requests
 
 Open the pull request as a draft before round 1, so each round is posted on it as it lands, and mark it ready only after the final round has no must-fix findings.
@@ -46,7 +58,7 @@ Full tier:
    - otherwise a fresh `compound-v:review` pass by yourself, re-reading the full diff from the start.
 
    Say on the PR which one ran, and why if it fell back. Its must-fix findings go back to step 2.
-4. **Polish pass** — fix all open polish in one go, small fixes only (a redesign now is what makes the next round find new problems). Run the tests, then a quick `compound-v:followup` of only the polish diff. New polish it raises is noted, not fixed; a must-fix sends you back to step 2.
+4. **Polish pass** — fix all open polish in one go, small fixes only (a redesign now is what makes the next round find new problems). Run the tests. Only if a polish fix changed behaviour, run a quick `compound-v:followup` of that diff; new polish it raises is noted, not fixed, and a must-fix sends you back to step 2.
 
 **Persona mode** runs when the user's rules switch it on, typically for high-consequence changes (the production boundary, data handling, money, authentication), where finding more is worth several times the cost. Its entry gate: a diff that touches none of the deep areas (`security`, `api`, `schema`, `instructions`; `correctness`, `design` and `tests` run on any code and don't count) and is under the size limit the user's rules set gets the single-reviewer loop above instead. With no size limit set, only the deep-area test applies.
 
@@ -61,18 +73,18 @@ Full tier:
    - otherwise a fresh `compound-v:review` pass by yourself, re-reading the full diff from the start.
 
    Say on the PR which second voice ran, and why if it fell back. Validate as in step 3, and drop repeats of rejected findings as `compound-v:followup` defines them. Must-fix findings go back to step 4, to the persona that owns the area.
-6. **Polish pass** — fix all open polish in one go, small fixes only (a redesign now is what makes the next round find new problems). Run the tests, then a quick `compound-v:followup` of only the polish diff. New polish it raises is noted, not fixed; a must-fix sends you back to step 4.
+6. **Polish pass** — fix all open polish in one go, small fixes only (a redesign now is what makes the next round find new problems). Run the tests. Only if a polish fix changed behaviour, run a quick `compound-v:followup` of that diff; new polish it raises is noted, not fixed, and a must-fix sends you back to step 4.
 
 Where the host can't run subagents in parallel, run the personas one after another in the same order; the steps don't change.
 
-**Stop rule.** Keep going while each round's must-fix findings are new ground. In persona mode, all the personas of one round count as one round, and the final pass as one more. When `compound-v:followup` reports **spinning** — a fix reversing an earlier fix or a logged decision, the same class of finding recurring, or the same lines churning (in the instructions tier, one line or clause rewritten in three rounds) — stop and bring the user the design question instead of patching again. As a cost guard, stop and report after six rounds on one PR regardless. The stop rule and the cost guard apply to every tier.
+**Stop rule.** Keep going while each round's must-fix findings are new ground. In persona mode, all the personas of one round count as one round, and the final pass as one more. When `compound-v:followup` reports **spinning** — a fix reversing an earlier fix or a logged decision, the same class of finding recurring, or the same lines churning (in the instructions tier, one line or clause rewritten in three rounds) — stop and bring the user the design question instead of patching again. Reviewer runs per PR are also capped by the goal's type (`compound-v:plan`): patch 2, change 3, feature and product 4, plus the second voice where the tier calls for it. At the cap with must-fix findings still open, or after three rounds whose fixes didn't hold, stop and bring it to the user. As a cost guard, stop and report after six rounds on one PR regardless. The stop rule and the cost guard apply to every tier.
 
 A commit that only changes the version number needs no round of its own. Merging the default branch into the branch, or a CI fix, gets a `compound-v:followup` round, which keeps the earlier result when the PR's own lines didn't change.
 
 ## Before acting on any round
 
 1. List every review that was requested: your subagents, a second-opinion model, built-in reviews, and any the user ran.
-2. Wait for the ones still running — in the background, never a foreground polling loop.
+2. Don't block on the ones still running: fix what has arrived, keep working, and read each later report as it lands, before posting the round's fix notes. Wait in the background, never in a foreground polling loop.
 3. Read everything posted on the pull request **and** the plan issue since you last read them — other reviewers post there too. On a pull request that means all three kinds of record, every page: conversation comments, review summaries and inline review comments. For GitHub:
 
    ```bash

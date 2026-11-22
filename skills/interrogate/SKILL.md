@@ -5,7 +5,7 @@ description: Settle every open decision in a plan, design or idea in one round t
 
 # Interrogate
 
-Settle every decision in the plan in one round trip. The user's time is the scarce resource: do all the research before asking, then ask everything at once. Never drip questions one after another.
+Settle every decision in the plan in one round trip. The user's time is the scarce resource: do all the research before asking, then ask everything at once. Never drip questions one after another. (A goal's intent is the one exception: it's settled in conversation, one question at a time, before planning; see `compound-v:plan`'s *Intent first*.)
 
 ## Build the packet
 
@@ -14,7 +14,7 @@ Settle every decision in the plan in one round trip. The user's time is the scar
 3. **Sort.**
    - **Mechanical** (versions, file layout, check commands): record in the table, don't show.
    - **Clear calls:** the evidence fits in one line, the alternatives are clearly worse, it's cheap to undo, it touches nothing the user sees (product direction, names, wording, spend, security, privacy), it conflicts with no user decision, and what it depends on is settled. An `ask` row qualifies only when a fact found since makes it clear-cut. These go on the packet's "decided unless you object" list.
-   - **Decisions:** everything else. When in doubt, it's a decision.
+   - **Decisions:** everything else. When in doubt, it's a decision. Mark each **critical** (the plan can't be right without it, or its answer can't be undone) or **optional** (it carries your default, the user may skip it, and work proceeds on the default). Critical ones come first.
 4. **Make each decision concrete.**
    - **The question** in one sentence, and what it changes.
    - **Show, don't tell.** Put the thing itself in front of the user: the mock or screenshot, the diagram, the diff or config, example output under each option, the numbers. Describe only what can't be shown.
