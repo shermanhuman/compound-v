@@ -24,7 +24,7 @@ Before planning a new goal, settle what the user wants, in conversation:
 
    Then ask "Shall I start planning?", unless the user already said to plan.
 
-The restatement goes at the top of the plan's issue (*The plan's home*), above the plan, and stays there when the plan is revised. It is the goal's anchor. Re-read it before each review round and before calling the work done; reviewers check the work against it. A request that already says what's wanted and what done looks like (a clear bug report, most patches) skips the questions and the closing ask: post the restatement and start.
+The restatement goes at the top of the plan's issue (*The plan's home*; for a patch, its PR description), above the plan, and stays there when the plan is revised. It is the goal's anchor. Re-read it before each review round and before calling the work done; reviewers check the work against it. A request that already says what's wanted and what done looks like (a clear bug report, most patches) skips the questions and the closing ask: post the restatement and start.
 
 ## Goal types
 
@@ -83,7 +83,7 @@ Ask only what the code, the data or a sensible default can't answer. Intent is a
 - **Critical:** what the plan can't be right without, and anything whose answer can't be undone (data deleted, a message sent, money spent, a public API released). These are answered before work starts.
 - **Optional:** each with your default and its reason. The user can skip them all, and you proceed on the defaults.
 
-A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default on the plan's issue and keep going; if it can't be undone (data deleted, a message sent, money spent, a public API released), ask, and carry on with the work it doesn't touch.
+A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default on the plan's issue (a patch's PR) and keep going; otherwise, and always when it can't be undone, ask, and carry on with the work it doesn't touch.
 
 `compound-v:interrogate` is the procedure: use it whenever a plan has open decisions before approval, or the user asks to stress-test one.
 
