@@ -35,14 +35,14 @@ The PR's own version-line bump (the version line in any manifest: `plugin.json`,
 ## Before any round: the author's check
 
 Before asking for any review, check your own work, since a reviewer's round costs far more than these do:
-- every factual claim in the change quotes its source;
-- every command the change recommends, and every test it adds, has been run;
+- every factual claim in the change has a source you checked (the PR description or fix notes say where; not the changed text itself);
+- every test it adds has been run, and every command it recommends has been tried as far as is safe: read-only commands run, anything that changes state (a deploy, delete, uninstall, publish) only with `--help` or `--dry-run`, as the light pass says;
 - every rule restated from another document is cited instead;
 - when a reviewer left a reproduction or fuzz script on an earlier round, rerun it against the fix.
 
 ## Reviews don't block
 
-While a review runs, keep working: on the next step, or on another goal. Start both voices of a round together, and fix the first report's findings while the other finishes. Only must-fix findings earn another round; polish is fixed and noted in the fix notes, with no re-review unless a polish fix changes behaviour.
+While a review runs, keep working: on the next step, or on another goal. **Pin each round to a commit:** push, record the head SHA, and give it to every reviewer, who reads that snapshot (`git show <sha>:<path>`, or a worktree at it), never your live worktree, so your edits during the round can't change what they read. Start both voices together, and fix the first report's findings while the other finishes, except any fix a known question for the user touches. Only must-fix findings earn another round; polish is fixed and noted in the fix notes, with no re-review unless a polish fix changes behaviour: for code, what it does; for instruction files, what an agent following them would do.
 
 ## Pull requests
 
@@ -84,7 +84,7 @@ A commit that only changes the version number needs no round of its own. Merging
 ## Before acting on any round
 
 1. List every review that was requested: your subagents, a second-opinion model, built-in reviews, and any the user ran.
-2. Don't block on the ones still running: take each report through steps 3 to 6 as it lands, and keep working in between. A report with *Questions for the user* waits for the rest, so the round sends one packet before its fixes (step 5). Post the round's fix notes after the last report. Wait in the background, never in a foreground polling loop.
+2. Don't block on the ones still running: take each report through steps 3 to 6 as it lands, and keep working in between. Questions for the user from any report are held until every report is in, then sent as one packet (step 5). When a later report raises a question, recheck the fixes already made against it, and revert or hold any it touches. Post the round's fix notes after the last report. Wait in the background, never in a foreground polling loop.
 3. Read everything posted on the pull request **and** the plan issue since you last read them — other reviewers post there too. On a pull request that means all three kinds of record, every page: conversation comments, review summaries and inline review comments. For GitHub:
 
    ```bash
@@ -95,7 +95,7 @@ A commit that only changes the version number needs no round of its own. Merging
 
    Without `--paginate` the API returns only the first 30 of each, and `gh pr view --comments` leaves out inline comments, so later findings go missing without any error.
 4. Treat each finding as a hypothesis: find the line of code or the read-only query that would prove it wrong, then adopt, adapt or refute it with that evidence.
-5. Findings under *Questions for the user* aren't patched, in any tier: send them in one decision packet before fixing this round's findings, and record each answer in the decisions table.
+5. Findings under *Questions for the user* aren't patched, in any tier: send them in one decision packet per round, hold the fixes they touch until the answers come, and record each answer in the decisions table.
 6. Fix or refute every valid must-fix finding (only the user may waive one).
 
 ## Record every round on the PR
