@@ -11,6 +11,14 @@ This is a format, not a workflow: use it inside whatever planning mode the host 
 
 Cut what doesn't earn its place: duplicated steps, anything there "just in case", anything more complex than the problem needs. Put each idea you rejected in the decisions table with the reason, so nobody re-proposes it.
 
+## Deliver the goal whole
+
+A plan delivers its goal whole: one plan, built to done, one pull request per repository. Each stage costs another plan, another review loop and another wait on the user.
+
+Split the work into stages (phases, waves, a pilot, a first version and then the rest) only when the user asks or something forces it, such as a migration that must ship before the code that uses it, and record why in the decisions table.
+
+"Lower risk" or "learn first" isn't a reason on its own; name the specific risk a single delivery would run. Moving part of the goal to Out of scope is a stage too.
+
 ## Sections
 
 1. **Goal** — one sentence that defines success.

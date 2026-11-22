@@ -19,10 +19,10 @@ Read code from the default branch (`git fetch`, then `git show origin/<default>:
 ## Check
 
 1. **Claims hold.** Every `file:line`, count, quoted behaviour, "this already works" and "X is unused" claim — verify it against the code. Where the plan relies on production data or performance, check it with read-only queries when you have access; keep them light. Mark each claim verified or refuted, with evidence. If code-map tools are available (`map_find`, `map_entity`, `map_callers`, `map_impact`), use them for where things are defined and who calls them, and re-check any location they mark as changed since their snapshot against the code you're reviewing; otherwise grep.
-2. **Scope.** The plan delivers the stated goal and the request, nothing important is silently dropped, and nothing extra crept in. Deferred items have a home (an issue), not just a mention.
-3. **Decisions.** Accepted and rejected rows in the decisions table are settled; reopen one only as must-fix, stating the harm. Flag open `ask` rows the plan proceeds without.
-4. **Design traps.** Silent failures, wrong defaults, behaviour that changes for existing users without saying so, a simpler option the plan missed, building more than the problem needs.
-5. **Rollout.** Step order, what's broken between steps, migrations and their order relative to deploys, version bumps, one PR per repository where that's the rule, and whether rollback is real.
+2. **Scope.** The plan delivers the stated goal and the request, nothing important is silently dropped, and nothing extra crept in. Deferred items have a home (an issue), not just a mention; a deferred part of the goal or the request is a stage (check 4).
+3. **Decisions.** Accepted and rejected rows in the decisions table are settled; reopen one only as must-fix, stating the harm. The exception is a staging row the user didn't decide (check 4). Flag open `ask` rows the plan proceeds without.
+4. **Design traps.** Silent failures, wrong defaults, behaviour that changes for existing users without saying so, a simpler option the plan missed, building more than the problem needs. A stage that nothing forces is polish, even where the decisions table accepts it, unless the user decided that row; the planner removes it or records what forces it (see `compound-v:plan`'s *Deliver the goal whole*).
+5. **Rollout.** Step order, what's broken between steps, migrations and their order relative to deploys, version bumps, one PR per repository unless a recorded reason forces a stage, and whether rollback is real. Don't ask for a stage unless you name the risk that forces it.
 6. **Proof.** Each step's check can actually fail; tests sit at the right layer (see `compound-v:testing`); user-facing changes have an end-to-end check; success is measurable.
 
 ## Must-fix or polish
