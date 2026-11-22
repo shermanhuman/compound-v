@@ -67,7 +67,7 @@ Sessions that span several repositories (started from a parent folder) don't pic
 | Skill | Use |
 |---|---|
 | `compound-v:next` | Recommend the next project from open issues and pull requests, then offer to plan it |
-| `compound-v:plan` | Format and habits for any implementation plan, including in plan mode |
+| `compound-v:plan` | How a goal becomes a plan: the intent conversation, goal types and the plan format, including in plan mode |
 | `compound-v:interrogate` | Settle a plan's open decisions in one packet: every decision at once with options shown and recommendations pre-filled, every answer in the decisions table |
 | `compound-v:plan-review` | Fresh, critical review of a finished plan; verdict approve / approve with changes / rework |
 | `compound-v:review` | Review of a full diff: ten code checks, or the light or instructions pass; Must-fix / Polish; posted on the PR |

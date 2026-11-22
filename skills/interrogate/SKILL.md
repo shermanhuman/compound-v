@@ -24,7 +24,7 @@ Settle every decision in the plan in one round trip. The user's time is the scar
 
 ## Present it once
 
-The packet has a top (the goal, the plan in a few lines, the count such as "6 decisions, 9 decided unless you object", a link to the full plan), the decisions numbered from 1 in order of consequence, the clear calls numbered on from there with one line of evidence each, and how to answer: "Reply `ok` to take every recommendation, or only your changes: `2B, 5C, 7: <note>`, `4: more` for more discussion, `12: no` to object to a clear call."
+The packet has a top (the goal, the plan in a few lines, the count such as "2 critical and 4 optional decisions, 9 decided unless you object", a link to the full plan), the decisions numbered from 1, critical first and then optional, each in order of consequence, the clear calls numbered on from there with one line of evidence each, and how to answer: "Reply `ok` to take every recommendation, or only your changes: `2B, 5C, 7: <note>`, `4: more` for more discussion, `12: no` to object to a clear call."
 
 Put the packet on a web page, never only in the chat:
 
@@ -35,7 +35,7 @@ Put the packet on a web page, never only in the chat:
 ## After the answers
 
 1. **Resolve first, then record, in one edit.**
-   - A decision the reply doesn't mention takes its recommendation, recorded as decided by "user (accepted the recommendation)". `ok` does this for all of them.
+   - An optional decision the reply doesn't mention takes its recommendation, recorded as decided by "user (accepted the recommendation)". `ok` does this for every decision. A critical decision that a partial reply skips stays `ask` and joins the follow-up.
    - Before applying a default, check its links against the answers: a decision a chosen option makes moot is recorded `rejected` with "not applicable after 2B"; one whose condition is still open stays `ask`. Clear calls get the same check.
    - A chosen letter is `accepted`, decided by the user, dated, with their reason when they gave one; an option other than your recommendation gets its own `accepted` row.
    - A note with no letter that settles the decision ("7: neither, keep the current name") is the user's own option, recorded `accepted`.

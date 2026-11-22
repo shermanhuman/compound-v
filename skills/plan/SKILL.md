@@ -5,7 +5,7 @@ description: How a goal becomes a plan — the intent conversation (one question
 
 # Plans
 
-This is a format, not a workflow: use it inside whatever planning mode the host has. Research first (read the code, check the data, check the docs for the versions actually pinned), then write the plan.
+Use this inside whatever planning mode the host has: settle intent, research (read the code, check the data, check the docs for the versions actually pinned), then write the plan.
 
 ## Intent first
 
@@ -24,7 +24,7 @@ Before planning a new goal, settle what the user wants, in conversation:
 
    Then ask "Shall I start planning?"
 
-The restatement goes at the top of the goal's issue as its anchor. Re-read it at every checkpoint; reviewers check the work against it. A bug report that already says what's broken and what fixed looks like skips the conversation.
+The restatement goes at the top of the plan's issue (*The plan's home*), above the plan, and stays there when the plan is revised. It is the goal's anchor. Re-read it at every checkpoint; reviewers check the work against it. A request that already says what's wanted and what done looks like (a clear bug report, most patches) skips the questions and the closing ask: post the restatement and start.
 
 ## Goal types
 

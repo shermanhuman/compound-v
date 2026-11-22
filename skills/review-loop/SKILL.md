@@ -77,14 +77,14 @@ Full tier:
 
 Where the host can't run subagents in parallel, run the personas one after another in the same order; the steps don't change.
 
-**Stop rule.** Keep going while each round's must-fix findings are new ground. In persona mode, all the personas of one round count as one round, and the final pass as one more. When `compound-v:followup` reports **spinning** — a fix reversing an earlier fix or a logged decision, the same class of finding recurring, or the same lines churning (in the instructions tier, one line or clause rewritten in three rounds) — stop and bring the user the design question instead of patching again. Reviewer runs per PR are also capped by the goal's type (`compound-v:plan`): patch 2, change 3, feature and product 4, plus the second voice where the tier calls for it. At the cap with must-fix findings still open, or after three rounds whose fixes didn't hold, stop and bring it to the user. As a cost guard, stop and report after six rounds on one PR regardless. The stop rule and the cost guard apply to every tier.
+**Stop rule.** Keep going while each round's must-fix findings are new ground. In persona mode, all the personas of one round count as one round, and the final pass as one more. When `compound-v:followup` reports **spinning** — a fix reversing an earlier fix or a logged decision, the same class of finding recurring, or the same lines churning (in the instructions tier, one line or clause rewritten in three rounds) — stop and bring the user the design question instead of patching again. Rounds per PR are also capped by the goal's type (`compound-v:plan`): patch 2, change 3, feature and product 4, plus the second voice's pass where the tier calls for one. At the cap with must-fix findings still open, or after three rounds whose fixes didn't hold, stop and bring it to the user. As a cost guard, stop and report after six rounds on one PR regardless. The stop rule and the cost guard apply to every tier.
 
 A commit that only changes the version number needs no round of its own. Merging the default branch into the branch, or a CI fix, gets a `compound-v:followup` round, which keeps the earlier result when the PR's own lines didn't change.
 
 ## Before acting on any round
 
 1. List every review that was requested: your subagents, a second-opinion model, built-in reviews, and any the user ran.
-2. Don't block on the ones still running: fix what has arrived, keep working, and read each later report as it lands, before posting the round's fix notes. Wait in the background, never in a foreground polling loop.
+2. Don't block on the ones still running: take each report through steps 3 to 6 as it lands, and keep working in between. A report with *Questions for the user* waits for the rest, so the round sends one packet before its fixes (step 5). Post the round's fix notes after the last report. Wait in the background, never in a foreground polling loop.
 3. Read everything posted on the pull request **and** the plan issue since you last read them — other reviewers post there too. On a pull request that means all three kinds of record, every page: conversation comments, review summaries and inline review comments. For GitHub:
 
    ```bash
