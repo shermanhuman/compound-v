@@ -1,11 +1,50 @@
 ---
 name: plan
-description: The format and habits for an implementation plan — one-sentence goal, decisions table, checked steps, rollout and rollback, out-of-scope items with homes — plus how to ask the user questions and how to carry the plan through execution. Use whenever you write or revise a plan, including in the host's plan mode.
+description: Use when the user gives you a new goal, before planning, and whenever you write or revise a plan, including in the host's plan mode. Covers the intent conversation and restatement, goal types, checks before planning, the plan format, and critical and optional questions.
 ---
 
 # Plans
 
-This is a format, not a workflow: use it inside whatever planning mode the host has. Research first (read the code, check the data, check the docs for the versions actually pinned), then write the plan.
+Use this inside whatever planning mode the host has: settle intent, research (read the code, check the data, check the docs for the versions actually pinned), then write the plan.
+
+## Intent first
+
+Before planning a new goal, settle what the user wants, in conversation:
+1. **Look first.** Read what already answers it: the code, the issues, past decisions. Never ask what you could find out.
+2. **One question at a time,** each with your best guess, so "yes" is a full answer. Ask only questions whose answer changes what gets built.
+3. **About five at most.** Past that, say what's still unclear instead of asking more. "Enough, plan it" ends the conversation.
+4. **Restate the goal** in this shape:
+   - the goal in one sentence;
+   - who it's for;
+   - why now, and what not doing it costs;
+   - **done when**, measurable, which becomes the acceptance tests;
+   - **not doing**;
+   - the goal type, and an ETA from past work of the same type and size, or "no history yet" when there's none to measure;
+   - your assumptions.
+
+   Then ask "Shall I start planning?", unless the user already said to plan.
+
+The restatement goes at the top of the plan's issue (*The plan's home*; for a patch, its PR description), above the plan, and stays there when the plan is revised. It is the goal's anchor. Re-read it before each review round and before calling the work done; reviewers check the work against it. A request that already says what's wanted and what done looks like (a clear bug report, most patches) skips the questions and the closing ask: post the restatement and start.
+
+## Goal types
+
+| Type | Examples | Plan | Plan deliverables, beyond goal, scope, non-goals and how it's tested |
+|---|---|---|---|
+| **Patch** | a bug fix, a copy change, a small config change | a short note: goal, how it's tested, steps | none |
+| **Change** | a small enhancement, a refactor, an internal tool | the plan's sections, kept short | user stories with acceptance tests; a diagram, mockups, API spec or ER diagram when it touches those |
+| **Feature** | new user-facing capability, a new integration | the full plan | all of those that apply, plus what's logged and measured to learn how it's used |
+| **Product** | a new app or service | feature depth | plus architecture and operations |
+
+A patch touches no schema, dependency files, auth, money paths or public API, and changes under about 150 lines. Work that outgrows that is reclassified, and you say so.
+
+## Before you write it
+
+These cost the user nothing, so do them before any technical question or plan packet:
+- **Look for something that already exists:** a library, a feature of a tool already in use, or an earlier attempt in the repository.
+- **Spike instead of asking.** When a technical unknown would change the plan, run a short, time-boxed experiment.
+- **Pre-mortem.** "It failed a month from now; why?" Put only the top risk in the plan, with what the plan does about it.
+- **Who else it touches:** other repositories, users, operations, data.
+- **Sort decisions by reversibility.** What's cheap to undo gets a default; what can't be undone is a critical question.
 
 ## Before you present it
 
@@ -40,13 +79,17 @@ Split the work into stages (phases, waves, a pilot, a first version and then the
 
 ## Asking questions
 
-Ask only what the code, the data or a sensible default can't answer, and ask it all at once, as one packet on a web page after the research, never one question after another.
+Ask only what the code, the data or a sensible default can't answer. Intent is a conversation (above); technical questions come all at once, as one packet on a web page after the research, never one after another, in two lists:
+- **Critical:** what the plan can't be right without, and anything whose answer can't be undone (data deleted, a message sent, money spent, a public API released). These are answered before work starts.
+- **Optional:** each with your default and its reason. The user can skip them all, and you proceed on the defaults.
+
+A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default on the plan's issue (a patch's PR) and keep going; otherwise, and always when it can't be undone, ask, and carry on with the work it doesn't touch.
 
 `compound-v:interrogate` is the procedure: use it whenever a plan has open decisions before approval, or the user asks to stress-test one.
 
 ## The plan's home
 
-When the project uses an issue tracker, every plan gets an issue: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land. Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval.
+A patch's short note goes in its pull request's description, with no issue of its own and no plan review; the PR's review covers it. For anything bigger, when the project uses an issue tracker, every plan gets an issue: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land. Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval.
 
 ## Carrying it out
 

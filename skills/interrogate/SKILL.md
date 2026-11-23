@@ -5,7 +5,7 @@ description: Settle every open decision in a plan, design or idea in one round t
 
 # Interrogate
 
-Settle every decision in the plan in one round trip. The user's time is the scarce resource: do all the research before asking, then ask everything at once. Never drip questions one after another.
+Settle every decision in the plan in one round trip. The user's time is the scarce resource: do all the research before asking, then ask everything at once. Never drip questions one after another. (A goal's intent is the one exception: it's settled in conversation, one question at a time, before planning; see `compound-v:plan`'s *Intent first*.)
 
 ## Build the packet
 
@@ -14,7 +14,7 @@ Settle every decision in the plan in one round trip. The user's time is the scar
 3. **Sort.**
    - **Mechanical** (versions, file layout, check commands): record in the table, don't show.
    - **Clear calls:** the evidence fits in one line, the alternatives are clearly worse, it's cheap to undo, it touches nothing the user sees (product direction, names, wording, spend, security, privacy), it conflicts with no user decision, and what it depends on is settled. An `ask` row qualifies only when a fact found since makes it clear-cut. These go on the packet's "decided unless you object" list.
-   - **Decisions:** everything else. When in doubt, it's a decision.
+   - **Decisions:** everything else. When in doubt, it's a decision. Mark each **critical** (the plan can't be right without it, or its answer can't be undone) or **optional** (it carries your default, the user may skip it, and work proceeds on the default). Critical ones come first.
 4. **Make each decision concrete.**
    - **The question** in one sentence, and what it changes.
    - **Show, don't tell.** Put the thing itself in front of the user: the mock or screenshot, the diagram, the diff or config, example output under each option, the numbers. Describe only what can't be shown.
@@ -24,7 +24,7 @@ Settle every decision in the plan in one round trip. The user's time is the scar
 
 ## Present it once
 
-The packet has a top (the goal, the plan in a few lines, the count such as "6 decisions, 9 decided unless you object", a link to the full plan), the decisions numbered from 1 in order of consequence, the clear calls numbered on from there with one line of evidence each, and how to answer: "Reply `ok` to take every recommendation, or only your changes: `2B, 5C, 7: <note>`, `4: more` for more discussion, `12: no` to object to a clear call."
+The packet has a top (the goal, the plan in a few lines, the count such as "2 critical and 4 optional decisions, 9 decided unless you object", a link to the full plan), the decisions numbered from 1, critical first and then optional, each in order of consequence, the clear calls numbered on from there with one line of evidence each, and how to answer: "Reply `ok` to take every recommendation, or only your changes: `2B, 5C, 7: <note>`, `4: more` for more discussion, `12: no` to object to a clear call."
 
 Put the packet on a web page, never only in the chat:
 
@@ -35,7 +35,7 @@ Put the packet on a web page, never only in the chat:
 ## After the answers
 
 1. **Resolve first, then record, in one edit.**
-   - A decision the reply doesn't mention takes its recommendation, recorded as decided by "user (accepted the recommendation)". `ok` does this for all of them.
+   - An optional decision the reply doesn't mention takes its recommendation, recorded as decided by "user (accepted the recommendation)". `ok` does this for every decision. A critical decision that a partial reply skips stays `ask` and joins the follow-up.
    - Before applying a default, check its links against the answers: a decision a chosen option makes moot is recorded `rejected` with "not applicable after 2B"; one whose condition is still open stays `ask`. Clear calls get the same check.
    - A chosen letter is `accepted`, decided by the user, dated, with their reason when they gave one; an option other than your recommendation gets its own `accepted` row.
    - A note with no letter that settles the decision ("7: neither, keep the current name") is the user's own option, recorded `accepted`.
