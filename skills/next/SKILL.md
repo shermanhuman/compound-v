@@ -21,7 +21,7 @@ Recommend one project with reasons, name two or three runners-up, then offer to 
 
 Run `gh` the way the user's rules say, for example through a tool manager. Keep output compact: titles and counts, never whole bodies.
 
-1. **Open issues**, one line each with checklist progress. Where the user's rules name a plan store, a plan issue's progress is its plan's ticked steps there, not the issue's checklist. Use one `--owner` per owner in scope, or `--repo` for the touched repositories. Rank on labels only when the repositories actually use them.
+1. **Open issues**, one line each with checklist progress. Use one `--owner` per owner in scope, or `--repo` for the touched repositories. Rank on labels only when the repositories actually use them.
 
    ```bash
    gh search issues --state open --limit 200 --sort updated <--owner X ... | --repo O/R ...> \

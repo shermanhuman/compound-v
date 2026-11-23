@@ -73,7 +73,7 @@ Split the work into stages (phases, waves, a pilot, a first version and then the
    Verdicts are `accepted`, `rejected` or `ask`. The table is the decisions log for the whole job: reviewers treat accepted and rejected rows as settled, it carries into the pull request body, and decisions made during review rounds are added as new rows with who and when. Every row's `#` is unique and never reused.
 
    Where the user's rules name a decision store, the store holds the decisions: posting the plan records its rows, each with an ID. After that a decision changes only through the store's decide command, never by editing the table, and the plan shows the store's rows.
-4. **Steps** — a numbered list under `### Steps`, each starting with its name in bold, saying what changes (files, by pattern rather than listing every file) and **how it's checked** in one `*Check:*` line, with a check that can actually fail. Reuse existing code where it exists and name it.
+4. **Steps** — under `### Steps`, each starting with its name in bold, saying what changes (files, by pattern rather than listing every file) and **how it's checked** in one `*Check:*` line, with a check that can actually fail. In an issue, write each as a task item (`- [ ] **Name.** …`) so it can be ticked; in a plan store, a numbered list (`1. **Name.** …`), which the store ticks. Reuse existing code where it exists and name it.
 5. **Happy path** — for user-facing changes, a numbered walkthrough of what the user sees afterwards. It becomes the "where to look" list at the end.
 6. **Risks, rollout and rollback** — what could go wrong, the order things ship in (migrations relative to deploys, which repository first), and how to undo each step.
 7. **Assumptions** — anything inferred rather than confirmed, so it can be corrected.
@@ -92,7 +92,7 @@ A plan with no critical questions that the user's rules don't require approval f
 ## The plan's home
 
 A patch's short note goes in its pull request's description, with no issue of its own and no plan review; the PR's review covers it. Anything bigger has a home, so a long job survives a lost context:
-- **A plan store the user's rules name:** the restatement, the plan and every revision, the steps, the decisions and the reviews live there, and approval is the store's approval item for a revision. The work's issue keeps the restatement and a link to the plan. If the store is unreachable, say so, write the plan in the issue marked "not yet in the plan store", and move it into the store once it's back; never let that fail silently.
+- **A plan store the user's rules name:** the restatement, the plan and every revision, the steps, the decisions and the reviews live there, and approval is the store's approval item for a revision. The work's issue keeps the restatement and a link to the plan. If the store is unreachable, say so and keep working in the issue, marked "not yet in the plan store": the plan, decisions, reviews and ticks. Check the store again at the next step, and move them in once it's back; never let that fail silently.
 - **Otherwise an issue,** when the project uses an issue tracker: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land.
 
 Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval.
@@ -102,6 +102,6 @@ Run `compound-v:plan-review` with a fresh reviewer and fold its findings in befo
 - Build on a feature branch, in a separate worktree, from a fresh fetch of the default branch. The main checkout may hold someone else's work or a running server.
 - Stop dependent work when a step's check fails; fix the cause before moving on.
 - Tick each step as it lands, in the plan's home.
-- Don't end a turn announcing a next step you could take now: take it.
+- A revision during the build goes on without a new approval unless it changes the restatement or a decision the user made; then ask for approval of that revision.
 - When reality disagrees with the plan, revise it in its home instead of drifting from it quietly.
 - Finish by saying where to see it working: the preview or command, what to look at, and the edge cases worth trying.

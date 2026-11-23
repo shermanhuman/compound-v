@@ -16,7 +16,7 @@ You are the reviewer for a later round: fresh, or a review persona forked from t
 
 - the repository or worktree, and the fix range (`<last reviewed SHA>..<head SHA>`)
 - the pull request number and this round's number
-- where the decisions live (a decision store the user's rules name, the PR body, or the plan's issue)
+- where the decisions live (a decision store the user's rules name, the PR body, or the plan's issue); a reviewer that can't reach the store gets the decisions, earlier reviews and fix notes in the brief
 - whether this is a normal follow-up round or the quick check after the polish pass
 - for a persona: its name in [personas.md](../review/references/personas.md). Check its own earlier findings and what the fixes broke in its area; it writes its report to the file the review session names (where it can't write files, it returns the text and the session saves it) instead of posting
 

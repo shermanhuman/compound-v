@@ -1,6 +1,6 @@
 ---
 name: pull-requests
-description: The procedure for a pull request where every PR is a release — which PR is yours, the worktree, testing the way CI does, end-to-end checks that are shown to fail once, the draft, the description, keeping it mergeable and green, and cleaning up after the merge. Use before opening a PR, when pushing more commits to one, when a PR has conflicts or failing checks, before saying a PR is ready to merge, and after a PR merges.
+description: The procedure for a pull request where every PR is a release — which PR is yours, the worktree, testing the way CI does, end-to-end checks that are shown to fail once, the draft, the description, keeping it mergeable and green, and cleaning up after the merge. Use before opening a PR, when pushing more commits to one, when a PR has conflicts or failing checks, before saying a PR is ready to merge, when returning to a session with open PRs, and after a PR merges.
 ---
 
 # Pull requests

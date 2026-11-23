@@ -16,7 +16,7 @@ Look at plugin manifests (`.claude-plugin/plugin.json`, and each plugin's in a m
 - **Rust:** `[package]` version, or `[workspace.package]` when members inherit it; check each affected member. Update internal path-dependency requirements first, then refresh `Cargo.lock` and commit it too. `rust-version` is the toolchain floor, not the product version.
 - **Go:** `go.mod`'s `go` line isn't the product version. Use `VERSION` when there is one; with tag-only versioning, record the intended version in the PR instead of tagging.
 
-Use the requested level; otherwise patch for fixes and docs, minor for compatible features, major for breaking changes. Compare with the PR's base so one PR carries one bump, and don't reset a larger intentional bump.
+Use the requested level; otherwise patch for fixes and docs, minor for compatible features, major for breaking changes, subject to the project's pre-1.0 policy. With no version source at all, don't bump, and say so. Compare with the PR's base so one PR carries one bump, and don't reset a larger intentional bump.
 
 ## Prepare
 

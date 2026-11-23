@@ -68,7 +68,7 @@ Sessions that span several repositories (started from a parent folder) don't pic
 |---|---|
 | `compound-v:next` | Recommend the next project from open issues and pull requests, then offer to plan it |
 | `compound-v:plan` | How a goal becomes a plan: the intent conversation, goal types and the plan format, including in plan mode |
-| `compound-v:interrogate` | Settle a plan's open decisions in one packet: every decision at once with options shown and recommendations pre-filled, every answer in the decision store the user's rules name, else the plan's table |
+| `compound-v:interrogate` | Settle a plan's open decisions in one packet (every decision at once, options shown, recommendations pre-filled), and hand the user a task they must do themselves; every answer in the decision store the user's rules name, else the plan's table |
 | `compound-v:plan-review` | Fresh, critical review of a finished plan; verdict approve / approve with changes / rework |
 | `compound-v:review` | Review of a full diff: ten code checks, or the light or instructions pass; Must-fix / Polish; posted on the PR |
 | `compound-v:followup` | Review of only the fixes since the last round, with the spinning check |
@@ -113,7 +113,7 @@ It assumes GitHub with the `gh` CLI (the review skills post with `gh pr comment`
 - **Plugin MCP servers in Codex** don't get `${CLAUDE_PLUGIN_ROOT}` expanded and start in the session's folder (seen in testing with Codex 0.162). Use a command on PATH.
 - **A `codex exec` run with `-s read-only`** can't post comments or call MCP tools. Post its report yourself, unchanged.
 - **Codex's question tool** (`request_user_input`) is single-choice, takes one to three short questions, and works in Plan mode only by default. Interrogate's packet goes on a board or a web page anyway, so this doesn't limit it.
-- **A plan or decision store** is optional: name it, and its commands, in your own rules. Without one, plans live in issues and decisions in the plan's table, as before.
+- **A plan or decision store** is optional: name it in your own rules, with its commands (new plan, revise, review, approve, decide, search, the item schema). Without one, plans live in issues and decisions in the plan's table, as before.
 - **The second voice needs configuring** in your own rules, or the full tier's independent pass uses the host's built-in review and the instructions tier's round 1 a second fresh reviewer.
 - **Open sessions keep the old version** after an update until they restart or run `/reload-plugins`.
 

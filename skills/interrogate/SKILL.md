@@ -12,7 +12,7 @@ Settle every decision in the plan in one round trip. The user's time is the scar
 1. **Map the decisions.** Read the plan, its decisions and its home (`compound-v:plan`'s *The plan's home*). Where the user's rules name a decision store, search it too:
    - **Settled:** an `accepted` or `rejected` row that is the goal's own or that the plan cites by ID. Never ask it again.
    - **Decided before:** a match from another goal. Put it in the packet as a clear call ("decided before in <ID>: …"), never drop the question silently, and never treat it as settled.
-   - **Open:** `ask` rows, choices the planner made alone, and assumptions the plan relies on without saying so (defaults, limits, names, who can do what, what happens on failure, what ships first). Check the user's confirmed defaults before asking.
+   - **Open:** `ask` rows, choices the planner made alone, and assumptions the plan relies on without saying so (defaults, limits, names, who can do what, what happens on failure, what ships first). Check the confirmed defaults, where the user's rules or the store keep them, before asking.
 2. **Find every fact first.** Look up what each decision needs from the code, data, docs and environment, in one parallel batch, with subagents for anything broad. Never ask the user for a fact you can find.
 3. **Sort.**
    - **Mechanical** (versions, file layout, check commands): record it, don't show it.
@@ -35,12 +35,16 @@ The packet has:
 
 Put the packet where the user will see it, never only in the chat, in the first of these that exists:
 
-- **A board the user's rules name,** with an item schema command. Post each decision as an item of that schema, with options and their mockups as its blocks, and one group per packet, so the agent is told once when the last is answered. Read the answers structurally from the board.
+- **A board the user's rules name,** with an item schema command: run the schema command first. The packet is one group of items, so the agent is told once, when the last is answered:
+  - each decision is an item, with its options and their mockups as blocks;
+  - one more item carries the packet's top and the clear calls, decided-before matches included, with two options: accept them all, or object (the note names which).
+
+  Accepting an item from its line takes its recommendation, so an optional item costs one click; the group completes only when every item is answered. Read the answers structurally from the board.
 - **A decision page the user's rules name.**
 - **An artifact or published page,** where the host has one.
 - **A local HTML file,** written outside the working tree. The chat carries only the link.
 
-Answers are collected on the page when it can deliver them back to the session; otherwise the user replies in chat in the answer format above. Only when no page can be shown at all, or the user asks for it in chat, send the packet as plain text in one message. Never spread a packet across several messages or question-tool calls.
+Answers are collected on the page when it can deliver them back to the session; otherwise the user replies in chat in the answer format above. Only when no page can be shown at all, or the user asks for it in chat, send the packet as plain text in one message. Never spread a packet across several messages or question-tool calls. Once its link is out, don't change the packet: put anything new in a follow-up.
 
 ## After the answers
 
@@ -68,7 +72,7 @@ Sometimes the user has to do a step themselves. Each task spends their attention
    - the service offers no way for an agent to do it.
 3. **Make their part as small as it can be.** Prepare everything around it: the exact command, the values to enter, the link with every ID filled in.
 
-Post it where the user's rules put tasks (a board's task item, or the work's issue), in this shape:
+Post it where the user's rules put tasks (a board's task item), else under a **Needs the user** heading on the work's issue, and give the user its link. In this shape:
 
 ```
 ### Sign in to the cloud CLI   ~1 min · unblocks <what>

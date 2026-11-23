@@ -9,7 +9,8 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "hooks" / "always-on.md"
 TARGET = ROOT / "hooks" / "session-start.json"
-# Read by every session: keep it short (the oh plugin keeps the same kind of budget).
+# Read by every session. Hosts cut long hook output (Claude Code at 10,000 characters,
+# Codex at about 2,500 tokens), and every line costs context, so keep it well under both.
 BUDGET = 4_000
 
 
