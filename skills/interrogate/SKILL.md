@@ -10,7 +10,7 @@ Settle every decision in the plan in one round trip. The user's time is the scar
 ## Build the packet
 
 1. **Map the decisions.** Read the plan, its decisions and its home (`compound-v:plan`'s *The plan's home*). Where the user's rules name a decision store, search it too:
-   - **Settled:** the goal's own rows and rows the plan cites by ID. Never ask them again.
+   - **Settled:** an `accepted` or `rejected` row that is the goal's own or that the plan cites by ID. Never ask it again.
    - **Decided before:** a match from another goal. Put it in the packet as a clear call ("decided before in <ID>: …"), never drop the question silently, and never treat it as settled.
    - **Open:** `ask` rows, choices the planner made alone, and assumptions the plan relies on without saying so (defaults, limits, names, who can do what, what happens on failure, what ships first). Check the user's confirmed defaults before asking.
 2. **Find every fact first.** Look up what each decision needs from the code, data, docs and environment, in one parallel batch, with subagents for anything broad. Never ask the user for a fact you can find.

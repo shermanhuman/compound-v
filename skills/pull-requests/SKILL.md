@@ -36,7 +36,7 @@ Describe the final change, its migrations and rollout, and the checks you actual
 ## Keeping it mergeable and green
 
 Until it merges, the PR's state is yours:
-- **After every push,** watch its checks in the background; fix what fails, push, and watch again. Checks can take a few seconds to register after a push. Don't call a PR ready while a check is red or running.
+- **After every push,** watch its checks in the background; fix what fails, push, and watch again. Checks can take a few seconds to register after a push. A check that's red by design on a draft (a version check before the bump lands last) waits for the bump; everything else gets fixed. Don't call a PR ready while a check is red or running.
 - **Before calling it ready,** and when you come back to a session with open PRs, look at its state, mergeability and checks. Conflicting means merge the default branch in now. A green result on a branch that's behind can be stale, because checks don't rerun when the base moves.
 - **When the base moves,** merge the default branch in, re-apply your bump at the same level on top of the base's new version (two PRs setting the same version merge cleanly and still fail a version check), run the affected checks, push, and watch again.
 - **Ready means mergeable now:** the final review round has no must-fix findings, the bump has landed, the base is the default branch, and it's up to date and green. When it stops qualifying, put it back to draft before fixing it. A PR stacked on another PR's branch stays a draft until that one merges and it's retargeted.

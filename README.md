@@ -68,7 +68,7 @@ Sessions that span several repositories (started from a parent folder) don't pic
 |---|---|
 | `compound-v:next` | Recommend the next project from open issues and pull requests, then offer to plan it |
 | `compound-v:plan` | How a goal becomes a plan: the intent conversation, goal types and the plan format, including in plan mode |
-| `compound-v:interrogate` | Settle a plan's open decisions in one packet: every decision at once with options shown and recommendations pre-filled, every answer in the decisions table |
+| `compound-v:interrogate` | Settle a plan's open decisions in one packet: every decision at once with options shown and recommendations pre-filled, every answer in the decision store the user's rules name, else the plan's table |
 | `compound-v:plan-review` | Fresh, critical review of a finished plan; verdict approve / approve with changes / rework |
 | `compound-v:review` | Review of a full diff: ten code checks, or the light or instructions pass; Must-fix / Polish; posted on the PR |
 | `compound-v:followup` | Review of only the fixes since the last round, with the spinning check |
@@ -125,7 +125,7 @@ It assumes GitHub with the `gh` CLI (the review skills post with `gh pr comment`
 
 Based on [obra/superpowers](https://github.com/obra/superpowers), with the [Antigravity adaptation](https://github.com/anthonylee991/gemini-superpowers-antigravity).
 
-`interrogate` adapts the `grilling` skill from [mattpocock/skills](https://github.com/mattpocock/skills) at commit `49dd158` (MIT, Copyright (c) 2026 Matt Pocock): mapping the open decisions, looking facts up instead of asking for them, and not acting until the user confirms. It differs by sending every decision at once in one packet, with options shown, recommendations pre-filled and the clear calls listed as decided unless the user objects, and by recording each answer in the plan's decisions table.
+`interrogate` adapts the `grilling` skill from [mattpocock/skills](https://github.com/mattpocock/skills) at commit `49dd158` (MIT, Copyright (c) 2026 Matt Pocock): mapping the open decisions, looking facts up instead of asking for them, and not acting until the user confirms. It differs by sending every decision at once in one packet, with options shown, recommendations pre-filled and the clear calls listed as decided unless the user objects, and by recording each answer in the decision store the user's rules name, else the plan's decisions table.
 
 ## License
 

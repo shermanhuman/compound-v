@@ -48,7 +48,7 @@ Rules for findings:
 - Cite `file:line` and say what breaks, for whom, and when.
 - No speculative findings, no "could be clearer", no repeats of an earlier round.
 - In later rounds of the same pull request, finding IDs continue from the last round's numbers instead of restarting.
-- Logged decisions are settled: the goal's own rows and rows the plan cites by ID. Reopen one only as must-fix, stating the harm.
+- Logged decisions are settled: `accepted` or `rejected` rows that are the goal's own or that the plan cites by ID; `ask` rows stay open. Reopen one only as must-fix, stating the harm.
 - After each finding, search for the same problem elsewhere in the change and the codebase and add those locations.
 
 ## Validation in persona mode
