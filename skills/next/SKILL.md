@@ -21,7 +21,7 @@ Recommend one project with reasons, name two or three runners-up, then offer to 
 
 Run `gh` the way the user's rules say, for example through a tool manager. Keep output compact: titles and counts, never whole bodies.
 
-1. **Open issues**, one line each with checklist progress. Use one `--owner` per owner in scope, or `--repo` for the touched repositories. Rank on labels only when the repositories actually use them.
+1. **Open issues**, one line each with checklist progress. Where the user's rules name a plan store, a plan issue's progress is its plan's ticked steps there, not the issue's checklist. Use one `--owner` per owner in scope, or `--repo` for the touched repositories. Rank on labels only when the repositories actually use them.
 
    ```bash
    gh search issues --state open --limit 200 --sort updated <--owner X ... | --repo O/R ...> \
@@ -39,7 +39,7 @@ Run `gh` the way the user's rules say, for example through a tool manager. Keep 
    Both searches stop at 200 results. If either returns exactly 200, say the survey was capped and narrow the scope (per owner or repository) rather than ranking a partial list as if it were complete. For each of the user's: `gh pr view <n> -R <owner>/<repo> --json mergeable,mergeStateStatus,statusCheckRollup` says whether it's blocked.
 
 3. **The shortlist only** (the five or six issues still in the running):
-   - the body and last comment, because progress on a plan issue often lives in its comments, not in ticked boxes: `gh issue view <n> -R <owner>/<repo> --json body,comments --jq '.body, .comments[-1].body'`
+   - where the user's rules name a plan store, the issue's plan there (its state and steps); otherwise the body and last comment, because progress on a plan issue often lives in its comments, not in ticked boxes: `gh issue view <n> -R <owner>/<repo> --json body,comments --jq '.body, .comments[-1].body'`
    - the pull requests that reference it: `gh api --paginate repos/<owner>/<repo>/issues/<n>/timeline --jq '.[] | select(.event=="cross-referenced") | .source.issue | "\(.repository.full_name) #\(.number) \(.html_url) pr=\(.pull_request != null) merged=\(.pull_request.merged_at != null) \(.state)"'`
 
 4. **The user's priorities** that the host already loaded: their rules, and any project or goal notes in memory. Don't go looking for more.
@@ -72,4 +72,4 @@ Runners-up:
 Housekeeping: <issues that look done or stale, "close?">
 ```
 
-Then ask through the host's question tool, repeating that context inside the question, since the widget hides the text above it. The options: start the pick in plan mode, take a runner-up, widen the scope, or more discussion (the tool's own free-text option where choices are capped at three); on more discussion, ask in plain text what's missing. On start, enter plan mode, use the `compound-v:plan` format, and make the issue the plan's home. Without a question tool, ask in one plain sentence. The pick itself creates nothing and closes nothing.
+Then ask through the host's question tool, repeating that context inside the question, since the widget hides the text above it. The options: start the pick in plan mode, take a runner-up, widen the scope, or more discussion (the tool's own free-text option where choices are capped at three); on more discussion, ask in plain text what's missing. On start, enter plan mode and use the `compound-v:plan` format; the plan's home is the plan store the user's rules name, else the issue. Without a question tool, ask in one plain sentence. The pick itself creates nothing and closes nothing.

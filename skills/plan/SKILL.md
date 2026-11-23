@@ -10,7 +10,7 @@ Use this inside whatever planning mode the host has: settle intent, research (re
 ## Intent first
 
 Before planning a new goal, settle what the user wants, in conversation:
-1. **Look first.** Read what already answers it: the code, the issues, past decisions. Never ask what you could find out.
+1. **Look first.** Read what already answers it: the code, the issues, past decisions (where the user's rules name a plan or decision store, search its plans and decisions too). Never ask what you could find out.
 2. **One question at a time,** each with your best guess, so "yes" is a full answer. Ask only questions whose answer changes what gets built.
 3. **About five at most.** Past that, say what's still unclear instead of asking more. "Enough, plan it" ends the conversation.
 4. **Restate the goal** in this shape:
@@ -24,7 +24,7 @@ Before planning a new goal, settle what the user wants, in conversation:
 
    Then ask "Shall I start planning?", unless the user already said to plan.
 
-The restatement goes at the top of the plan's issue (*The plan's home*; for a patch, its PR description), above the plan, and stays there when the plan is revised. It is the goal's anchor. Re-read it before each review round and before calling the work done; reviewers check the work against it. A request that already says what's wanted and what done looks like (a clear bug report, most patches) skips the questions and the closing ask: post the restatement and start.
+The restatement goes at the top of the plan in its home (*The plan's home*; for a patch, its PR description), above the plan, and stays there when the plan is revised. It is the goal's anchor. Re-read it before each review round and before calling the work done; reviewers check the work against it. A request that already says what's wanted and what done looks like (a clear bug report, most patches) skips the questions and the closing ask: post the restatement and start.
 
 ## Goal types
 
@@ -43,7 +43,7 @@ These cost the user nothing, so do them before any technical question or plan pa
 - **Look for something that already exists:** a library, a feature of a tool already in use, or an earlier attempt in the repository.
 - **Spike instead of asking.** When a technical unknown would change the plan, run a short, time-boxed experiment.
 - **Pre-mortem.** "It failed a month from now; why?" Put only the top risk in the plan, with what the plan does about it.
-- **Who else it touches:** other repositories, users, operations, data.
+- **Who else it touches:** other repositories, users, operations, data. When the change removes a fallback, find out who relied on it.
 - **Sort decisions by reversibility.** What's cheap to undo gets a default; what can't be undone is a critical question.
 
 ## Before you present it
@@ -70,8 +70,10 @@ Split the work into stages (phases, waves, a pilot, a first version and then the
    | 2 | Add a "did you mean" index | rejected | four misspelt searches in 395; not worth a nightly job | planner, 2026-10-14 |
    | 3 | Keep the old column for one release | ask | needs the user's call on rollback window | — |
 
-   Verdicts are `accepted`, `rejected` or `ask`. The table is the decisions log for the whole job: reviewers treat accepted and rejected rows as settled, it carries into the pull request body, and decisions made during review rounds are added as new rows with who and when.
-4. **Steps** — each says what changes (files, by pattern rather than listing every file) and **how it's checked**, with a check that can actually fail. Reuse existing code where it exists and name it.
+   Verdicts are `accepted`, `rejected` or `ask`. The table is the decisions log for the whole job: reviewers treat accepted and rejected rows as settled, it carries into the pull request body, and decisions made during review rounds are added as new rows with who and when. Every row's `#` is unique and never reused.
+
+   Where the user's rules name a decision store, the store holds the decisions: posting the plan records its rows, each with an ID. After that a decision changes only through the store's decide command, never by editing the table, and the plan shows the store's rows.
+4. **Steps** — a numbered list under `### Steps`, each starting with its name in bold, saying what changes (files, by pattern rather than listing every file) and **how it's checked** in one `*Check:*` line, with a check that can actually fail. Reuse existing code where it exists and name it.
 5. **Happy path** — for user-facing changes, a numbered walkthrough of what the user sees afterwards. It becomes the "where to look" list at the end.
 6. **Risks, rollout and rollback** — what could go wrong, the order things ship in (migrations relative to deploys, which repository first), and how to undo each step.
 7. **Assumptions** — anything inferred rather than confirmed, so it can be corrected.
@@ -79,21 +81,27 @@ Split the work into stages (phases, waves, a pilot, a first version and then the
 
 ## Asking questions
 
-Ask only what the code, the data or a sensible default can't answer. Intent is a conversation (above); technical questions come all at once, as one packet on a web page after the research, never one after another, in two lists:
+Ask only what the code, the data, the decision record or a sensible default can't answer. Intent is a conversation (above); technical questions come all at once, as one packet after the research (`compound-v:interrogate`'s *Present it once*), never one after another, in two lists:
 - **Critical:** what the plan can't be right without, and anything whose answer can't be undone (data deleted, a message sent, money spent, a public API released). These are answered before work starts.
 - **Optional:** each with your default and its reason. The user can skip them all, and you proceed on the defaults.
 
-A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default on the plan's issue (a patch's PR) and keep going; otherwise, and always when it can't be undone, ask, and carry on with the work it doesn't touch.
+A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default in the plan's home (a patch's PR) and keep going; otherwise, and always when it can't be undone, ask, and carry on with the work it doesn't touch.
 
 `compound-v:interrogate` is the procedure: use it whenever a plan has open decisions before approval, or the user asks to stress-test one.
 
 ## The plan's home
 
-A patch's short note goes in its pull request's description, with no issue of its own and no plan review; the PR's review covers it. For anything bigger, when the project uses an issue tracker, every plan gets an issue: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land. Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval.
+A patch's short note goes in its pull request's description, with no issue of its own and no plan review; the PR's review covers it. Anything bigger has a home, so a long job survives a lost context:
+- **A plan store the user's rules name:** the restatement, the plan and every revision, the steps, the decisions and the reviews live there, and approval is the store's approval item for a revision. The work's issue keeps the restatement and a link to the plan. If the store is unreachable, say so, write the plan in the issue marked "not yet in the plan store", and move it into the store once it's back; never let that fail silently.
+- **Otherwise an issue,** when the project uses an issue tracker: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land.
+
+Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval.
 
 ## Carrying it out
 
 - Build on a feature branch, in a separate worktree, from a fresh fetch of the default branch. The main checkout may hold someone else's work or a running server.
 - Stop dependent work when a step's check fails; fix the cause before moving on.
-- When reality disagrees with the plan, update the plan and the issue instead of drifting from them quietly.
+- Tick each step as it lands, in the plan's home.
+- Don't end a turn announcing a next step you could take now: take it.
+- When reality disagrees with the plan, revise it in its home instead of drifting from it quietly.
 - Finish by saying where to see it working: the preview or command, what to look at, and the edge cases worth trying.
