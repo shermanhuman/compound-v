@@ -36,7 +36,7 @@
     },
     {
       "name": "brandkit",
-      "description": "Brand and design skills on brandkit packages (DTCG brand tokens; UI as three checked mockups, a pick, a build and a screenshot review), plus an edit-time brand lint hook. Uses the brandkit binary on PATH, or finds it with mise.",
+      "description": "Brand and design skills on brandkit packages (DTCG brand tokens; UI as three checked mockups, a pick, a build and a screenshot review), plus an edit-time brand lint hook. Uses the brandkit binary on PATH, or finds it with mise. Claude Code only for now.",
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/shermanhuman/brandkit.git",
