@@ -14,7 +14,7 @@ Whoever launched you should give you:
 - the repository or worktree, and the diff range (`<base SHA>..<head SHA>`)
 - the pull request number, or the issue the work belongs to
 - the round number (round 1 unless told otherwise) and the last finding IDs used on the PR, so yours continue from them; when two reviewers run in the same round, each gets its own starting IDs or a prefix
-- where the decisions table lives (PR body, plan issue, or a file)
+- where the decisions live (a decision store the user's rules name, the PR body, the plan's issue, or a file); a reviewer that can't reach the store gets the plan revision and its decisions in the brief
 - optionally, the checks to run instead of all ten: one named check, the *light pass* (prose-only PRs), or the *instructions pass* (agent-instruction files), all in [references/checks.md](references/checks.md)
 - or a **persona** from [references/personas.md](references/personas.md): run only its checks, on the review bundle you were given or forked with
 - for the instructions pass: the hosts the repository targets, and the rough-edge or feedback log the user's rules name
@@ -25,7 +25,7 @@ If the diff range is missing, review the current branch against the default bran
 
 1. The full diff, then every changed file in full. A persona reads the review bundle instead and opens a file only where the bundle isn't enough.
 2. The repository's own rules (`AGENTS.md`, `CLAUDE.md`, rules folders).
-3. The plan issue and its decisions table, when there is one.
+3. The plan, in its home (a plan store the user's rules name, or the plan's issue), and its decisions, when there is one.
 4. Versions actually pinned (`mix.exs`/`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles). Research version-specific behaviour against these, not from memory.
 
 If code-map tools are available (for example `map_find`, `map_entity`, `map_callers`, `map_impact`), use them to find definitions and callers of changed functions; re-check any location they mark as changed since their snapshot against the working tree. Otherwise use grep.
@@ -48,7 +48,7 @@ Rules for findings:
 - Cite `file:line` and say what breaks, for whom, and when.
 - No speculative findings, no "could be clearer", no repeats of an earlier round.
 - In later rounds of the same pull request, finding IDs continue from the last round's numbers instead of restarting.
-- Logged decisions in the decisions table are settled. Reopen one only as must-fix, stating the harm.
+- Logged decisions are settled: `accepted` or `rejected` rows that are the goal's own or that the plan cites by ID; `ask` rows stay open. Reopen one only as must-fix, stating the harm.
 - After each finding, search for the same problem elsewhere in the change and the codebase and add those locations.
 
 ## Validation in persona mode

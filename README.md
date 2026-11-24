@@ -5,9 +5,9 @@ A plan-and-review method for Claude Code and Codex, packaged as a plugin. Work i
 ## The workflow
 
 1. **Pick the work.** `/compound-v:next` reads your open issues and pull requests and recommends one project, with reasons and runners-up. It finishes in-flight work before starting new work, never picks something only you can unblock, and folds small leftovers into the same release. With no argument it looks at the repositories this session has touched; `all` covers every organisation you belong to and your own account; a repository or topic narrows it.
-2. **Intent, then plan.** When a request leaves the goal unclear, the agent looks first, asks one question at a time with its best guess, then restates the goal (who it's for, why now, done when, not doing, its type) and asks whether to plan; a clear request gets the restatement and goes straight on (*Intent first*). Then it plans in the host's plan mode with `compound-v:plan`: a one-sentence goal, a decisions table (`# · Idea · Verdict · Why · Decided`), steps that each say how they're checked, rollout and rollback. Rejected ideas stay in the table, so nobody proposes them again, and reviewers treat decided rows as settled. A plan delivers its goal whole, as one plan and one PR per repository; it splits into stages only when you ask or something forces it, because each stage costs another plan, review loop and wait on you. Every plan beyond a patch gets an issue (plan in the body, reviews as comments), so a long job survives a lost context; a patch's short note lives in its PR.
+2. **Intent, then plan.** When a request leaves the goal unclear, the agent looks first, asks one question at a time with its best guess, then restates the goal (who it's for, why now, done when, not doing, its type) and asks whether to plan; a clear request gets the restatement and goes straight on (*Intent first*). Then it plans in the host's plan mode with `compound-v:plan`: a one-sentence goal, a decisions table (`# · Idea · Verdict · Why · Decided`), steps that each say how they're checked, rollout and rollback. Rejected ideas stay in the table, so nobody proposes them again, and reviewers treat decided rows as settled. A plan delivers its goal whole, as one plan and one PR per repository; it splits into stages only when you ask or something forces it, because each stage costs another plan, review loop and wait on you. Every plan beyond a patch has a home, so a long job survives a lost context: a plan store your rules name (the plan with every revision, its decisions as rows with IDs, its reviews, and approval), otherwise an issue (plan in the body, reviews as comments). A patch's short note lives in its PR. Agents search past plans and decisions before asking you anything.
 3. **Plan review** by a fresh reviewer (`compound-v:plan-review`) before you're asked to approve. It checks the plan's claims against the code and data. The trap it exists for is a confident "X is unused" or "this already works" that nobody verified.
-4. **Interrogate** (`compound-v:interrogate`) settles what's left in one round trip. After the research, the plan and every open decision come to you as one packet on a web page: options shown rather than described, recommendations pre-filled, and the clear calls listed as decided unless you object. Reply `ok`, or only your changes.
+4. **Interrogate** (`compound-v:interrogate`) settles what's left in one round trip. After the research, the plan and every open decision come to you as one packet, posted as items to a board your rules name, or else on a web page: options shown rather than described, recommendations pre-filled, and the clear calls listed as decided unless you object. Reply `ok`, or only your changes.
 5. **Build in a worktree** on a branch from a fresh fetch. The main checkout may hold someone else's work or a running dev server.
 6. **Review loop** (`compound-v:review-loop`) at the tier the diff needs:
    - *Full:* round 1 runs ten checks on the whole diff, follow-ups review only each fix, then an independent full-diff pass by a second voice, then one polish pass.
@@ -20,7 +20,7 @@ A plan-and-review method for Claude Code and Codex, packaged as a plugin. Work i
    - **Every page of all three comment endpoints:** unpaginated reads stop at 30, and `gh pr view --comments` leaves out inline comments, so findings disappear without an error.
    - **The stop rule:** fixes that undo fixes, the same finding coming back, or the same lines churning mean patching won't converge, so the design question goes to you.
    - **Findings are hypotheses:** a wrong premise adopted unchecked spreads.
-7. **You merge, and a merge is a release.** The agent never merges or pushes to the default branch. Pull requests stay drafts until the last review round has no must-fix findings.
+7. **You merge, and a merge is a release** (`compound-v:pull-requests`, with the bump from `compound-v:release`). The agent never merges or pushes to the default branch, never rebases a PR branch, and never routes around a refusal. Pull requests stay drafts until the last review round has no must-fix findings.
 8. **Follow-ups go to issues:** a real piece of work gets its own issue, and small leftovers go in one "Follow-ups from #N" checklist. Never a local list, because local notes made unfinished work look finished.
 9. **Issue and PR references are links.** A Stop hook (`hooks/check-links.py`) sends a reply back once when it names an issue or PR, such as `#12`, `repo#12` or `PR 12`, outside a markdown link, a URL or code. Run, build and job numbers like `run #512` are left alone; a rare false match costs one rewrite. A reminder at session start wasn't enough: over a long session it stopped being followed.
 
@@ -68,12 +68,14 @@ Sessions that span several repositories (started from a parent folder) don't pic
 |---|---|
 | `compound-v:next` | Recommend the next project from open issues and pull requests, then offer to plan it |
 | `compound-v:plan` | How a goal becomes a plan: the intent conversation, goal types and the plan format, including in plan mode |
-| `compound-v:interrogate` | Settle a plan's open decisions in one packet: every decision at once with options shown and recommendations pre-filled, every answer in the decisions table |
+| `compound-v:interrogate` | Settle a plan's open decisions in one packet (every decision at once, options shown, recommendations pre-filled), and hand the user a task they must do themselves; every answer in the decision store the user's rules name, else the plan's table |
 | `compound-v:plan-review` | Fresh, critical review of a finished plan; verdict approve / approve with changes / rework |
 | `compound-v:review` | Review of a full diff: ten code checks, or the light or instructions pass; Must-fix / Polish; posted on the PR |
 | `compound-v:followup` | Review of only the fixes since the last round, with the spinning check |
 | `compound-v:review-loop` | Which tier, who reviews when, when to stop, how rounds are recorded |
 | `compound-v:testing` | What's worth testing and at which layer |
+| `compound-v:pull-requests` | The PR procedure: worktree, testing the way CI does, checks shown to fail once, the draft, keeping it mergeable and green, cleanup after the merge |
+| `compound-v:release` | The version bump from the repository's real version source, and publishing only when asked |
 
 In Claude Code, invoke a skill as `/compound-v:next`; in Codex, as `$compound-v:next`. Both hosts also load skills on their own when a task matches.
 
@@ -110,7 +112,8 @@ It assumes GitHub with the `gh` CLI (the review skills post with `gh pr comment`
 - **One marketplace per plugin.** Adding the same plugin from two marketplaces loads it twice, and only one copy's hooks run (documented for Claude Code).
 - **Plugin MCP servers in Codex** don't get `${CLAUDE_PLUGIN_ROOT}` expanded and start in the session's folder (seen in testing with Codex 0.162). Use a command on PATH.
 - **A `codex exec` run with `-s read-only`** can't post comments or call MCP tools. Post its report yourself, unchanged.
-- **Codex's question tool** (`request_user_input`) is single-choice, takes one to three short questions, and works in Plan mode only by default. Interrogate's packet goes on a web page anyway, so this doesn't limit it.
+- **Codex's question tool** (`request_user_input`) is single-choice, takes one to three short questions, and works in Plan mode only by default. Interrogate's packet goes on a board or a web page anyway, so this doesn't limit it.
+- **A plan or decision store** is optional: name it in your own rules, with its commands (new plan, revise, review, approve, decide, search, the item schema). Without one, plans live in issues and decisions in the plan's table, as before.
 - **The second voice needs configuring** in your own rules, or the full tier's independent pass uses the host's built-in review and the instructions tier's round 1 a second fresh reviewer.
 - **Open sessions keep the old version** after an update until they restart or run `/reload-plugins`.
 
@@ -122,7 +125,7 @@ It assumes GitHub with the `gh` CLI (the review skills post with `gh pr comment`
 
 Based on [obra/superpowers](https://github.com/obra/superpowers), with the [Antigravity adaptation](https://github.com/anthonylee991/gemini-superpowers-antigravity).
 
-`interrogate` adapts the `grilling` skill from [mattpocock/skills](https://github.com/mattpocock/skills) at commit `49dd158` (MIT, Copyright (c) 2026 Matt Pocock): mapping the open decisions, looking facts up instead of asking for them, and not acting until the user confirms. It differs by sending every decision at once in one packet, with options shown, recommendations pre-filled and the clear calls listed as decided unless the user objects, and by recording each answer in the plan's decisions table.
+`interrogate` adapts the `grilling` skill from [mattpocock/skills](https://github.com/mattpocock/skills) at commit `49dd158` (MIT, Copyright (c) 2026 Matt Pocock): mapping the open decisions, looking facts up instead of asking for them, and not acting until the user confirms. It differs by sending every decision at once in one packet, with options shown, recommendations pre-filled and the clear calls listed as decided unless the user objects, and by recording each answer in the decision store the user's rules name, else the plan's decisions table.
 
 ## License
 

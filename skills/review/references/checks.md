@@ -6,7 +6,7 @@ Checks marked 🔍 call for research against the versions the project actually p
 
 ### 🎯 1. `correctness` — does it do what was asked?
 
-Walk through every step of the plan (the plan issue, when there is one). Confirm the code delivers each one.
+Walk through every step of the plan (in its home, when there is one). Confirm the code delivers each one.
 Cross-check accepted scope against deferred ideas; a deferred idea is not a missing requirement unless explicitly included in the task.
 Read the repository's own rules (`AGENTS.md`, `CLAUDE.md`, rules folders) — flag any violation. They are non-negotiable.
 Verify return values, status codes, and error types match the contracts defined.

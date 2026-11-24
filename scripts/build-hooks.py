@@ -9,6 +9,9 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "hooks" / "always-on.md"
 TARGET = ROOT / "hooks" / "session-start.json"
+# Read by every session. Hosts cut long hook output (Claude Code at 10,000 characters,
+# Codex at about 2,500 tokens), and every line costs context, so keep it well under both.
+BUDGET = 4_000
 
 
 def render() -> str:
@@ -22,6 +25,9 @@ def render() -> str:
 
 
 if __name__ == "__main__":
+    size = len(SOURCE.read_text(encoding="utf-8").strip())
+    if size > BUDGET:
+        sys.exit(f"hooks/always-on.md is {size} characters; the budget is {BUDGET}")
     expected = render()
     if "--check" in sys.argv:
         actual = TARGET.read_text(encoding="utf-8") if TARGET.exists() else ""
