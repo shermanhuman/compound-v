@@ -85,7 +85,7 @@ A commit that only changes the version number needs no round of its own. Merging
 
 1. List every review that was requested: your subagents, a second-opinion model, built-in reviews, and any the user ran.
 2. Don't block on the ones still running: take each report through steps 3 to 6 as it lands, and keep working in between. Questions for the user from any report are held until every report is in, then sent as one packet (step 5); the round's follow-up starts after the answers are applied. When a later report raises a question, recheck the fixes already made against it, and revert or hold any it touches. Post the round's fix notes after the last report. Wait in the background, never in a foreground polling loop.
-3. Read everything posted on the pull request **and** the plan issue since you last read them — other reviewers post there too. On a pull request that means all three kinds of record, every page: conversation comments, review summaries and inline review comments. For GitHub:
+3. Read everything posted on the pull request **and** the plan's home (a plan store the user's rules name, or the plan's issue) since you last read them — other reviewers post there too. On a pull request that means all three kinds of record, every page: conversation comments, review summaries and inline review comments. For GitHub:
 
    ```bash
    gh api --paginate repos/<owner>/<repo>/issues/<n>/comments
@@ -95,7 +95,7 @@ A commit that only changes the version number needs no round of its own. Merging
 
    Without `--paginate` the API returns only the first 30 of each, and `gh pr view --comments` leaves out inline comments, so later findings go missing without any error.
 4. Treat each finding as a hypothesis: find the line of code or the read-only query that would prove it wrong, then adopt, adapt or refute it with that evidence.
-5. Findings under *Questions for the user* aren't patched, in any tier: send them in one decision packet per round, hold the fixes they touch until the answers come, and record each answer in the decisions table.
+5. Findings under *Questions for the user* aren't patched, in any tier: send them in one decision packet per round (`compound-v:interrogate`'s *Present it once*), hold the fixes they touch until the answers come, and record each answer where the decisions live.
 6. Fix or refute every valid must-fix finding (only the user may waive one).
 
 ## Record every round on the PR
@@ -103,8 +103,8 @@ A commit that only changes the version number needs no round of its own. Merging
 - Each review is posted as a comment, naming the plugin version and, in persona mode, the mode (the review skills do this; if a reviewer couldn't post, post its text unchanged and say whose it is).
 - After addressing a round, post one fix-notes comment answering each finding by ID: the fix and its commit SHA, or the evidence for refuting it, or "noted" for polish left alone; for a question, the user's answer and its decisions row.
 - When a round ran before a pull request existed (for example on a host that can't open one), post it when the PR opens; reviewers return their text until then. Finding IDs continue across rounds on one PR (round 2 starts after round 1's last number).
-- Add decisions made during review to the decisions table in the PR body, with who and when.
+- Add decisions made during review where the decisions live (the decision store the user's rules name, else the decisions table in the PR body), with who and when.
 
 ## Plans
 
-When a plan beyond a patch is finished (a patch's note goes in its PR and gets no plan review), a fresh reviewer runs `compound-v:plan-review` (plus the second-opinion model when the user asks for one). Wait for every requested review, fold the findings in, post the review and a short "how each finding was handled" comment on the plan's issue, then ask for approval. If the host's plan mode can't write to the tracker, open the issue as the first step after approval and post both then. A plan review that finds must-fix issues gets one more `compound-v:plan-review` after the plan is revised.
+When a plan beyond a patch is finished (a patch's note goes in its PR and gets no plan review), a fresh reviewer runs `compound-v:plan-review` (plus the second-opinion model when the user asks for one). Wait for every requested review, fold the findings in, post the review and a short "how each finding was handled" note in the plan's home (the plan store the user's rules name, attached to the revision reviewed, or the plan's issue), then ask for approval. If the host's plan mode can't write: with a plan store, leave the restricted mode first (where only the user can, ask them to), then post the revision, the review, the note on how each finding was handled and the approval item, and wait for its answer before building; without one, post both as the first step after the host's approval. A plan review that finds must-fix issues gets one more `compound-v:plan-review` after the plan is revised.
