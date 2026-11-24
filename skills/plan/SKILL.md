@@ -85,7 +85,7 @@ Ask only what the code, the data, the decision record or a sensible default can'
 - **Critical:** what the plan can't be right without, and anything whose answer can't be undone (data deleted, a message sent, money spent, a public API released). These are answered before work starts.
 - **Optional:** each with your default and its reason. The user can skip them all, and you proceed on the defaults.
 
-A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default in the plan's home (a patch's PR) and keep going; otherwise, and always when it can't be undone, ask, and carry on with the work it doesn't touch.
+A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default in the plan's home (a patch's PR) and keep going; otherwise, and always when it can't be undone, ask, and carry on with the work it doesn't touch. Where the user's rules name a board, the question goes there, not the chat; in plan mode it waits in the decisions table as an `ask` row until plan mode ends (`compound-v:interrogate`).
 
 `compound-v:interrogate` is the procedure: use it whenever a plan has open decisions before approval, or the user asks to stress-test one.
 
