@@ -44,7 +44,7 @@ Put the packet where the user will see it, never only in the chat, in the first 
 - **An artifact or published page,** where the host has one.
 - **A local HTML file,** written outside the working tree. The chat carries only the link.
 
-In plan mode, while writes are blocked, open decisions go in the plan's decisions table as `ask` rows rather than the chat, and are posted as the packet as soon as plan mode ends.
+In plan mode, while writes are blocked, open decisions go in the plan's decisions table as `ask` rows rather than the chat or the question tool, and are posted as the packet as soon as plan mode ends.
 
 Answers are collected on the page when it can deliver them back to the session; otherwise the user replies in chat in the answer format above. Only when no page can be shown at all, or the user asks for it in chat, send the packet as plain text in one message. Never spread a packet across several messages or question-tool calls. Once its link is out, don't change the packet: put anything new in a follow-up.
 
