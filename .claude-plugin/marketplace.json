@@ -4,7 +4,7 @@
     "name": "Sherman Boyd",
     "url": "https://github.com/shermanhuman"
   },
-  "description": "Compound V, Grugg, Oh and Cartographer plugins for Claude Code and Codex.",
+  "description": "Compound V, Grugg, Oh, Cartographer and brandkit plugins for Claude Code and Codex.",
   "plugins": [
     {
       "name": "compound-v",
@@ -35,8 +35,18 @@
       }
     },
     {
+      "name": "brandkit",
+      "description": "Brand and design skills on brandkit packages (DTCG brand tokens; UI as three checked mockups, a pick, a build and a screenshot review), plus an edit-time brand lint hook. Uses the brandkit binary on PATH, or finds it with mise. Claude Code only for now.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/shermanhuman/brandkit.git",
+        "path": "./agent-plugin",
+        "ref": "main"
+      }
+    },
+    {
       "name": "oh",
-      "description": "Sherman's working agreements: mise first, pull requests as releases, version bumps, questions as one decision packet, a rough-edge log, reviewer choices; release, waxseal, mise and Dockerfile skills.",
+      "description": "Sherman's working agreements: mise first, pull requests as releases, version bumps, questions and plans on the Sugarhouse board, a rough-edge log, a process and secrets guard (one specific kill at a time, no printing secret files), reviewer choices; release, waxseal, mise and Dockerfile skills.",
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/shermanhuman/oh.git",
