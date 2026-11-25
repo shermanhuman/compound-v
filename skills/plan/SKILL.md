@@ -11,7 +11,7 @@ Use this inside whatever planning mode the host has: settle intent, research (re
 
 Before planning a new goal, settle what the user wants, in conversation:
 1. **Look first.** Read what already answers it: the code, the issues, past decisions (where the user's rules name a plan or decision store, search its plans and decisions too). Never ask what you could find out.
-2. **One question at a time,** each with your best guess, so "yes" is a full answer. Ask only questions whose answer changes what gets built.
+2. **One question at a time,** each with your best guess, so "yes" is a full answer (on a board, one ask with every question and your guess for each). Ask only questions whose answer changes what gets built.
 3. **About five at most.** Past that, say what's still unclear instead of asking more. "Enough, plan it" ends the conversation.
 4. **Restate the goal** in this shape:
    - the goal in one sentence;

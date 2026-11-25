@@ -5,7 +5,7 @@ description: Settle every open decision in a plan, design or idea in one round t
 
 # Interrogate
 
-Settle every decision in the plan in one round trip. The user's time is the scarce resource: do all the research before asking, then ask everything at once. Never drip questions one after another. (A goal's intent is the one exception: it's settled in conversation, one question at a time, before planning; see `compound-v:plan`'s *Intent first*.)
+Settle every decision in the plan in one round trip. The user's time is the scarce resource: do all the research before asking, then ask everything at once. Never drip questions one after another. (A goal's intent is the one exception: it's settled in conversation, one question at a time (on a board, one ask with a guess for each), before planning; see `compound-v:plan`'s *Intent first*.)
 
 ## Build the packet
 
@@ -19,9 +19,9 @@ Settle every decision in the plan in one round trip. The user's time is the scar
    - **Clear calls:** the evidence fits in one line, the alternatives are clearly worse, it's cheap to undo, it touches nothing the user sees (product direction, names, wording, spend, security, privacy), it conflicts with no user decision, and what it depends on is settled. An `ask` row qualifies only when a fact found since makes it clear-cut. These go on the packet's "decided unless you object" list.
    - **Decisions:** everything else. When in doubt, it's a decision. Mark each **critical** (the plan can't be right without it, or its answer can't be undone) or **optional** (it carries your default, the user may skip it, and work proceeds on the default). Critical ones come first.
 4. **Make each decision concrete.**
-   - **The question** in one sentence, and what it changes.
+   - **The question, then its context, then the options.** The question in one sentence (on a board, the title). Before the options, two or three lines of context: what's happening, why it needs the user now, and what the answer unblocks. One screen per decision: the question, the context, the thing shown and the options stay open; fold the rest.
    - **Show, don't tell.** Put the thing itself in front of the user: the mock or screenshot, the diagram, the diff or config, example output under each option, the numbers (as a chart, and a table whose columns say what they measure). Describe only what can't be shown.
-   - **Options** lettered A, B, C, each with what happens and what it costs. Recommendation first, marked. The last option is always **More discussion**, for when the packet didn't give the user enough to decide.
+   - **Options** lettered A, B, C, each with what happens and what it costs. **Each option stands on its own:** its label names what it means in full, never "those four" or "as above"; when it stands for a list, show the list as a table. Recommendation first, marked, with a one-line reason. The last option is always **More discussion**, for when the packet didn't give the user enough to decide.
    - **Links between decisions:** when one answer changes another decision, say how ("if 2B, skip 5") instead of holding the second one back.
 5. **Record before sending.** Clear calls are recorded `accepted` (planner) and packet decisions `ask`, in the decision store where the rules name one, otherwise the plan's decisions table. The packet's link and text also go on the plan's home, so a reply like `2B` can still be read after lost context.
 
@@ -57,10 +57,10 @@ Answers are collected on the page when it can deliver them back to the session; 
    - A note with no letter that settles the decision ("7: neither, keep the current name") is the user's own option, recorded `accepted`.
    - These stay or go back to `ask` and join the follow-up: More discussion, an objection to a clear call, a note that asks something or leaves the choice open, and any answer that conflicts with an earlier one.
    - Record in the decision store when the rules name one (its decide command is the only way to change a row there; never edit a rendered table), otherwise in the plan's table. Update the plan's home, then change the steps, risks and assumptions the answers affect.
-2. **One follow-up packet** for everything still open and any decision the answers opened that nobody could have foreseen, built the same way and showing the missing information. If a More discussion reply didn't say what was missing, first ask in one plain-text message what's missing for all of them. Never fall back to one question at a time.
+2. **One follow-up packet** for everything still open and any decision the answers opened that nobody could have foreseen, built the same way and showing the missing information. If a More discussion reply didn't say what was missing, first ask once what's missing for all of them, where the user picked More discussion (on the board, as a decision whose options are the likely gaps). Never fall back to one question at a time.
 3. **Log rough edges** as [references/rough-edges.md](references/rough-edges.md) says: `more-discussion`, `foreseeable-follow-up` and `override-knowable` come from packets.
 
-If the user asks to talk instead, talk it through in prose until they want the packet again.
+If the user asks to talk instead, talk it through in prose where they asked, until they want the packet again.
 
 ## Tasks for the human
 
