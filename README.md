@@ -44,7 +44,7 @@ codex plugin add compound-v@compound-v
 
 Then start a new session and open `/hooks` to trust the Compound V hook. Codex skips plugin hooks until you do, and without the hook the skills still work, but plans and pull requests aren't steered to them.
 
-The same marketplace lists [Grugg](https://github.com/shermanhuman/grugg) (terse mode, opt-in), [Cartographer](https://github.com/shermanhuman/cartographer) (a code map over MCP that the review skills use when it's installed; it runs the `cartographer` binary from PATH, or fetches it with mise) and [brandkit](https://github.com/shermanhuman/brandkit) (brand and design skills on DTCG brand packages, with an edit-time brand lint hook; Claude Code only for now; it runs the `brandkit` binary from PATH, or finds it with mise). Install them the same way, by name. The author's personal [Oh](https://github.com/shermanhuman/oh) plugins have their own marketplace, `mapleset` (`claude plugin marketplace add shermanhuman/oh`).
+The same marketplace lists [Grugg](https://github.com/shermanhuman/grugg) (terse mode, opt-in), [Cartographer](https://github.com/shermanhuman/cartographer) (a code map over MCP that the review skills use when it's installed; it runs the `cartographer` binary from PATH, or fetches it with mise) and [brandkit](https://github.com/shermanhuman/brandkit) (brand and design skills on DTCG brand packages, with an edit-time brand lint hook; Claude Code only for now; it runs the `brandkit` binary from PATH, or finds it with mise). Install them the same way, by name. The author's personal [Oh](https://github.com/shermanhuman/oh) plugins have their own marketplace, `mapleset` (`claude plugin marketplace add shermanhuman/oh`; in Codex, `codex plugin marketplace add shermanhuman/oh`).
 
 ## Updating
 
