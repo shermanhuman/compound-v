@@ -5,7 +5,7 @@ description: Settle every open decision in a plan, design or idea in one round t
 
 # Interrogate
 
-Settle every decision in the plan in one round trip. The user's time is the scarce resource: do all the research before asking, then ask everything at once. Never drip questions one after another. (A goal's intent is the one exception: it's settled in conversation, one question at a time, before planning; see `compound-v:plan`'s *Intent first*.)
+Settle every decision in the plan in one round trip. The user's time is the scarce resource: do all the research before asking, then ask everything at once. Never drip questions one after another. (A goal's intent is the one exception: it's settled in conversation, one question at a time (on a board, one ask with a guess for each), before planning; see `compound-v:plan`'s *Intent first*.)
 
 ## Build the packet
 
