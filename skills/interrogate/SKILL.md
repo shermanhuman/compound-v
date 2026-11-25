@@ -60,7 +60,7 @@ Answers are collected on the page when it can deliver them back to the session; 
 2. **One follow-up packet** for everything still open and any decision the answers opened that nobody could have foreseen, built the same way and showing the missing information. If a More discussion reply didn't say what was missing, first ask once what's missing for all of them, where the user picked More discussion (on the board, as a decision whose options are the likely gaps). Never fall back to one question at a time.
 3. **Log rough edges** as [references/rough-edges.md](references/rough-edges.md) says: `more-discussion`, `foreseeable-follow-up` and `override-knowable` come from packets.
 
-If the user asks to talk instead, talk it through in prose until they want the packet again.
+If the user asks to talk instead, talk it through in prose where they asked, until they want the packet again.
 
 ## Tasks for the human
 
