@@ -3,12 +3,12 @@
 Checks marked 🔍 call for research against the versions the project actually pins (`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles). It isn't optional, and it never comes from memory.
 
 **How to research** (this list is also what a plan's *Research* part follows):
-1. For a public library, a docs lookup tool for pinned versions when the host has one configured (an MCP server that resolves a library and returns its docs for a given version). A query names only the library and the concept, never private code, names or task wording.
+1. For a public library, a docs lookup tool for pinned versions when one is among your tools (an MCP server that resolves a library and returns its docs for a given version). A query names only the library and the concept, never private code, names or task wording.
 2. The language's own docs for that version: `go doc` against the module cache, `pkg.go.dev/<module>@<version>`, `hexdocs.pm/<pkg>/<version>`, or the vendor's versioned docs.
 3. API reference skills the user's rules install for a service.
 4. The web, preferring the vendor's docs to blog posts.
 
-List every source in the report's *Sources* section. Without web or docs access, still run each 🔍 check from the code, and add "research not assessed: no web access" to its Coverage row.
+List every source you opened in the report's *Sources* section; a search result you didn't open isn't a source. Without web or docs access, still run each 🔍 check from the code, and add "research not assessed: no web access" to its Coverage row.
 
 ---
 
