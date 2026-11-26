@@ -13,6 +13,7 @@ Verify return values, status codes, and error types match the contracts defined.
 Trace every conditional branch. Confirm all expected states are handled, not just the happy path.
 Check pre/post conditions: what must be true before calling a function, and what must be true after it returns? Flag any violations.
 Flag hardcoded solutions that only work for specific test inputs. The code must solve the general problem.
+Where the change merges, deduplicates or shows once something that appeared twice, check the two were the same fact, not just the same text (`merged-facts` in [causes.md](causes.md)).
 
 ---
 
@@ -65,6 +66,7 @@ Apply the test-value policy in `compound-v:testing`: assess distinct failures, t
 For claims of existing coverage, inspect the cited file and test: confirm it exists and exercises the claimed behavior or failure. An unsupported claim is a coverage gap.
 Run appropriate checks or reuse still-valid results with evidence; follow the repository's requirements for final validation. Do not mistake a fast subset for complete feature coverage.
 Check that changed behavior and relevant boundary/error cases have meaningful coverage. Retain populated negative examples when fixtures shrink; a passing assertion on empty data may prove nothing.
+A change that touches many places (a migration, rename or swap) is proved by its outcome, the rendered output or the live state, not by tests that ban old spellings one at a time (`many-sites-proof` in [causes.md](causes.md)).
 Check error paths explicitly. Happy-path-only tests give false confidence.
 Read the test names. Each should describe the scenario: `TestEmptyInputReturnsError`, not `TestProcess`.
 Verify test independence: tests must run in any order without shared state. Shared mutable state between tests causes flaky failures.
@@ -94,7 +96,7 @@ Handle errors the language's way: Go returns errors, Elixir uses ok/error tuples
 
 ### 🔁 7. `dry` — single point of truth
 
-Find duplicated knowledge: a rule, constant, schema or policy stated in more than one place, so that changing one leaves the other wrong (pattern S1 in [patterns.md](patterns.md)).
+Find duplicated knowledge: a rule, constant, schema or policy stated in more than one place, so that changing one leaves the other wrong (pattern S1 in [patterns.md](patterns.md); `two-owners` in [causes.md](causes.md)). Our own copy of an outside tool's or API's behaviour (hand-written shell or SQL parsing, an assumed payload shape) is a second owner too: prefer the real tool or parser, or test against it.
 Similar-looking lines are not duplication. Below three occurrences of merely similar code, leave it (Rule of Three).
 
 ---

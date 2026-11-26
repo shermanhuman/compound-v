@@ -28,12 +28,12 @@ The restatement goes at the top of the plan in its home (*The plan's home*; for 
 
 ## Goal types
 
-| Type | Examples | Plan | Plan deliverables, beyond goal, scope, non-goals and how it's tested |
+| Type | Examples | Plan | *Design* section (beyond goal, scope, non-goals and how it's tested) |
 |---|---|---|---|
 | **Patch** | a bug fix, a copy change, a small config change | a short note: goal, how it's tested, steps | none |
-| **Change** | a small enhancement, a refactor, an internal tool | the plan's sections, kept short | user stories with acceptance tests; a diagram, mockups, API spec or ER diagram when it touches those |
-| **Feature** | new user-facing capability, a new integration | the full plan | all of those that apply, plus what's logged and measured to learn how it's used |
-| **Product** | a new app or service | feature depth | plus architecture and operations |
+| **Change** | a small enhancement, a refactor, an internal tool | the plan's sections, kept short | a diagram, user stories, functions and interfaces, traps; mockups when it touches a screen |
+| **Feature** | new user-facing capability, a new integration | the full plan | the Change parts, plus a sequence diagram of the main flow, the data model or API spec, and what's logged and measured to learn how it's used; suggested: quality targets, cross-cutting concerns, alternatives considered |
+| **Product** | a new app or service | feature depth | plus context and container views, and operations |
 
 A patch touches no schema, dependency files, auth, money paths or public API, and changes under about 150 lines. Work that outgrows that is reclassified, and you say so.
 
@@ -73,11 +73,17 @@ Split the work into stages (phases, waves, a pilot, a first version and then the
    Verdicts are `accepted`, `rejected` or `ask`. The table is the decisions log for the whole job: reviewers treat accepted and rejected rows as settled, it carries into the pull request body, and decisions made during review rounds are added as new rows with who and when. Every row's `#` is unique and never reused.
 
    Where the user's rules name a decision store, the store holds the decisions: posting the plan records its rows, each with an ID. After that a decision changes only through the store's decide command, never by editing the table, and the plan shows the store's rows.
-4. **Steps** — under `### Steps`, each starting with its name in bold, saying what changes (files, by pattern rather than listing every file) and **how it's checked** in one `*Check:*` line, with a check that can actually fail. In a plan store, write them as a numbered list (`1. **Name.** …`), which the store ticks; anywhere else (an issue, a file), as task items (`- [ ] **Name.** …`), converted to the numbered list when the plan moves into a store. Reuse existing code where it exists and name it.
-5. **Happy path** — for user-facing changes, a numbered walkthrough of what the user sees afterwards. It becomes the "where to look" list at the end.
-6. **Risks, rollout and rollback** — what could go wrong, the order things ship in (migrations relative to deploys, which repository first), and how to undo each step.
-7. **Assumptions** — anything inferred rather than confirmed, so it can be corrected.
-8. **Out of scope** — each deferred item with its home: its own issue for real work, or one "Follow-ups from #N" checklist issue for small leftovers.
+4. **Design** — what the goal-types table asks for, under these headings (a Patch has none):
+   - `### Diagram`: a Mermaid diagram of every component that reads or writes the data the change touches, and the flow between them, or a `No diagram:` line with the reason. Two components reading one format, or a cache beside its source, show up here.
+   - `### User stories`: who does what and what they see, each with an acceptance test that can fail. The restatement's *done when* isn't a substitute: it says what is true at the end, while a story walks one person through one path, edge cases included.
+   - `### Functions and interfaces`: each new or changed function, route, table, message or instruction section, with its shape (signature, columns, payload) and the one fact it owns. A fact two entries claim is a design problem to settle now.
+   - `### Traps`: one row per trap in `compound-v:review`'s [causes.md](../review/references/causes.md): whether it applies, where, and how the plan handles it. Plan review fills in its own table and compares.
+   - For a Feature and above, the further parts the goal-types table lists, each under its own heading. Quality targets are measurable non-functional goals. Cross-cutting concerns are security, privacy and observability, with how the design handles each. Alternatives considered are other designs that would reach the goal, including buying or reusing, and why not.
+5. **Steps** — under `### Steps`, each starting with its name in bold, saying what changes (files, by pattern rather than listing every file) and **how it's checked** in one `*Check:*` line, with a check that can actually fail. In a plan store, write them as a numbered list (`1. **Name.** …`), which the store ticks; anywhere else (an issue, a file), as task items (`- [ ] **Name.** …`), converted to the numbered list when the plan moves into a store. Reuse existing code where it exists and name it.
+6. **Happy path** — for user-facing changes, a numbered walkthrough of what the user sees afterwards. It becomes the "where to look" list at the end.
+7. **Risks, rollout and rollback** — what could go wrong, the order things ship in (migrations relative to deploys, which repository first), and how to undo each step.
+8. **Assumptions** — anything inferred rather than confirmed, so it can be corrected.
+9. **Out of scope** — each deferred item with its home: its own issue for real work, or one "Follow-ups from #N" checklist issue for small leftovers.
 
 ## Asking questions
 
