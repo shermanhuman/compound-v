@@ -1,6 +1,14 @@
 ## Review checks
 
-Checks marked 🔍 call for research against the versions the project actually pins (`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles).
+Checks marked 🔍 call for research into the libraries and outside APIs the diff touches, at the versions the project actually pins (`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles). It isn't optional, and it never comes from memory. When the diff touches none, say so in one line under *Sources*.
+
+**How to research** (this list is also what a plan's *Research* part follows). Take the steps in order and stop when the question is answered; go on to the next when a step isn't available, refuses the call, or doesn't cover the version or the question:
+1. For a public library, a docs lookup tool for pinned versions when one is among your tools (an MCP server that resolves a library and returns its docs for a given version). A query names only the library and the concept, never private code, names or task wording.
+2. The language's own docs for that version: `go doc` against the module cache, `pkg.go.dev/<module>@<version>`, `hexdocs.pm/<pkg>/<version>`, or the vendor's versioned docs.
+3. API reference skills the user's rules install for a service.
+4. The web, preferring the vendor's docs to blog posts.
+
+List every source you opened in the report's *Sources* section; a search result you didn't open isn't a source. Without web or docs access, still run each 🔍 check from the code, and add "research not assessed: no web access" to its Coverage row.
 
 ---
 
@@ -19,7 +27,7 @@ Where the change merges, deduplicates or shows once something that appeared twic
 
 ### 🚧 2. `edges` — what breaks at the boundaries? 🔍
 
-**Stack research:** Where web search is available, search for common edge cases and error patterns for the pinned versions.
+**Stack research:** Search for common edge cases and error patterns for the pinned versions.
 
 Test the boundaries: nil, empty, zero, max, negative, off-by-one. If any are unhandled, flag them.
 Trace resource lifecycle — files, connections, goroutines must be released on ALL paths, including error paths.
@@ -34,7 +42,7 @@ Check for retry/recovery: transient failures (network timeouts, 503s) should be 
 
 ### 🛡️ 3. `security` — close the doors 🔍
 
-**Stack research:** Where web search is available, search for CVEs, security advisories, and OWASP ASVS misconfigurations for the pinned versions.
+**Stack research:** Search for CVEs, security advisories, and OWASP ASVS misconfigurations for the pinned versions.
 
 Search for hardcoded secrets and credentials. Search logs for leaked tokens or PII. Flag both.
 Trace user input from entry to use. Sanitize before queries, commands, file paths, and templates.
@@ -49,7 +57,7 @@ Check IaC files too: Kubernetes manifests, Dockerfiles, Terraform — not just a
 
 ### ⚡ 4. `perf` — don't waste cycles 🔍
 
-**Stack research:** Where web search is available, search for common performance pitfalls for the pinned versions.
+**Stack research:** Search for common performance pitfalls for the pinned versions.
 
 Find N+1 queries and unbounded loops over external data. Batch or paginate them.
 Look for unnecessary allocations or copies in hot paths. Eliminate them.
@@ -84,7 +92,7 @@ Minimize coupling: changing module A shouldn't require touching module B.
 Apply the 2-minute rule: can a new team member understand this function in under 2 minutes? If not, simplify.
 Match patterns to the latest framework best practices for the pinned versions.
 
-**Idiomatic code** 🔍 — where web search is available, search for "idiomatic [language] [version]":
+**Idiomatic code** 🔍 — search for "idiomatic [language] [version]":
 
 Use language-native constructs: list comprehensions in Python, channels in Go, pattern matching in Elixir.
 Follow the language's style guide: Effective Go, PEP 8, Elixir formatter.
