@@ -52,7 +52,7 @@ Before reporting, compare this round's must-fix causes, and the author's cause l
 
 - **Flip-flop**: a fix that reverses an earlier fix, or contradicts a logged decision.
 - **Recurrence**: a must-fix whose specific cause matches an earlier must-fix's: one fix would have prevented both. The same class with a different cause isn't a recurrence; note it.
-- **Churn**: the same lines rewritten round after round.
+- **Churn**: the same lines rewritten round after round (in the instructions tier, one line or clause rewritten in three rounds).
 
 Any of these means more patching won't converge: the author steps back (`compound-v:review-loop`'s stop rule).
 

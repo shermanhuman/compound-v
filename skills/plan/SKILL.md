@@ -28,7 +28,7 @@ The restatement goes at the top of the plan in its home (*The plan's home*; for 
 
 ## Goal types
 
-| Type | Examples | Plan | *Design* section (beyond goal, scope, non-goals and how it's tested) |
+| Type | Examples | Plan | *Design* section (beyond Goal, Steps with their checks, and Out of scope) |
 |---|---|---|---|
 | **Patch** | a bug fix, a copy change, a small config change | a short note: goal, how it's tested, steps | none |
 | **Change** | a small enhancement, a refactor, an internal tool | the plan's sections, kept short | a diagram, user stories, functions and interfaces, traps; mockups when it touches a screen |
