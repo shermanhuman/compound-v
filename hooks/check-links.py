@@ -3,9 +3,10 @@ r"""Stop hook: send a reply back when it names an issue or PR without a link.
 Reads the hook input on stdin: the assistant's text since the last user
 message, from the transcript, plus `last_assistant_message` (the transcript
 may not hold the turn's final text yet when Stop fires). Markdown links,
-URLs and code are ignored. A bare `#12`, `repo#12`, `PR 12`, `PR-12`,
-`GH-12` or `issue 12` that remains blocks the stop once, with the
-references to link. Any other input, or a second stop in a row, passes.
+URLs and code are ignored, and so are numbered things that aren't issues
+(`item #1`, `Option #2`, `Q#1`, `the #1 priority`). A bare `#12`, `repo#12`,
+`PR 12`, `PR-12`, `GH-12` or `issue 12` that remains blocks the stop once,
+with the references to link. Any other input, or a second stop in a row, passes.
 
 `python3 hooks/check-links.py --test` runs the examples below. That a live
 host fires it: with this hook in a settings file,
@@ -27,9 +28,14 @@ DEFINITION = re.compile(
     r"""^[ ]{0,3}\[([^\]\n]+)\]:[ \t]*(?:<[^>\n]*>|\S+)(?:[ \t]+(?:"[^"\n]*"|'[^'\n]*'|\([^)\n]*\)))?[ \t]*\r?$""", re.M
 )
 LIST_ITEM = re.compile(r"^ {0,3}(?:[-*+]|\d{1,9}[.)])(?:\s|$)")
-# Not run/build/job numbers, not C#/F#; "issue 5 minutes" is not issue 5.
+# Numbered things that aren't issues: board items, steps, options, decisions and
+# questions ("item #1", bare #N only); one letter before the hash (C#, F#, Q#1); "the #1".
+NOT_ISSUES = "".join(
+    rf"(?<!\b{w} )(?<!\b{w}s )" for w in ("item", "step", "option", "decision", "question")
+)
+# Not run/build/job numbers either; "issue 5 minutes" is not issue 5.
 BARE = re.compile(
-    r"(?<![&/\w.-])(?<!\b(?:run|job) )(?<!\bbuild )(?!(?:[CF]#))(?:[\w.-]+/)?[\w.-]*#\d+\b"
+    r"(?<![&/\w.-])(?<!\b(?:run|job) )(?<!\bbuild )(?:(?:[\w.-]+/[\w.-]+|[\w.-]{2,})#\d+\b|" + NOT_ISSUES + r"(?!(?<=\bthe )#\d\b)#\d+\b)"
     r"|\b(?:PRs?|pull requests?|issues?) #?\d+\b(?! (?:seconds?|minutes?|hours?|days?|weeks?|months?|years?|commits?|times?)\b| of \d)(?!-\d)"
     r"|\b(?:PR|GH)-\d+\b",
     re.I,
@@ -64,6 +70,13 @@ EXAMPLES = [
     ("- a\n\tfixed #12", ["#12"]),
     ("    code #12\nmore #13", ["#13"]),
     ("[fix]: https://x/y\r\nsee [#12][fix]", []),
+    # Board items, steps, options, decisions and questions are numbered too.
+    ("Answered item #1, Option #2, step #3, decision #4 and question #5.", []),
+    ("Q#1 and D#7 are packet labels.", []),
+    ("It's the #1 priority.", []),
+    ("A bare #12 and the #57 fix.", ["#12", "#57"]),
+    ("Merged api#57, web#34 and infra#216.", ["api#57", "web#34", "infra#216"]),
+    ("The board item api#57 is open.", ["api#57"]),
 ]
 
 TRANSCRIPT = [

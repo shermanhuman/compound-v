@@ -31,6 +31,8 @@ Read code from the default branch (`git fetch`, then `git show origin/<default>:
 - **Must-fix** (⠿ **B** blocker, ⠷ **M** major): the plan as written would produce wrong behaviour, a security problem, data loss, a silent failure, a broken contract between components, or a rollout that fails; or a load-bearing claim is false; or a step's proof can't fail (check 6); or a required deliverable is missing (check 7). Each names its `Cause` from [causes.md](../review/references/causes.md), as in `compound-v:review`.
 - **Polish** (⠴ **m** minor, ⠠ **n** nit): everything else.
 
+**The threat model.** A finding that hardens beyond the threat model the plan or brief states (for example cooperative agents acting as the owner) is out of scope, not must-fix.
+
 No speculative findings, no "could be clearer". A reviewer's suggestion is a hypothesis too: give the evidence for each finding so the author can test it.
 
 ## Report
