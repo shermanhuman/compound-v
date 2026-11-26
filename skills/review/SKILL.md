@@ -98,7 +98,7 @@ Reviewed commit `<short SHA>` (<base>..<head>) · compound-v <version> · Tier: 
 | Q1 | ... | ... | ... |
 
 ### Sources
-Instructions pass only (check 8): source, URL, fetched, stated date or version.
+Every report that ran a 🔍 check or the instructions pass's check 8, a persona's included: source, URL, fetched, stated date or version.
 
 ### Details
 Must-fix reasoning that isn't obvious from the row, and the instructions pass's situations (check 9) and rule costs (check 11).
