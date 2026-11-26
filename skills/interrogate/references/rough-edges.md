@@ -4,7 +4,7 @@ A rough edge is a moment where the workflow cost the user more than it should ha
 
 `rough-edge: <skill or rule> · <kind> · <link to the plan, PR, issue or session>`
 
-then a line or two on what was missing or went wrong. Log it when it happens, not at the end.
+then a line or two on what was missing or went wrong. An `escape` or `stuck` entry starts that line with `cause:<class>`, the class from `compound-v:review`'s [causes.md](../../review/references/causes.md). Log it when it happens, not at the end.
 
 Kinds:
 - `more-discussion`: a decision packet didn't give the user enough to decide.

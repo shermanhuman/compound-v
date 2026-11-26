@@ -50,6 +50,7 @@ Rules for findings:
 - In later rounds of the same pull request, finding IDs continue from the last round's numbers instead of restarting.
 - Logged decisions are settled: `accepted` or `rejected` rows that are the goal's own or that the plan cites by ID; `ask` rows stay open. Reopen one only as must-fix, stating the harm.
 - After each finding, search for the same problem elsewhere in the change and the codebase and add those locations.
+- Each must-fix names its cause in a `Cause` cell, `<class> · <specific cause>`, with the class from [references/causes.md](references/causes.md). The review loop matches causes across rounds.
 
 ## Validation in persona mode
 
@@ -76,10 +77,10 @@ Reviewed commit `<short SHA>` (<base>..<head>) · compound-v <version> · Tier: 
 ...all ten, every time (or "Not assessed — targeted review"; a light or instructions pass lists its own checks instead)
 
 ### Must-fix
-| ID | Sev | Location | Issue | Fix |
-|---|---|---|---|---|
-| B1 | ⠿ | [lib/x.ex:42](<blob link at the reviewed SHA>) | ... | ... |
-| M2 | ⠷ unresolved | ... | ... (persona mode: the validator couldn't settle it) | ... |
+| ID | Sev | Location | Issue | Cause | Fix |
+|---|---|---|---|---|---|
+| B1 | ⠿ | [lib/x.ex:42](<blob link at the reviewed SHA>) | ... | `concurrency` · retried send has no idempotency key | ... |
+| M2 | ⠷ unresolved | ... | ... (persona mode: the validator couldn't settle it) | ... | ... |
 
 ### Polish
 | ID | Sev | Location | Issue | Fix |
