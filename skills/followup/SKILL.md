@@ -44,7 +44,7 @@ You are the reviewer for a later round: fresh, or a review persona forked from t
 
 ## New issues the fixes caused
 
-Same Must-fix rules, severities and table as the `compound-v:review` skill, each must-fix with its `Cause` ([causes.md](../review/references/causes.md)). When the fix diff adds a new call to a library or outside API, or changes a pinned version, research it as `compound-v:review`'s 🔍 checks do and list the sources in a *Sources* section. In a normal follow-up round, raise no new polish: it waits for the polish pass. The exception is a polish finding that recurs in a new place; report it with its `Cause`, since a recurring polish finding is usually a design trap. A fix that adds a choice the user hasn't decided (a surface, default, name or something they'll be asked) goes under *Questions for the user*, as in that skill. Finding IDs continue across rounds on one pull request: if round 1 ended at M2 and m3, this round starts at M3 and m4, so fix notes never confuse two findings. In the quick check after the polish pass, list new polish as noted, not to fix; only must-fix findings count.
+Same Must-fix rules, severities and table as the `compound-v:review` skill, each must-fix with its `Cause` ([causes.md](../review/references/causes.md)). When the fix diff adds a new call to a library or outside API, or changes a pinned version, research it as [checks.md](../review/references/checks.md)'s *How to research* says and list the sources in a *Sources* section. In a normal follow-up round, raise no new polish: it waits for the polish pass. The exception is a polish finding that recurs in a new place; report it with its `Cause`, since a recurring polish finding is usually a design trap. A fix that adds a choice the user hasn't decided (a surface, default, name or something they'll be asked) goes under *Questions for the user*, as in that skill. Finding IDs continue across rounds on one pull request: if round 1 ended at M2 and m3, this round starts at M3 and m4, so fix notes never confuse two findings. In the quick check after the polish pass, list new polish as noted, not to fix; only must-fix findings count.
 
 ## Spinning check
 
@@ -84,6 +84,9 @@ Only when the author posted one: each check above, passed or failed.
 
 ### Spinning
 The first line is exactly `None`, or one kind word (`flip-flop`, `recurrence` or `churn`), then ` — ` and what's spinning, with the findings and commits involved. Notes go after it, under a `Noted:` line. A recurrence, flip-flop or churn that a passed step-back already covers is `None`, with a `Noted:` line; when two kinds apply, name the one the step-back should start from and note the other.
+
+### Sources
+Only when the fix diff triggered research: what you opened, or "research not assessed: no web access".
 
 ### Verdict
 One or two sentences.

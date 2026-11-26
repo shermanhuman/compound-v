@@ -18,7 +18,7 @@ Read code from the default branch (`git fetch`, then `git show origin/<default>:
 
 ## Check
 
-1. **Claims hold.** Every `file:line`, count, quoted behaviour, "this already works" and "X is unused" claim — verify it against the code. Where the plan relies on production data or performance, check it with read-only queries when you have access; keep them light. Mark each claim verified or refuted, with evidence. If code-map tools are available (`map_find`, `map_entity`, `map_callers`, `map_impact`), use them for where things are defined and who calls them, and re-check any location they mark as changed since their snapshot against the code you're reviewing; otherwise grep. Open at least two of the sources the plan cites, and say whether each supports the claim made of it, for the version named. Where the plan cites none, check its two most load-bearing claims about an outside library or service yourself, as `compound-v:review`'s *How to research* says. A claim of current practice with no source is a finding. Without web access, say the sources weren't opened.
+1. **Claims hold.** Every `file:line`, count, quoted behaviour, "this already works" and "X is unused" claim — verify it against the code. Where the plan relies on production data or performance, check it with read-only queries when you have access; keep them light. Mark each claim verified or refuted, with evidence. If code-map tools are available (`map_find`, `map_entity`, `map_callers`, `map_impact`), use them for where things are defined and who calls them, and re-check any location they mark as changed since their snapshot against the code you're reviewing; otherwise grep. Open at least two of the sources the plan cites, and say whether each supports the claim made of it, for the version named. Where the plan cites none, check its two most load-bearing claims about an outside library or service yourself, as [checks.md](../review/references/checks.md)'s *How to research* says. A claim of current practice with no source is a finding. Without web access, say the sources weren't opened.
 2. **Scope.** The plan delivers the stated goal and the request, nothing important is silently dropped, and nothing extra crept in. Deferred items have a home (an issue), not just a mention; a deferred part of the goal or the request is a stage (check 5).
 3. **Decisions.** Accepted and rejected rows are settled (the goal's own, and rows the plan cites by ID; a match from another goal is not); reopen one only as must-fix, stating the harm. The exception is a staging row the user didn't decide (check 5). Flag open `ask` rows the plan proceeds without.
 4. **Design traps.** Fill in your own traps table before you read the plan's: read the plan with its *Traps* section skipped (or ask whoever launched you to leave it out of the brief), then fill in yours: one row per **trap** in [causes.md](../review/references/causes.md). Each row says whether the trap applies here, where (a plan section, step or `file:line`), and the evidence: what you searched (the functions, the grep, the data you looked at). "Doesn't apply" says what was searched, not a reason. Then compare with the plan's table. Every disagreement, and every instance the plan didn't list, is a finding. A plan with no *Traps* table at all is one check 7 finding; your rows then become findings only where they name a real problem.
@@ -55,6 +55,9 @@ No speculative findings, no "could be clearer". A reviewer's suggestion is a hyp
 
 ### Details
 Only for must-fix findings whose reasoning isn't obvious from the row.
+
+### Sources
+The sources you opened (source, URL, fetched, stated date or version), or "not opened: no web access".
 
 ### Verdict
 approve / approve with changes / rework — in one or two sentences.

@@ -26,7 +26,7 @@ If the diff range is missing, review the current branch against the default bran
 1. The full diff, then every changed file in full. A persona reads the review bundle instead and opens a file only where the bundle isn't enough.
 2. The repository's own rules (`AGENTS.md`, `CLAUDE.md`, rules folders).
 3. The plan, in its home (a plan store the user's rules name, or the plan's issue), and its decisions, when there is one.
-4. Versions actually pinned (`mix.exs`/`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles). Research version-specific behaviour against these, not from memory.
+4. Versions actually pinned (`mix.exs`/`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles). Research version-specific behaviour against these.
 
 If code-map tools are available (for example `map_find`, `map_entity`, `map_callers`, `map_impact`), use them to find definitions and callers of changed functions; re-check any location they mark as changed since their snapshot against the working tree. Otherwise use grep.
 
@@ -109,6 +109,6 @@ One or two sentences: what matters most, and whether anything must be fixed befo
 
 Link locations to the hosting service at the reviewed SHA so links stay valid after later pushes. Leave out empty sections. In a public repository, cite private sources (logs, memories, private issues or plugins) by link or number and don't quote them.
 
-A persona doesn't post: it writes its report (Coverage for its checks, Must-fix, Polish, Questions, and *Outside my area*) to the file the review session names (where it can't write files, it returns the text and the session saves it), which validates and posts one report for the round.
+A persona doesn't post: it writes its report (Coverage for its checks, Must-fix, Polish, Questions, Sources, and *Outside my area*) to the file the review session names (where it can't write files, it returns the text and the session saves it), which validates and posts one report for the round.
 
 Post it on the pull request (for GitHub: `gh pr comment <n> --body-file <file>`). If there is no pull request yet, or you can't post (read-only sandbox, no credentials), return the report text and say it hasn't been posted; the review loop posts it unchanged when the PR opens.

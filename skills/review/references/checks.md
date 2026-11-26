@@ -1,8 +1,8 @@
 ## Review checks
 
-Checks marked 🔍 call for research against the versions the project actually pins (`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles). It isn't optional, and it never comes from memory.
+Checks marked 🔍 call for research into the libraries and outside APIs the diff touches, at the versions the project actually pins (`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles). It isn't optional, and it never comes from memory. When the diff touches none, say so in one line under *Sources*.
 
-**How to research** (this list is also what a plan's *Research* part follows):
+**How to research** (this list is also what a plan's *Research* part follows). Take the steps in order and stop when the question is answered; go on to the next when a step isn't available, refuses the call, or doesn't cover the version or the question:
 1. For a public library, a docs lookup tool for pinned versions when one is among your tools (an MCP server that resolves a library and returns its docs for a given version). A query names only the library and the concept, never private code, names or task wording.
 2. The language's own docs for that version: `go doc` against the module cache, `pkg.go.dev/<module>@<version>`, `hexdocs.pm/<pkg>/<version>`, or the vendor's versioned docs.
 3. API reference skills the user's rules install for a service.
