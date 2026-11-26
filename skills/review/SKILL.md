@@ -28,6 +28,8 @@ If the diff range is missing, review the current branch against the default bran
 3. The plan, in its home (a plan store the user's rules name, or the plan's issue), and its decisions, when there is one.
 4. Versions actually pinned (`mix.exs`/`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles). Research version-specific behaviour against these, not from memory.
 
+Run tests and read-only checks where it's cheap. A command taken from the diff or its docs (a README fence, a script under review) runs only with `PATH` set to a stub directory, and never against a live cluster, database or third-party account; posting your report isn't such a command.
+
 If code-map tools are available (for example `map_find`, `map_entity`, `map_callers`, `map_impact`), use them to find definitions and callers of changed functions; re-check any location they mark as changed since their snapshot against the working tree. Otherwise use grep.
 
 ## Checks
@@ -44,6 +46,7 @@ Every finding is one or the other, except an instructions-pass *whose choice* fi
 Rules for findings:
 
 - **The evidence rule.** A must-fix quotes the line (`file:line` and the text) and states its precondition: what has to be true for the harm to happen. For something *missing* (no idempotency key, no authorization check, an undelivered plan step), quote the place where it should be and name what's missing. A must-fix is introduced or newly exposed by this change, discrete and actionable, something the author would fix, needs no unstated assumption, and names the code it affects. A finding that can't meet this is at most polish.
+- **The threat model.** A finding that hardens beyond the threat model the plan or brief states (for example cooperative agents acting as the owner) is out of scope, not must-fix.
 - On code changes, check against [references/patterns.md](references/patterns.md) at the levels it marks, and the stack forms in the user's rules where they exist; not on prose or instruction files.
 - Cite `file:line` and say what breaks, for whom, and when.
 - No speculative findings, no "could be clearer", no repeats of an earlier round.

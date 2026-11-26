@@ -5,11 +5,11 @@ description: Runs the review rounds for a pull request or a plan — who reviews
 
 # Review loop
 
-Reviewers never come from the session that wrote the code (a new subagent or process, never a fork of yourself): a reviewer that has seen how the code was written tends to accept it. Brief each with the inputs its skill lists and the facts you've already verified, so it doesn't re-derive them. In the persona mode, one review session per pull request keeps the reviewers' context across rounds; its final pass is always fresh.
+Reviewers never come from the session that wrote the code (a new subagent or process, never a fork of yourself): a reviewer that has seen how the code was written tends to accept it. Brief each with the inputs its skill lists and the facts you've already verified, so it doesn't re-derive them. A brief for guard work (a gate, a guard, permissions) states the threat model. In the persona mode, one review session per pull request keeps the reviewers' context across rounds; its final pass is always fresh.
 
 ## Choosing the tier
 
-Pick the tier from the diff before round 1, and say which one and why in the PR body and the first review comment. The user can ask for the full tier at any time.
+Pick the tier from the diff before round 1, and say which one and why in the PR body and the first review comment. The user can ask for the full tier at any time. When a decision changes what gates a PR (what it ships, its tier, whether it waits on another change), re-plan that PR's review then and say so on the PR; don't leave it waiting on the old plan.
 
 **Light** covers prose only. The list is closed: anything not on it is instructions or full.
 

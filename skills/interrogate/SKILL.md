@@ -14,14 +14,15 @@ Settle every decision in the plan in one round trip. The user's time is the scar
    - **Decided before:** a match from another goal. Put it in the packet as a clear call ("decided before in <ID>: …"), never drop the question silently, and never treat it as settled.
    - **Open:** `ask` rows, choices the planner made alone, and assumptions the plan relies on without saying so (defaults, limits, names, who can do what, what happens on failure, what ships first). Check the confirmed defaults, where the user's rules or the store keep them, before asking.
 2. **Find every fact first.** Look up what each decision needs from the code, data, docs and environment, in one parallel batch, with subagents for anything broad. Never ask the user for a fact you can find.
+   - **Research the options too,** not only the facts: what the sibling repositories and the stack already use, and the asset's own traits (size, format, what it shows). Include the simplest option and, where it is one, doing nothing, and question the premise: does the goal need this at all, or did a design doc's wording put it there?
 3. **Sort.**
    - **Mechanical** (versions, file layout, check commands): record it, don't show it.
    - **Clear calls:** the evidence fits in one line, the alternatives are clearly worse, it's cheap to undo, it touches nothing the user sees (product direction, names, wording, spend, security, privacy), it conflicts with no user decision, and what it depends on is settled. An `ask` row qualifies only when a fact found since makes it clear-cut. These go on the packet's "decided unless you object" list.
    - **Decisions:** everything else. When in doubt, it's a decision. Mark each **critical** (the plan can't be right without it, or its answer can't be undone) or **optional** (it carries your default, the user may skip it, and work proceeds on the default). Critical ones come first.
 4. **Make each decision concrete.**
-   - **The question, then its context, then the options.** The question in one sentence (on a board, the title). Before the options, two or three lines of context: what's happening, why it needs the user now, and what the answer unblocks. One screen per decision: the question, the context, the thing shown and the options stay open; fold the rest.
-   - **Show, don't tell.** Put the thing itself in front of the user: the mock or screenshot, the diagram, the diff or config, example output under each option, the numbers (as a chart, and a table whose columns say what they measure). Describe only what can't be shown.
-   - **Options** lettered A, B, C, each with what happens and what it costs. **Each option stands on its own:** its label names what it means in full, never "those four" or "as above"; when it stands for a list, show the list as a table. Recommendation first, marked, with a one-line reason. The last option is always **More discussion**, for when the packet didn't give the user enough to decide.
+   - **The question, then its context, then the options.** The question in one sentence (on a board, the title). Before the options, two or three lines of context: what's happening, why it needs the user now, and what the answer unblocks, with one line naming the decision's purpose and the evidence behind it. One screen per decision: the question, the context, the thing shown and the options stay open; fold the rest.
+   - **Show, don't tell.** Put the thing itself in front of the user: the mock or screenshot, the diagram, the diff or config, example output under each option, the numbers (as a chart, and a table whose columns say what they measure). A visual choice (layout, crop, type, spacing, colour) carries a rendered picture of each option, made from the real asset at real size, as an image block; ASCII art and prose aren't pictures. A long table shows only the rows still undecided. Describe only what can't be shown.
+   - **Options** lettered A, B, C, each with what happens, what it costs and its side effects (what it writes, sends outside or spends; a copied setting that turns on outbound writes counts). **Each option stands on its own:** its label names what it means in full, never "those four" or "as above"; when it stands for a list, show the list as a table. Recommendation first, marked, with a one-line reason. The last option is always **More discussion**, for when the packet didn't give the user enough to decide.
    - **Links between decisions:** when one answer changes another decision, say how ("if 2B, skip 5") instead of holding the second one back.
 5. **Record before sending.** Clear calls are recorded `accepted` (planner) and packet decisions `ask`, in the decision store where the rules name one, otherwise the plan's decisions table. The packet's link and text also go on the plan's home, so a reply like `2B` can still be read after lost context.
 
@@ -65,14 +66,15 @@ If the user asks to talk instead, talk it through in prose where they asked, unt
 ## Tasks for the human
 
 Sometimes the user has to do a step themselves. Each task spends their attention, so **push back on yourself first:**
-1. **Is there a way in?** A CLI, an API, an MCP server, or a setting that makes the step unnecessary. Look before you ask.
-2. **Is it really theirs?** Only for one of these reasons, which you name on the task:
+1. **Does the premise hold?** Check it before anything else: is the thing installed, running, needed at all? Would a smaller fix do, or does another machine already have it? A value you can make up or generate carries no secret: pipe it in yourself.
+2. **Is there a way in?** A CLI, an API, an MCP server, or a setting that makes the step unnecessary. Look before you ask.
+3. **Is it really theirs?** Only for one of these reasons, which you name on the task:
    - it's a step the user's rules reserve for them;
    - it needs their own sign-in, identity or second factor;
    - it spends money;
    - it's physical;
    - the service offers no way for an agent to do it.
-3. **Make their part as small as it can be.** Prepare everything around it: the exact command, the values to enter, the link with every ID filled in.
+4. **Make their part as small as it can be.** Prepare everything around it: the exact command, the values to enter, the link with every ID filled in.
 
 Post it where the user's rules put tasks (a board's task item), else under a **Needs the user** heading on the work's issue, and give the user its link. In this shape:
 

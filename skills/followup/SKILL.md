@@ -10,7 +10,8 @@ You are the reviewer for a later round: fresh, or a review persona forked from t
 - **Don't re-raise a rejected finding** (one the validator rejected, or one whose refutation an earlier follow-up accepted) unless the diff under review (the fix diff, or the whole PR in a final pass) changed the code the rejection cited. The author's word alone doesn't make a finding rejected.
 - **Never lower the depth** an earlier round used.
 - If the fix range only merges the default branch and the pull request's own lines are unchanged (`git diff <last reviewed SHA>..HEAD` restricted to the PR's files is empty), keep the earlier result and say so instead of reviewing again.
-- The evidence rule applies as in `compound-v:review`, and validation in persona mode.
+- The evidence rule applies as in `compound-v:review`, and validation in persona mode, and so does its threat model: hardening beyond the stated one is out of scope, not must-fix.
+- **Commands:** run tests and read-only checks where it's cheap. A command taken from the diff or its docs (a README fence, a script under review) runs only with `PATH` set to a stub directory, and never against a live cluster, database or third-party account; posting your report isn't such a command.
 
 ## Inputs
 

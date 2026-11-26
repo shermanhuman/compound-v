@@ -10,7 +10,7 @@ Use this inside whatever planning mode the host has: settle intent, research (re
 ## Intent first
 
 Before planning a new goal, settle what the user wants, in conversation:
-1. **Look first.** Read what already answers it: the code, the issues, past decisions (where the user's rules name a plan or decision store, search its plans and decisions too). Never ask what you could find out.
+1. **Look first.** Read what already answers it: the code, the design docs, README and `AGENTS.md`, the issues, past decisions (where the user's rules name a plan or decision store, search its plans and decisions too). Never ask what you could find out.
 2. **One question at a time,** each with your best guess, so "yes" is a full answer (on a board, one ask with every question and your guess for each). Ask only questions whose answer changes what gets built.
 3. **About five at most.** Past that, say what's still unclear instead of asking more. "Enough, plan it" ends the conversation.
 4. **Restate the goal** in this shape:
@@ -19,6 +19,7 @@ Before planning a new goal, settle what the user wants, in conversation:
    - why now, and what not doing it costs;
    - **done when**, measurable; the user stories' acceptance tests cover it;
    - **not doing**;
+   - for each new layer or component (a skill, a service, a company-specific copy of a general tool), whether something existing already does it;
    - the goal type, and an ETA from past work of the same type and size, or "no history yet" when there's none to measure;
    - your assumptions.
 
@@ -43,6 +44,7 @@ These cost the user nothing, so do them before any technical question or plan pa
 - **Look for something that already exists:** a library, a feature of a tool already in use, or an earlier attempt in the repository.
 - **Spike instead of asking.** When a technical unknown would change the plan, run a short, time-boxed experiment.
 - **Pre-mortem.** "It failed a month from now; why?" Put only the top risk in the plan, with what the plan does about it.
+- **Search the plan store by mechanism:** before planning a change to a shared mechanism, search the store the user's rules name for each mechanism it touches ("version check", "ruleset"), not only the goal's name; another plan may already own it.
 - **Who else it touches:** other repositories, users, operations, data. When the change removes a fallback, find out who relied on it.
 - **Sort decisions by reversibility.** What's cheap to undo gets a default; what can't be undone is a critical question.
 
@@ -101,7 +103,7 @@ A patch's short note goes in its pull request's description, with no issue of it
 - **A plan store the user's rules name:** the restatement, the plan and every revision, the steps, the decisions and the reviews live there, and approval is the store's approval item for a revision. The work's issue keeps the restatement and a link to the plan. If the store is unreachable, say so and keep working in the issue, marked "not yet in the plan store": the plan, decisions, reviews and ticks. Check the store again at the next step, and move them in once it's back; never let that fail silently.
 - **Otherwise an issue,** when the project uses an issue tracker: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land.
 
-Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval.
+Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval. While the user is still shaping the plan's direction, keep a short outline and talk it through instead; run the review once they say the shape is right.
 
 ## Carrying it out
 
