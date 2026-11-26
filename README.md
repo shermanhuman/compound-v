@@ -85,7 +85,7 @@ The full tier's round 2 and its later follow-ups, persona mode's second voice, a
 
 ## Persona mode (opt-in)
 
-By default each round has one fresh reviewer, plus the second voice from round 2 on. For high-consequence changes (the production boundary, data handling, money, authentication), the user's rules can switch on persona mode. One review session per PR reads the diff once, and specialist reviewers (`skills/review/references/personas.md`) fork from it in parallel, sharing the cached read. A validator re-checks every must-fix finding, and a fresh final pass closes it out.
+By default round 1 has one fresh reviewer; round 2 adds the second voice's full read beside a follow-up of the fixes; later rounds are the second voice's follow-ups. For high-consequence changes (the production boundary, data handling, money, authentication), the user's rules can switch on persona mode. One review session per PR reads the diff once, and specialist reviewers (`skills/review/references/personas.md`) fork from it in parallel, sharing the cached read. A validator re-checks every must-fix finding, and a fresh final pass closes it out.
 
 In a blind benchmark of 20 real bugs, personas found about twice as many real problems as a single reviewer, at about 3.9× the cost, but caught two fewer of the known bugs (16 against 18), which is why the mode is opt-in.
 
