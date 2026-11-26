@@ -31,7 +31,7 @@ The restatement goes at the top of the plan in its home (*The plan's home*; for 
 | Type | Examples | Plan | *Design* section (beyond Goal, Steps with their checks, and Out of scope) |
 |---|---|---|---|
 | **Patch** | a bug fix, a copy change, a small config change | a short note: goal, how it's tested, steps | none |
-| **Change** | a small enhancement, a refactor, an internal tool | the plan's sections, kept short | a diagram, user stories, functions and interfaces, traps; mockups when it touches a screen |
+| **Change** | a small enhancement, a refactor, an internal tool | the plan's sections, kept short | a diagram, user stories, functions and interfaces, traps, research; mockups when it touches a screen |
 | **Feature** | new user-facing capability, a new integration | the full plan | the Change parts, plus a sequence diagram of the main flow, the data model or API spec, and what's logged and measured to learn how it's used; suggested: quality targets, cross-cutting concerns, alternatives considered |
 | **Product** | a new app or service | feature depth | plus context and container views, and operations |
 
@@ -40,7 +40,7 @@ A patch touches no schema, dependency files, auth, money paths or public API, an
 ## Before you write it
 
 These cost the user nothing, so do them before any technical question or plan packet:
-- **Look for something that already exists:** a library, a feature of a tool already in use, or an earlier attempt in the repository.
+- **Look for something that already exists:** a library, a feature of a tool already in use, or an earlier attempt in the repository. For a Change and above, it goes in the plan's *Research* part.
 - **Spike instead of asking.** When a technical unknown would change the plan, run a short, time-boxed experiment.
 - **Pre-mortem.** "It failed a month from now; why?" Put only the top risk in the plan, with what the plan does about it.
 - **Who else it touches:** other repositories, users, operations, data. When the change removes a fallback, find out who relied on it.
@@ -78,7 +78,8 @@ Split the work into stages (phases, waves, a pilot, a first version and then the
    - `### User stories`: who does what and what they see, each with an acceptance test that can fail. The restatement's *done when* isn't a substitute: it says what is true at the end, while a story walks one person through one path, edge cases included.
    - `### Functions and interfaces`: each new or changed function, route, table, message or instruction section, with its shape (signature, columns, payload) and the one fact it owns. A fact two entries claim is a design problem to settle now.
    - `### Traps`: one row per trap in `compound-v:review`'s [causes.md](../review/references/causes.md): whether it applies, where, and how the plan handles it. Plan review fills in its own table and compares.
-   - For a Feature and above, the further parts the goal-types table lists, each under its own heading. Quality targets are measurable non-functional goals. Cross-cutting concerns are security, privacy and observability, with how the design handles each. Alternatives considered are other designs that would reach the goal, including buying or reusing, and why not.
+   - `### Research`: what current practice says for the versions the project pins (from its lockfiles and manifests), the pitfalls, and the alternatives, including an existing tool or library that would do the job, and why not. Research it as [checks.md](../review/references/checks.md)'s *How to research* says, and end with a *Sources* table in `compound-v:review`'s shape. A change that touches no outside library or service keeps the heading and writes `No outside dependency:` with the reason in place of the practice and pitfalls; what it looked for that already exists still goes in.
+   - For a Feature and above, the further parts the goal-types table lists, each under its own heading. Quality targets are measurable non-functional goals. Cross-cutting concerns are security, privacy and observability, with how the design handles each. Alternatives considered are other designs that would reach the goal, and why not (existing tools and libraries go in *Research*).
 5. **Steps** — under `### Steps`, each starting with its name in bold, saying what changes (files, by pattern rather than listing every file) and **how it's checked** in one `*Check:*` line, with a check that can actually fail, and how it will be shown failing once. In a plan store, write them as a numbered list (`1. **Name.** …`), which the store ticks; anywhere else (an issue, a file), as task items (`- [ ] **Name.** …`), converted to the numbered list when the plan moves into a store. Reuse existing code where it exists and name it.
 6. **Happy path** — for user-facing changes, a numbered walkthrough of what the user sees afterwards. It becomes the "where to look" list at the end.
 7. **Risks, rollout and rollback** — what could go wrong, the order things ship in (migrations relative to deploys, which repository first), and how to undo each step.
