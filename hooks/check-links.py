@@ -29,13 +29,13 @@ DEFINITION = re.compile(
 )
 LIST_ITEM = re.compile(r"^ {0,3}(?:[-*+]|\d{1,9}[.)])(?:\s|$)")
 # Numbered things that aren't issues: board items, steps, options, decisions and
-# questions ("item #1"); one letter before the hash (C#, F#, Q#1); "the #1".
+# questions ("item #1", bare #N only); one letter before the hash (C#, F#, Q#1); "the #1".
 NOT_ISSUES = "".join(
     rf"(?<!\b{w} )(?<!\b{w}s )" for w in ("item", "step", "option", "decision", "question")
 )
 # Not run/build/job numbers either; "issue 5 minutes" is not issue 5.
 BARE = re.compile(
-    r"(?<![&/\w.-])(?<!\b(?:run|job) )(?<!\bbuild )" + NOT_ISSUES + r"(?![a-z]#)(?!(?<=\bthe )#\d\b)(?:[\w.-]+/)?[\w.-]*#\d+\b"
+    r"(?<![&/\w.-])(?<!\b(?:run|job) )(?<!\bbuild )(?:(?:[\w.-]+/[\w.-]+|[\w.-]{2,})#\d+\b|" + NOT_ISSUES + r"(?!(?<=\bthe )#\d\b)#\d+\b)"
     r"|\b(?:PRs?|pull requests?|issues?) #?\d+\b(?! (?:seconds?|minutes?|hours?|days?|weeks?|months?|years?|commits?|times?)\b| of \d)(?!-\d)"
     r"|\b(?:PR|GH)-\d+\b",
     re.I,
@@ -75,7 +75,8 @@ EXAMPLES = [
     ("Q#1 and D#7 are packet labels.", []),
     ("It's the #1 priority.", []),
     ("A bare #12 and the #57 fix.", ["#12", "#57"]),
-    ("Merged oh#57, forge#34 and infra#216.", ["oh#57", "forge#34", "infra#216"]),
+    ("Merged api#57, web#34 and infra#216.", ["api#57", "web#34", "infra#216"]),
+    ("The board item api#57 is open.", ["api#57"]),
 ]
 
 TRANSCRIPT = [

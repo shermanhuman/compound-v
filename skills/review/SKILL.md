@@ -28,7 +28,7 @@ If the diff range is missing, review the current branch against the default bran
 3. The plan, in its home (a plan store the user's rules name, or the plan's issue), and its decisions, when there is one.
 4. Versions actually pinned (`mix.exs`/`mix.lock`, `go.mod`, `package.json` and lockfile, Dockerfiles). Research version-specific behaviour against these, not from memory.
 
-Run tests and read-only checks where it's cheap. A command taken from the diff or its docs (a README fence, a script under review) runs only with `PATH` set to a stub directory, and never against a live cluster, database or third-party account; posting your report isn't such a command.
+Run tests and read-only checks where it's cheap, the diff's own tests included. A command from the diff or its docs that can reach outside the machine (a README fence, a deploy or cloud CLI) runs only with `PATH` set to a stub directory, and never against a live cluster, database or third-party account; posting your report isn't such a command.
 
 If code-map tools are available (for example `map_find`, `map_entity`, `map_callers`, `map_impact`), use them to find definitions and callers of changed functions; re-check any location they mark as changed since their snapshot against the working tree. Otherwise use grep.
 
