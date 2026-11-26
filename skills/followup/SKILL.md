@@ -48,21 +48,19 @@ Same Must-fix rules, severities and table as the `compound-v:review` skill, each
 
 ## Spinning check
 
-Before reporting, compare this round's must-fix causes, and the author's cause ledger in the fix notes, with every earlier round's, the second voice's included, and flag:
+Before reporting, compare this round's causes (must-fix, and any recurring polish), and the author's cause ledger in the fix notes, with every earlier round's, the second voice's included, and flag:
 
 - **Flip-flop**: a fix that reverses an earlier fix, or contradicts a logged decision.
-- **Recurrence**: a must-fix whose specific cause matches an earlier must-fix's: one fix would have prevented both. The same class with a different cause isn't a recurrence; note it.
+- **Recurrence**: a must-fix, or a polish finding recurring in a new place, whose specific cause matches an earlier finding's: one fix would have prevented both. The same class with a different cause isn't a recurrence; note it.
 - **Churn**: the same lines rewritten round after round (in the instructions tier, one line or clause rewritten in three rounds).
 
 Any of these means more patching won't converge: the author steps back (`compound-v:review-loop`'s stop rule).
 
 ## Step-back check
 
-When the author posted a step-back since the last round, check it:
-- it names the cause and the findings that share it;
-- its outcome is one of the three the review loop allows;
-- for a sweep, your own search for sibling sites matches the author's list;
-- the fix diff removes the cause, rather than patching one more instance.
+When the author posted a step-back since the last round, check it by its outcome:
+- **a design change or a sweep**: it names the cause and the findings that share it, and the fix diff removes the cause rather than patching one more instance; for a sweep, your own search for sibling sites matches the author's list;
+- **not the same cause**: the evidence shows the findings have independent causes.
 
 A step-back that fails a check is a must-fix.
 

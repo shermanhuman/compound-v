@@ -64,12 +64,12 @@ Full tier:
 
 | Case | Round 1 | Round 2 | Round 3 and later | Review stops when |
 |---|---|---|---|---|
-| Full tier, round 1 found must-fix | a fresh reviewer | a fresh follow-up of the fixes, and the second voice's full review | the second voice's follow-ups | a round from round 2 on finds no must-fix (then the polish pass), or the stop rule |
+| Full tier, round 1 found must-fix | a fresh reviewer | a fresh follow-up of the fixes, and the second voice's full review | the second voice's follow-ups, while must-fix remain | a round from round 2 on finds no must-fix (then the polish pass), or the stop rule |
 | Full tier, round 1 clean | a fresh reviewer | the second voice's full review | the second voice's follow-ups | the same |
-| Second voice asked for at round 1 | both | the second voice's follow-up | the same | the same |
-| Instructions tier | both voices | the second voice's follow-up | the same | the same |
+| Second voice asked for at round 1 | both | the second voice's follow-up, if round 1 found must-fix | the same | round 1 clean, or a later round finds no must-fix; or the stop rule |
+| Instructions tier | both voices | the second voice's follow-up, if round 1 found must-fix | the same | round 1 clean, or a later round finds no must-fix; or the stop rule |
 | Persona mode | the personas | persona follow-ups, and the second voice's full review | persona and second-voice follow-ups | no must-fix open, then the final pass (persona step 5), or the stop rule |
-| Light tier | the light pass, its polish fixed | a follow-up only for a must-fix | the same | a follow-up finds no must-fix |
+| Light tier | the light pass, its polish fixed | a follow-up only for a must-fix | the same | the light pass finds no must-fix, or a follow-up finds none |
 
 **Persona mode** runs when the user's rules switch it on, typically for high-consequence changes (the production boundary, data handling, money, authentication), where finding more is worth several times the cost. Its entry gate: a diff that touches none of the deep areas (`security`, `api`, `schema`, `instructions`; `correctness`, `design` and `tests` run on any code and don't count) and is under the size limit the user's rules set gets the single-reviewer loop above instead. With no size limit set, only the deep-area test applies.
 
@@ -85,7 +85,7 @@ Where the host can't run subagents in parallel, run the personas one after anoth
 
 **Stop rule.** Keep going while each round's must-fix findings are new ground. In persona mode, all the personas of one round, and the second voice beside them, count as one round.
 
-**Step back** before patching again when a must-fix shares its cause with an earlier must-fix on the pull request (one fix would have prevented both; `compound-v:followup`'s *Recurrence*), when a fix reverses an earlier fix or a logged decision, or when the same lines churn (in the instructions tier, one line or clause rewritten in three rounds). Post a step-back note naming the cause and the findings that share it, with one of three outcomes:
+**Step back** before patching again when a must-fix, or a polish finding recurring in a new place, shares its cause with an earlier finding on the pull request (one fix would have prevented both; `compound-v:followup`'s *Recurrence*), when a fix reverses an earlier fix or a logged decision, or when the same lines churn (in the instructions tier, one line or clause rewritten in three rounds). Post a step-back note naming the suspected shared cause and the findings involved, with one of three outcomes:
 - **a design change** that removes the cause. Build it yourself when it stays inside the plan's decisions; when it changes a decision the user made, or the scope, ask the user and hold the work it touches;
 - **a sweep**: every sibling site of the cause, listed, fixed and proved by the outcome, not by banning a spelling;
 - **not the same cause**, with the evidence.
@@ -112,7 +112,7 @@ A commit that only changes the version number needs no round of its own. Merging
 4. Treat each finding as a hypothesis: find the line of code or the read-only query that would prove it wrong, then adopt, adapt or refute it with that evidence.
 5. Findings under *Questions for the user* aren't patched, in any tier: send them in one decision packet per round (`compound-v:interrogate`'s *Present it once*), hold the fixes they touch until the answers come, and record each answer where the decisions live.
 6. Fix or refute every valid must-fix finding (only the user may waive one).
-7. Keep a cause ledger in the fix notes: each of this round's must-fix causes beside every earlier one on the pull request, the second voice's included, saying for each whether one fix would have prevented both. A match means the step-back comes first (*Stop rule*).
+7. Keep a cause ledger in the fix notes: each of this round's must-fix causes, and any recurring polish's, beside every earlier one on the pull request, the second voice's included, saying for each whether one fix would have prevented both. A match means the step-back comes first (*Stop rule*).
 
 ## Record every round on the PR
 

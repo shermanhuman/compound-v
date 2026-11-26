@@ -18,7 +18,7 @@ A plan-and-review method for Claude Code and Codex, packaged as a plugin. Work i
    Why it's built this way:
    - **Fresh reviewers each round:** a reviewer that has seen the code tends to accept its own earlier conclusions.
    - **Every page of all three comment endpoints:** unpaginated reads stop at 30, and `gh pr view --comments` leaves out inline comments, so findings disappear without an error.
-   - **The stop rule:** fixes that undo fixes, the same finding coming back, or the same lines churning mean patching won't converge, so the design question goes to you.
+   - **The step-back:** fixes that undo fixes, a cause coming back, or the same lines churning mean patching won't converge, so the agent steps back: a design change (asking you only when it changes your decision or the scope), a sweep of every sibling site, or evidence that it isn't the same cause.
    - **Findings are hypotheses:** a wrong premise adopted unchecked spreads.
 7. **You merge, and a merge is a release** (`compound-v:pull-requests`, with the bump from `compound-v:release`). The agent never merges or pushes to the default branch, never rebases a PR branch, and never routes around a refusal. Pull requests stay drafts until the last review round has no must-fix findings.
 8. **Follow-ups go to issues:** a real piece of work gets its own issue, and small leftovers go in one "Follow-ups from #N" checklist. Never a local list, because local notes made unfinished work look finished.
@@ -85,7 +85,7 @@ The full tier's round 2 and its later follow-ups, and the instructions tier's ro
 
 ## Persona mode (opt-in)
 
-By default every PR gets one fresh reviewer per round. For high-consequence changes (the production boundary, data handling, money, authentication), the user's rules can switch on persona mode. One review session per PR reads the diff once, and specialist reviewers (`skills/review/references/personas.md`) fork from it in parallel, sharing the cached read. A validator re-checks every must-fix finding, and a fresh final pass closes it out.
+By default each round has one fresh reviewer, plus the second voice from round 2 on. For high-consequence changes (the production boundary, data handling, money, authentication), the user's rules can switch on persona mode. One review session per PR reads the diff once, and specialist reviewers (`skills/review/references/personas.md`) fork from it in parallel, sharing the cached read. A validator re-checks every must-fix finding, and a fresh final pass closes it out.
 
 In a blind benchmark of 20 real bugs, personas found about twice as many real problems as a single reviewer, at about 3.9× the cost, but caught two fewer of the known bugs (16 against 18), which is why the mode is opt-in.
 
