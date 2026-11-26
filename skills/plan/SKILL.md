@@ -17,7 +17,7 @@ Before planning a new goal, settle what the user wants, in conversation:
    - the goal in one sentence;
    - who it's for;
    - why now, and what not doing it costs;
-   - **done when**, measurable, which becomes the acceptance tests;
+   - **done when**, measurable; the user stories' acceptance tests cover it;
    - **not doing**;
    - the goal type, and an ETA from past work of the same type and size, or "no history yet" when there's none to measure;
    - your assumptions.
@@ -79,7 +79,7 @@ Split the work into stages (phases, waves, a pilot, a first version and then the
    - `### Functions and interfaces`: each new or changed function, route, table, message or instruction section, with its shape (signature, columns, payload) and the one fact it owns. A fact two entries claim is a design problem to settle now.
    - `### Traps`: one row per trap in `compound-v:review`'s [causes.md](../review/references/causes.md): whether it applies, where, and how the plan handles it. Plan review fills in its own table and compares.
    - For a Feature and above, the further parts the goal-types table lists, each under its own heading. Quality targets are measurable non-functional goals. Cross-cutting concerns are security, privacy and observability, with how the design handles each. Alternatives considered are other designs that would reach the goal, including buying or reusing, and why not.
-5. **Steps** — under `### Steps`, each starting with its name in bold, saying what changes (files, by pattern rather than listing every file) and **how it's checked** in one `*Check:*` line, with a check that can actually fail. In a plan store, write them as a numbered list (`1. **Name.** …`), which the store ticks; anywhere else (an issue, a file), as task items (`- [ ] **Name.** …`), converted to the numbered list when the plan moves into a store. Reuse existing code where it exists and name it.
+5. **Steps** — under `### Steps`, each starting with its name in bold, saying what changes (files, by pattern rather than listing every file) and **how it's checked** in one `*Check:*` line, with a check that can actually fail, and how it will be shown failing once. In a plan store, write them as a numbered list (`1. **Name.** …`), which the store ticks; anywhere else (an issue, a file), as task items (`- [ ] **Name.** …`), converted to the numbered list when the plan moves into a store. Reuse existing code where it exists and name it.
 6. **Happy path** — for user-facing changes, a numbered walkthrough of what the user sees afterwards. It becomes the "where to look" list at the end.
 7. **Risks, rollout and rollback** — what could go wrong, the order things ship in (migrations relative to deploys, which repository first), and how to undo each step.
 8. **Assumptions** — anything inferred rather than confirmed, so it can be corrected.

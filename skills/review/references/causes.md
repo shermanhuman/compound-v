@@ -2,7 +2,7 @@
 
 Every must-fix finding, in a code review, a follow-up or a plan review, names its cause in a `Cause` cell: `<class> · <the specific cause in a few words>`, for example `two-owners · plan text parsed by the server and by the page`. The class comes from the table below, and this file is its only list; the other skills cite it.
 
-The class is for counting. The specific cause is what a follow-up matches: two findings share a cause when one fix would have prevented both. Two findings of the same class with different causes are not a recurrence.
+When no class fits, use the nearest and say so in the specific cause. The class is for counting. The specific cause is what a follow-up matches: two findings share a cause when one fix would have prevented both. Two findings of the same class with different causes are not a recurrence.
 
 Rows marked **trap** are the design traps: a plan lists them in its *Traps* table, and a plan reviewer checks each one against the plan with evidence (`compound-v:plan-review`, check 4). Rows marked **proof** are about how a change is proved: plan-review check 6 and review check 5 cite them.
 
