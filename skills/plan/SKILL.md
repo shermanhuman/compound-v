@@ -62,6 +62,8 @@ Split the work into stages (phases, waves, a pilot, a first version and then the
 
 ## Sections
 
+Where the user's rules name a plan store with its own plan format, such as a structured document, write the plan in that format: these sections, Design parts, steps with their checks, and decision rows are its fields, not Markdown headings, and the store's template and check list them. The headings and the `*Check:*` line below are the format for a plan kept as Markdown (an issue, a PR description).
+
 1. **Goal** — one sentence that defines success.
 2. **Context** — why this change, what prompted it, what the outcome should be.
 3. **Decisions** — every choice made while planning:
