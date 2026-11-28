@@ -45,7 +45,7 @@ Until it merges, the PR's state is yours:
 
 ## Merging
 
-Creating branches, pushing feature branches, and creating or updating PRs are yours. Where the user's rules let you merge your own PR into its base branch, merge it once it's ready, with the merge method they name. Otherwise, when it's ready, hand the user the merge. Merging into the default branch is the user's unless their rules say otherwise. Never push to the default branch, never force-push, and never route around a refusal.
+Creating branches, pushing feature branches, and creating or updating PRs are yours. Where the user's rules let you merge your own PR into its base branch, and that base isn't the default branch, merge it once it's ready, with the merge method they name. Otherwise, when it's ready, hand the user the merge. A PR into the default branch, a release PR included, is always the user's to merge. Never push to the default branch, never force-push, and never route around a refusal.
 
 ## After the merge
 

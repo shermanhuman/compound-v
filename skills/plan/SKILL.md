@@ -106,7 +106,7 @@ A patch's short note goes in its pull request's description, with no issue of it
 - **A plan store the user's rules name:** the restatement, the plan and every revision, the steps, the decisions and the reviews live there, and approval is the store's approval item for a revision. The work's issue keeps the restatement and a link to the plan. If the store is unreachable, say so and keep working in the issue, marked "not yet in the plan store": the plan, decisions, reviews and ticks. Check the store again at the next step, and move them in once it's back; never let that fail silently.
 - **Otherwise an issue,** when the project uses an issue tracker: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land.
 
-Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval. While the user is still shaping the plan's direction, keep a short outline and talk it through instead; run the review once they say the shape is right.
+Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval. **Batches:** where the user's rules batch work (a start packet, a review at the end), the start packet asks for every plan in the batch to be approved at once; each plan's approval is that answer, not a separate request. While the user is still shaping the plan's direction, keep a short outline and talk it through instead; run the review once they say the shape is right.
 
 ## Carrying it out
 

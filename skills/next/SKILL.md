@@ -48,7 +48,7 @@ Run `gh` the way the user's rules say, for example through a tool manager. Keep 
 
 Use judgment, in this order, with each criterion breaking ties left by the one above. Don't compute scores.
 
-1. **Finish what's in flight.** If the user has an open pull request in a repository that's a draft, red, conflicting or behind, it's the pick for that repository. One that's ready and green is merged where the rules let the agent merge it; otherwise it goes under *Needs you* ("merge [#n](<url>)"), and new work in that repository waits behind it. Someone else's pull request doesn't block the user's; say it's there.
+1. **Finish what's in flight.** If the user has an open pull request in a repository that's a draft, red, conflicting or behind, it's the pick for that repository, unless it's held for a batch's end review (its cause is posted on it): name it, don't pick it. One that's ready and green and targets a candidate branch the rules let its own session merge is named as in flight, not merged from here. Any other ready and green one goes under *Needs you* ("merge [#n](<url>)"), and new work in that repository waits behind it unless the rules allow several open PRs there. Someone else's pull request doesn't block the user's; say it's there.
 2. **Half-done releases:** a plan or issue where part has shipped and a counterpart (another repository, a rollout step) is still open.
 3. **Blocked on the user:** a decision, spending, or a secret only they hold is never the pick. Give it one line naming the decision.
 4. **Impact:** what end users of the software see, then production safety and security, then developer tooling and CI, then housekeeping. The user's own priorities, when their rules or notes state them, refine this.
