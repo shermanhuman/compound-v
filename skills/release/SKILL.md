@@ -32,7 +32,7 @@ Use the requested level; otherwise patch for fixes and docs, minor for compatibl
 Read the release automation before tagging: some repositories tag from `VERSION` after a merge, others publish on a pushed tag. Never add a second trigger.
 
 1. Verify the exact reviewed commit, the version, the checks, and that the tag doesn't exist yet.
-2. For a tag-driven release, tag that commit and push only the tag, unless the user's rules name a tool that tags after the release merges; then leave tagging to it. Pushing the default branch and merging into it are the user's.
+2. For a tag-driven release, tag that commit and push only the tag, unless the user's rules name a tool that tags after the release merges; then leave tagging to it. Pushing the default branch is the user's, and so is merging into it, unless the user's rules name that merge as yours.
 3. Follow the release workflow for that tag and commit, not just the newest run, and confirm the published artifact.
 
 A bump or tag doesn't authorize a production rollout, a secret rotation or a database migration; those follow the user's rules.
