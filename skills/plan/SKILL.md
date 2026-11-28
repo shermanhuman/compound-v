@@ -96,7 +96,7 @@ Ask only what the code, the data, the decision record or a sensible default can'
 - **Critical:** what the plan can't be right without, and anything whose answer can't be undone (data deleted, a message sent, money spent, a public API released). These are answered before work starts.
 - **Optional:** each with your default and its reason. The user can skip them all, and you proceed on the defaults.
 
-A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default in the plan's home (a patch's PR) and keep going; otherwise, and always when it can't be undone, ask, and carry on with the work it doesn't touch. Where the user's rules name a board, the question goes there, not the chat; in plan mode it waits in the decisions table as an `ask` row until plan mode ends (`compound-v:interrogate`).
+A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default in the plan's home (a patch's PR) and keep going (where the rules hold such answers for a later review, post it there with how to undo it, and get a second opinion in the background); otherwise, and always when it can't be undone, ask, and carry on with the work it doesn't touch. Where the user's rules name a board, the question goes there, not the chat; in plan mode it waits in the decisions table as an `ask` row until plan mode ends (`compound-v:interrogate`).
 
 `compound-v:interrogate` is the procedure: use it whenever a plan has open decisions before approval, or the user asks to stress-test one.
 
@@ -110,7 +110,7 @@ Run `compound-v:plan-review` with a fresh reviewer and fold its findings in befo
 
 ## Carrying it out
 
-- Build on a feature branch, in a separate worktree, from a fresh fetch of the default branch. The main checkout may hold someone else's work or a running server.
+- Build on a feature branch, in a separate worktree, from a fresh fetch of the base branch (`compound-v:pull-requests`). The main checkout may hold someone else's work or a running server.
 - Stop dependent work when a step's check fails; fix the cause before moving on.
 - Tick each step as it lands, in the plan's home.
 - A revision during the build goes on without a new approval unless it changes the restatement or a decision the user made. Then ask for approval of that revision, with the changed decision shown, hold the work it touches, and carry on with the rest.

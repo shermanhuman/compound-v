@@ -29,7 +29,7 @@ Run `gh` the way the user's rules say, for example through a tool manager. Keep 
      --jq '.[] | "\(.repository.nameWithOwner) #\(.number) \(.url) | \(.title) | upd \(.updatedAt[0:10]) cre \(.createdAt[0:10]) | c\(.commentsCount) | \([.labels[].name] | join(",")) | todo \((.body // "") | [scan("(?m)^\\s*[-*] \\[ \\]")] | length) done \((.body // "") | [scan("(?m)^\\s*[-*] \\[[xX]\\]")] | length) | \((.body // "")[0:160] | gsub("\\s+"; " "))"'
    ```
 
-2. **Open pull requests** in the same scope. A repository with an open pull request of the user's finishes it before anything new starts there.
+2. **Open pull requests** in the same scope. A repository with an open pull request of the user's finishes it before anything new starts there, unless the user's rules let several PRs into a candidate branch be open at once.
 
    ```bash
    gh search prs --state open --limit 200 <same scope flags> \
@@ -48,11 +48,11 @@ Run `gh` the way the user's rules say, for example through a tool manager. Keep 
 
 Use judgment, in this order, with each criterion breaking ties left by the one above. Don't compute scores.
 
-1. **Finish what's in flight.** If the user has an open pull request in a repository that's a draft, red, conflicting or behind, it's the pick for that repository. One that's ready and green goes under *Needs you* ("merge [#n](<url>)"), and new work in that repository waits behind it. Someone else's pull request doesn't block the user's; say it's there.
+1. **Finish what's in flight.** If the user has an open pull request in a repository that's a draft, red, conflicting or behind, it's the pick for that repository. One that's ready and green is merged where the rules let the agent merge it; otherwise it goes under *Needs you* ("merge [#n](<url>)"), and new work in that repository waits behind it. Someone else's pull request doesn't block the user's; say it's there.
 2. **Half-done releases:** a plan or issue where part has shipped and a counterpart (another repository, a rollout step) is still open.
 3. **Blocked on the user:** a decision, spending, or a secret only they hold is never the pick. Give it one line naming the decision.
 4. **Impact:** what end users of the software see, then production safety and security, then developer tooling and CI, then housekeeping. The user's own priorities, when their rules or notes state them, refine this.
-5. **Batch within a repository.** Small leftovers (follow-up checklist items, flaky tests, alert noise) ride along with the pick as one release; name them.
+5. **Batch within a repository.** Small leftovers (follow-up checklist items, flaky tests, alert noise) ride along with the pick in the same PR (or batch); name them.
 6. **Size:** a pick fits one session unless the user asked for a big one. Say when a candidate is a multi-week plan.
 7. **Stale:** an issue untouched for six months or more, or a plan whose releases all shipped, is a candidate for closing, not a pick.
 
@@ -63,7 +63,7 @@ Under 25 lines, plain text, no tables, every issue and pull request a link to it
 ```text
 Next: <repo> — <one-line project>
 Why now: <two or three sentences: state, impact, what blocks what>
-Release: <issues and items folded in, as links; the open PR to finish first, if any>
+Batch: <issues and items folded in, as links; the open PR to finish first, if any>
 Needs you: <decisions or inputs, or "nothing">
 
 Runners-up:
