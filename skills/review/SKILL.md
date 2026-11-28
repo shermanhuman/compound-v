@@ -19,7 +19,7 @@ Whoever launched you should give you:
 - or a **persona** from [references/personas.md](references/personas.md): run only its checks, on the review bundle you were given or forked with
 - for the instructions pass: the hosts the repository targets, and the rough-edge or feedback log the user's rules name
 
-If the diff range is missing, review the current branch against the default branch's merge base and say so.
+If the diff range is missing, review the current branch against the merge base with its base branch, chosen in this order: the open PR's base, the base branch the user's rules name, the default branch. Say which range you reviewed.
 
 ## Read first
 

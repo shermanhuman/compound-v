@@ -96,7 +96,7 @@ Ask only what the code, the data, the decision record or a sensible default can'
 - **Critical:** what the plan can't be right without, and anything whose answer can't be undone (data deleted, a message sent, money spent, a public API released). These are answered before work starts.
 - **Optional:** each with your default and its reason. The user can skip them all, and you proceed on the defaults.
 
-A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default in the plan's home (a patch's PR) and keep going; otherwise, and always when it can't be undone, ask, and carry on with the work it doesn't touch. Where the user's rules name a board, the question goes there, not the chat; in plan mode it waits in the decisions table as an `ask` row until plan mode ends (`compound-v:interrogate`).
+A plan with no critical questions that the user's rules don't require approval for (bugs and upkeep usually go ahead) needs no packet. A question that comes up mid-work gets the same test: if its answer is cheap to undo, record your default in the plan's home (a patch's PR) and keep going (where the rules hold such answers for a later review, post it there with how to undo it and ask the second voice the rules name for an opinion in the background; it's shown with the held answer, and if it changes your mind, switch and record the switch); otherwise, and always when it can't be undone, ask, and carry on with the work it doesn't touch. Where the user's rules name a board, the question goes there, not the chat; in plan mode it waits in the decisions table as an `ask` row until plan mode ends (`compound-v:interrogate`).
 
 `compound-v:interrogate` is the procedure: use it whenever a plan has open decisions before approval, or the user asks to stress-test one.
 
@@ -106,11 +106,11 @@ A patch's short note goes in its pull request's description, with no issue of it
 - **A plan store the user's rules name:** the restatement, the plan and every revision, the steps, the decisions and the reviews live there, and approval is the store's approval item for a revision. The work's issue keeps the restatement and a link to the plan. If the store is unreachable, say so and keep working in the issue, marked "not yet in the plan store": the plan, decisions, reviews and ticks. Check the store again at the next step, and move them in once it's back; never let that fail silently.
 - **Otherwise an issue,** when the project uses an issue tracker: the plan in the body, reviews as comments, the approved revision written back to the body, and the steps as a checklist ticked off as they land.
 
-Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval. While the user is still shaping the plan's direction, keep a short outline and talk it through instead; run the review once they say the shape is right.
+Run `compound-v:plan-review` with a fresh reviewer and fold its findings in before asking for approval. **Batches:** where the user's rules batch work (a start packet, a review at the end), the start packet asks for every plan in the batch to be approved at once; each plan's approval is that answer, not a separate request. While the user is still shaping the plan's direction, keep a short outline and talk it through instead; run the review once they say the shape is right.
 
 ## Carrying it out
 
-- Build on a feature branch, in a separate worktree, from a fresh fetch of the default branch. The main checkout may hold someone else's work or a running server.
+- Build on a feature branch, in a separate worktree, from a fresh fetch of the base branch (`compound-v:pull-requests`). The main checkout may hold someone else's work or a running server.
 - Stop dependent work when a step's check fails; fix the cause before moving on.
 - Tick each step as it lands, in the plan's home.
 - A revision during the build goes on without a new approval unless it changes the restatement or a decision the user made. Then ask for approval of that revision, with the changed decision shown, hold the work it touches, and carry on with the rest.

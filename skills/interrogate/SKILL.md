@@ -96,4 +96,4 @@ Every link goes to the exact page, every command is ready to paste, and every st
 
 ## Finish
 
-The session is done when nothing is open. Summarize what was decided and what changed in the plan, then stop. Don't start implementing until the user approves the plan as it now stands. Where the rules name a plan store, that approval is the store's approval item for the revision; when the user approves in chat or plan mode, post the approval item and wait for its answer. Otherwise it's the host's plan approval, when there is one.
+The session is done when nothing is open. Summarize what was decided and what changed in the plan, then stop. Don't start implementing until the user approves the plan as it now stands. Where the rules name a plan store, that approval is the store's approval item for the revision; when the user approves in chat or plan mode, post the approval item and wait for its answer. Otherwise it's the host's plan approval, when there is one. In a batch, approval comes from its start packet (`compound-v:plan`'s *The plan's home*).
